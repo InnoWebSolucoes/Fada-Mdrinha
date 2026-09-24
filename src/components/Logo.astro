@@ -1,8 +1,8 @@
 ---
 /**
  * Logótipo oficial (PNG extraído do manual de identidade; substituir por SVG
- * quando o cliente enviar os ficheiros originais — ver README).
- * variant="light" → versão para fundos claros; "dark" → para fundos escuros.
+ * quando o cliente enviar os ficheiros originais, ver README).
+ * variant="light" para fundos claros; "dark" para fundos escuros.
  */
 interface Props { variant?: 'light' | 'dark'; height?: number; class?: string; priority?: boolean }
 const { variant = 'light', height = 44, class: className, priority = false } = Astro.props;

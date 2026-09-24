@@ -28,14 +28,14 @@ export const officeOrder = [
 export const twentyPoints = [
   'Uniforme', 'Pontualidade', 'Educação', 'Organização', 'Produtos',
   'Equipamentos', 'Limpeza', 'Vidros', 'Rodapés', 'Portas',
-  'Interruptores', 'Casas de banho', 'Cozinha / copa', 'Pavimentos', 'Aroma',
+  'Interruptores', 'Casas de banho', 'Cozinha e copa', 'Pavimentos', 'Aroma',
   'Organização final', 'Comunicação', 'Inspecção', 'Cliente satisfeito', 'Momento final',
 ];
 
 export const commitments = [
   {
     title: 'Pontualidade',
-    text: 'Horários acordados são horários cumpridos. Qualquer imprevisto é comunicado de imediato — nunca espera que seja a sua empresa a ligar.',
+    text: 'Horários acordados são horários cumpridos. Qualquer imprevisto é comunicado de imediato. Nunca espera que seja a sua empresa a ligar.',
   },
   {
     title: 'Supervisão',
@@ -55,6 +55,6 @@ export const commitments = [
 export const complaintSteps = [
   { title: 'Ouvimos', text: 'Agradecemos o contacto e ouvimos sem interromper.' },
   { title: 'Analisamos', text: 'Verificamos os factos, se necessário no local.' },
-  { title: 'Resolvemos', text: 'Assumimos a responsabilidade e corrigimos — voltando ao espaço sempre que for preciso.' },
+  { title: 'Resolvemos', text: 'Assumimos a responsabilidade e corrigimos, voltando ao espaço sempre que for preciso.' },
   { title: 'Confirmamos', text: 'Verificamos consigo se a solução foi satisfatória e registamos para não se repetir.' },
 ];

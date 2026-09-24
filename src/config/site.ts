@@ -60,10 +60,7 @@ export const whatsappMessages = {
   geral: 'Olá! Gostaria de pedir um orçamento de limpeza.',
   empresas:
     'Bom dia! Represento uma empresa e gostaria de receber uma proposta de limpeza profissional. Tipo de espaço: ______. Área aproximada: ______. Frequência pretendida: ______.',
-  precos: 'Olá! Tenho uma dúvida sobre os preços dos serviços.',
   servico: (nome: string) => `Olá! Gostaria de pedir um orçamento para ${nome}.`,
-  /** Prefixo da mensagem gerada pelo estimador (o resumo é acrescentado em JS). */
-  estimador: 'Olá! Fiz uma simulação no site e gostaria de confirmar um orçamento:',
 } as const;
 
 /** Constrói um link wa.me com a mensagem codificada. */
@@ -78,7 +75,7 @@ export const mailLink = `mailto:${site.email}`;
 export const nav = [
   { href: '/', label: 'Início' },
   { href: '/quem-somos', label: 'Quem Somos' },
-  { href: '/servicos', label: 'Serviços & Preços' },
+  { href: '/servicos', label: 'Serviços' },
   { href: '/empresas', label: 'Empresas' },
   { href: '/metodo', label: 'O Nosso Método' },
   { href: '#contacto', label: 'Contacto' },

@@ -5,9 +5,7 @@ import { site, waLink, whatsappMessages, telLink, mailLink } from '../config/sit
 interface Props {
   title?: string;
   text?: string;
-  /** Mensagem pré-preenchida do WhatsApp. */
   message?: string;
-  /** Mostrar a lista "para agilizar o orçamento". */
   tips?: boolean;
 }
 const {
@@ -17,98 +15,61 @@ const {
   tips = true,
 } = Astro.props;
 ---
-<section id="contacto" class="section contact" aria-labelledby="contacto-title">
-  <div class="wrap">
-    <div class="contact__card reveal">
-      <div class="contact__main">
-        <p class="kicker">Contacto</p>
-        <h2 id="contacto-title">{title}</h2>
-        <p class="lede">{text}</p>
-        <div class="actions">
-          <a href={waLink(message)} class="btn btn--primary btn--lg" target="_blank" rel="noopener">
-            <Icon name="whatsapp" /> Falar no WhatsApp
-          </a>
-          <a href={mailLink} class="btn btn--ghost btn--lg">
-            <Icon name="mail" /> Enviar e-mail
-          </a>
-        </div>
-
-        {tips && (
-          <div class="contact__tips">
-            <h3>Para agilizar o seu orçamento, indique-nos:</h3>
-            <ul class="check-list">
-              <li><Icon name="check" /> Tipo de espaço (casa, escritório, loja…)</li>
-              <li><Icon name="check" /> Localização</li>
-              <li><Icon name="check" /> Tipo de limpeza pretendida</li>
-              <li><Icon name="check" /> Data desejada para o serviço</li>
-              <li><Icon name="check" /> Fotografias do espaço, se possível</li>
-            </ul>
-          </div>
-        )}
+<section id="contacto" class="section bg-white contact" aria-labelledby="contacto-title">
+  <div class="wrap split">
+    <div class="contact__main reveal">
+      <p class="kicker">Contacto</p>
+      <h2 id="contacto-title">{title}</h2>
+      <p class="lede">{text}</p>
+      <div class="actions">
+        <a href={waLink(message)} class="btn btn--primary btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Falar no WhatsApp</a>
+        <a href={mailLink} class="btn btn--ghost btn--lg">Enviar e-mail</a>
       </div>
-
-      <address class="contact__details">
-        <a href={telLink}>
-          <span class="contact__ico"><Icon name="phone" size={20} /></span>
-          <span><strong>Telefone / WhatsApp</strong>{site.phone.display}</span>
-        </a>
-        <a href={mailLink}>
-          <span class="contact__ico"><Icon name="mail" size={20} /></span>
-          <span><strong>E-mail</strong>{site.email}</span>
-        </a>
-        <a href={site.instagram.url} target="_blank" rel="noopener">
-          <span class="contact__ico"><Icon name="instagram" size={20} /></span>
-          <span><strong>Instagram</strong>@{site.instagram.handle}</span>
-        </a>
-        <span>
-          <span class="contact__ico"><Icon name="pin" size={20} /></span>
-          <span><strong>Morada</strong>{site.address.display}</span>
-        </span>
-      </address>
+      {tips && (
+        <div class="contact__tips">
+          <p class="kicker kicker--blue">Para agilizar o seu orçamento</p>
+          <ul class="dot-list">
+            <li>Tipo de espaço: casa, escritório, loja</li>
+            <li>Localização</li>
+            <li>Serviço pretendido</li>
+            <li>Data desejada</li>
+            <li>Fotografias do espaço, se possível</li>
+          </ul>
+        </div>
+      )}
     </div>
+
+    <dl class="contact__dl reveal">
+      <div>
+        <dt>Telefone e WhatsApp</dt>
+        <dd><a href={telLink}>{site.phone.display}</a></dd>
+      </div>
+      <div>
+        <dt>E-mail</dt>
+        <dd><a href={mailLink}>{site.email}</a></dd>
+      </div>
+      <div>
+        <dt>Instagram</dt>
+        <dd><a href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.handle}</a></dd>
+      </div>
+      <div>
+        <dt>Morada</dt>
+        <dd>{site.address.display}</dd>
+      </div>
+    </dl>
   </div>
 </section>
 
 <style>
-  .contact { background: var(--cream-2); }
-  .contact__card {
-    display: grid; gap: 32px;
-    background: var(--white);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: clamp(24px, 4vw, 48px);
-    box-shadow: var(--shadow);
-  }
-  .contact__tips { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
-  .contact__tips h3 { font-size: 1rem; color: var(--ink-soft); margin-bottom: 12px; }
-  .contact__tips li { font-size: 0.98rem; }
-
-  .contact__details {
-    font-style: normal;
-    display: grid; gap: 8px; align-content: start;
-    background: var(--cream);
-    border-radius: var(--radius-sm);
-    padding: 22px;
-  }
-  .contact__details a, .contact__details > span {
-    display: flex; gap: 14px; align-items: center;
-    padding: 10px; border-radius: 12px;
-    color: var(--ink); text-decoration: none;
-    transition: background-color var(--dur) var(--ease);
-  }
-  .contact__details a:hover { background: var(--white); }
-  .contact__details strong {
-    display: block;
-    font-family: var(--font-label); font-weight: 600;
-    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--ink-mute); margin-bottom: 2px;
-  }
-  .contact__ico {
-    display: grid; place-items: center; flex: none;
-    width: 42px; height: 42px; border-radius: 12px;
-    background: var(--white); color: var(--blue); border: 1px solid var(--line);
-  }
-  @media (min-width: 900px) {
-    .contact__card { grid-template-columns: 1.4fr 1fr; align-items: start; }
-  }
+  .contact__tips { margin-top: 40px; }
+  .contact__tips .kicker { margin-bottom: 14px; }
+  .contact__tips li { color: var(--ink-soft); }
+  .contact__dl { margin: 0; border-top: 1px solid var(--line-strong); }
+  .contact__dl > div { display: grid; gap: 4px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .contact__dl dt { font-family: var(--font-label); font-size: 0.74rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; }
+  .contact__dl dd { margin: 0; font-size: clamp(1.15rem, 1rem + 0.7vw, 1.5rem); }
+  .contact__dl a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+  .contact__dl a:hover { color: var(--blue-text); border-color: currentColor; }
+  @media (min-width: 640px) { .contact__dl > div { grid-template-columns: 200px 1fr; align-items: baseline; } }
+  @media (min-width: 1024px) { .contact__dl { margin-top: 8px; } }
 </style>

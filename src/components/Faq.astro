@@ -1,5 +1,5 @@
 ---
-/** Acordeão nativo (<details>) — acessível por teclado sem JS. */
+/** Acordeão nativo (<details>), acessível por teclado sem JS. */
 import Icon from './Icon.astro';
 interface Props { items: { q: string; a: string }[] }
 const { items } = Astro.props;
@@ -8,8 +8,9 @@ const { items } = Astro.props;
   {items.map((item, i) => (
     <details class="faq__item" open={i === 0}>
       <summary class="faq__q">
-        <span>{item.q}</span>
-        <span class="faq__icon" aria-hidden="true"><Icon name="plus" size={20} /></span>
+        <span class="num">{String(i + 1).padStart(2, '0')}</span>
+        <span class="faq__text">{item.q}</span>
+        <span class="faq__icon" aria-hidden="true"><Icon name="plus" size={18} /></span>
       </summary>
       <div class="faq__a"><p>{item.a}</p></div>
     </details>
@@ -17,21 +18,15 @@ const { items } = Astro.props;
 </div>
 
 <style>
-  .faq { display: grid; gap: 10px; }
-  .faq__item { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius-sm); }
-  .faq__item[open] { border-color: var(--line-strong); }
+  .faq { border-top: 1px solid var(--line-strong); }
+  .faq__item { border-bottom: 1px solid var(--line); }
   .faq__q {
-    display: flex; justify-content: space-between; align-items: center; gap: 16px;
-    padding: 18px 20px; cursor: pointer; list-style: none;
-    font-weight: 500; font-size: 1.05rem;
+    display: grid; grid-template-columns: 48px 1fr 32px; align-items: center; gap: 12px;
+    padding: 20px 0; cursor: pointer; list-style: none; font-size: 1.12rem;
   }
   .faq__q::-webkit-details-marker { display: none; }
-  .faq__icon {
-    display: grid; place-items: center; flex: none;
-    width: 34px; height: 34px; border-radius: 50%;
-    background: var(--cream-2); color: var(--blue-text);
-    transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
-  }
-  .faq__item[open] .faq__icon { transform: rotate(45deg); background: var(--gold); color: var(--ink); }
-  .faq__a { padding: 0 20px 20px; color: var(--ink-soft); }
+  .faq__icon { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--line-strong); border-radius: 50%; transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease); }
+  .faq__item[open] .faq__icon { transform: rotate(45deg); background: var(--gold); border-color: var(--gold); }
+  .faq__a { padding: 0 0 22px 60px; color: var(--ink-soft); max-width: 66ch; }
+  @media (max-width: 480px) { .faq__q { grid-template-columns: 36px 1fr 32px; } .faq__a { padding-left: 48px; } }
 </style>

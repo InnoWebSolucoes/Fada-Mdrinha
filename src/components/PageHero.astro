@@ -1,7 +1,7 @@
 ---
 /**
  * Cabeçalho de página interna, no estilo das capas de capítulo do brand book:
- * fundo de cor sólida, numeral grande translúcido, título e citação.
+ * cor sólida, numeral romano em grande, título e citação.
  */
 interface Props {
   kicker: string;
@@ -16,36 +16,32 @@ const { kicker, title, text, quote, numeral, tone = 'plum' } = Astro.props;
 <section class:list={['page-hero', `bg-${tone}`, 'pattern']}>
   <div class="wrap page-hero__inner">
     {numeral && <span class="page-hero__numeral" aria-hidden="true">{numeral}</span>}
-    <p class="kicker">{kicker}</p>
-    <h1 set:html={title} />
-    {text && <p class="lede">{text}</p>}
-    {quote && <p class="page-hero__quote">“{quote}”</p>}
-    <slot />
+    <div class="page-hero__body">
+      <p class="kicker">{kicker}</p>
+      <h1 set:html={title} />
+      {text && <p class="lede">{text}</p>}
+      {quote && <p class="page-hero__quote">“{quote}”</p>}
+      <slot />
+    </div>
   </div>
 </section>
 
 <style>
-  .page-hero { padding-block: clamp(64px, 10vw, 128px) clamp(48px, 7vw, 88px); }
-  .page-hero__inner { position: relative; max-width: 820px; }
+  .page-hero { padding-block: clamp(72px, 10vw, 140px) clamp(56px, 8vw, 104px); }
+  .page-hero__inner { display: grid; gap: 24px; }
   .page-hero__numeral {
-    display: block;
-    font-size: clamp(4rem, 10vw, 7rem);
-    line-height: 0.9;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.28);
-    margin-bottom: 18px;
-    letter-spacing: -0.02em;
+    font-size: clamp(5rem, 12vw, 9rem); line-height: 0.85; font-weight: 400; letter-spacing: -0.04em;
+    color: rgba(255, 255, 255, 0.22);
   }
-  .bg-gold-deep .page-hero__numeral { color: rgba(10, 10, 12, 0.2); }
+  .bg-gold-deep .page-hero__numeral { color: rgba(10, 10, 12, 0.16); }
+  .page-hero__body { max-width: 820px; }
   .page-hero h1 { color: inherit; }
   .page-hero__quote {
-    margin-top: 22px;
-    padding-left: 16px;
-    border-left: 2px solid var(--gold);
-    color: rgba(255, 255, 255, 0.85);
-    font-style: italic;
-    max-width: 52ch;
+    margin-top: 24px; padding-left: 18px; border-left: 2px solid var(--gold-light);
+    color: rgba(255, 255, 255, 0.86); font-style: italic; max-width: 52ch;
   }
   .bg-gold-deep .page-hero__quote { border-color: var(--ink); color: rgba(10, 10, 12, 0.82); }
-  .bg-plum .page-hero__quote, .bg-blue-deep .page-hero__quote, .bg-brand .page-hero__quote { border-color: var(--gold-light); }
+  @media (min-width: 900px) {
+    .page-hero__inner { grid-template-columns: 1fr 5fr; align-items: end; gap: 40px; }
+  }
 </style>

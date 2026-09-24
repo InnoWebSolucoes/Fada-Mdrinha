@@ -1,8 +1,8 @@
 ---
 /**
- * Antes & Depois — comparador acessível (input type="range" controla a máscara).
+ * Antes e Depois: comparador acessível (input type="range" controla a máscara).
  * Só é renderizado quando site.features.beforeAfter = true e existem pares.
- * Sem JS: mostra as duas fotos lado a lado.
+ * Sem JS mostra as duas fotos lado a lado.
  *
  * Como activar: colocar as fotos em src/assets/antes-depois/, importar na página
  * e passar `pairs=[{ before, after, label }]`; mudar a flag em src/config/site.ts.
@@ -18,20 +18,20 @@ const { pairs } = Astro.props;
 {pairs.length > 0 && (
   <section class="section" id="antes-depois" aria-labelledby="ad-title">
     <div class="wrap">
-      <SectionHead kicker="Resultados" title="Antes &amp; Depois" text="Uma amostra do tipo de transformação que entregamos em cada serviço." />
-      <div class="grid grid--2">
+      <SectionHead kicker="Resultados" title="Antes e depois" text="Uma amostra do tipo de transformação que entregamos em cada serviço." />
+      <div class="ba-grid">
         {pairs.map((pair, i) => (
           <figure class="ba" data-ba>
             <div class="ba__frame">
               <div class="ba__img ba__img--after">
-                <Picture src={pair.after} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 560px, 100vw" alt={`${pair.label} — depois da limpeza pela Fada Madrinha`} />
+                <Picture src={pair.after} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 600px, 100vw" alt={`${pair.label}, depois da limpeza pela Fada Madrinha`} />
                 <span class="ba__tag ba__tag--after">Depois</span>
               </div>
-              <div class="ba__img ba__img--before" data-ba-before>
-                <Picture src={pair.before} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 560px, 100vw" alt={`${pair.label} — antes da limpeza`} />
+              <div class="ba__img ba__img--before">
+                <Picture src={pair.before} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 600px, 100vw" alt={`${pair.label}, antes da limpeza`} />
                 <span class="ba__tag">Antes</span>
               </div>
-              <div class="ba__handle" data-ba-handle aria-hidden="true"></div>
+              <div class="ba__handle" aria-hidden="true"></div>
               <label class="visually-hidden" for={`ba-range-${i}`}>Comparar antes e depois: {pair.label}</label>
               <input class="ba__range" id={`ba-range-${i}`} type="range" min="0" max="100" value="50" data-ba-range />
             </div>
@@ -44,8 +44,9 @@ const { pairs } = Astro.props;
 )}
 
 <style>
+  .ba-grid { display: grid; gap: 32px; }
   .ba { margin: 0; }
-  .ba__frame { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4 / 3; background: var(--cream-3); }
+  .ba__frame { position: relative; overflow: hidden; aspect-ratio: 4 / 3; background: var(--cream-3); }
   .ba__img { position: absolute; inset: 0; }
   .ba__img img { width: 100%; height: 100%; object-fit: cover; }
   html.js .ba__img--before { clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
@@ -53,25 +54,15 @@ const { pairs } = Astro.props;
   html:not(.js) .ba__img { position: relative; }
   html:not(.js) .ba__handle, html:not(.js) .ba__range { display: none; }
   .ba__tag {
-    position: absolute; top: 14px; left: 14px;
-    padding: 0.3rem 0.7rem; border-radius: var(--radius-pill);
+    position: absolute; top: 14px; left: 14px; padding: 0.3rem 0.7rem;
     background: rgba(10, 10, 12, 0.7); color: var(--white);
     font-family: var(--font-label); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase;
   }
   .ba__tag--after { left: auto; right: 14px; background: var(--blue); }
-  .ba__handle {
-    position: absolute; top: 0; bottom: 0; left: var(--pos, 50%);
-    width: 2px; background: var(--white); transform: translateX(-1px);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
-  }
-  .ba__handle::after {
-    content: '⇄'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    width: 40px; height: 40px; border-radius: 50%; background: var(--white); color: var(--ink);
-    display: grid; place-items: center; font-size: 1.1rem; box-shadow: var(--shadow);
-  }
+  .ba__handle { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 2px; background: var(--white); transform: translateX(-1px); }
   .ba__range { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; margin: 0; }
-  .ba__range:focus-visible + * { outline: 3px solid var(--blue); }
   figcaption { margin-top: 10px; font-weight: 500; }
+  @media (min-width: 800px) { .ba-grid { grid-template-columns: 1fr 1fr; } }
 </style>
 
 <script>

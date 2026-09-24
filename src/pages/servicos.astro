@@ -1,102 +1,100 @@
 ---
+import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PageHero from '../components/PageHero.astro';
 import SectionHead from '../components/SectionHead.astro';
-import PriceCategory from '../components/PriceCategory.astro';
-import Estimator from '../components/Estimator.astro';
 import Faq from '../components/Faq.astro';
 import ContactSection from '../components/ContactSection.astro';
-import { whatsappMessages } from '../config/site';
+import { waLink, whatsappMessages } from '../config/site';
 import { services } from '../data/services';
-import { priceCategories, extras, frequencies, faq, formatKz, estimatorDisclaimer } from '../data/pricing';
+import { faq } from '../data/faq';
+import bandPhoto1 from '../assets/photos/sala-reunioes.jpg';
+import bandPhoto2 from '../assets/photos/janela-escritorio.jpg';
 
-const categoryFor = (id: string) => priceCategories.find((c) => c.id === id)!;
+const bands: Record<number, { src: ImageMetadata; alt: string }> = {
+  1: { src: bandPhoto1, alt: 'Colaboradora a limpar com atenção a mesa de uma sala de reuniões' },
+  3: { src: bandPhoto2, alt: 'Mão com luva amarela a limpar a janela de um escritório ao fim da tarde' },
+};
 ---
 <Base
-  title="Serviços & Preços"
-  description="Tabela de preços da Fada Madrinha para limpeza residencial, empresarial, higienização, organização, pós-obra e estofos em Luanda. Calcule uma estimativa e envie-a por WhatsApp."
+  title="Serviços"
+  description="Limpeza residencial, empresarial, higienização especializada, organização de espaços, pós-obra e estofos em Luanda. Conheça como trabalhamos em cada serviço."
+  darkHeader
 >
   <PageHero
     tone="blue-deep"
-    kicker="Serviços &amp; preços"
-    title="Preços claros, sem letras pequenas"
-    text="Valores de referência para os nossos serviços em Luanda. Use o estimador para uma simulação rápida e envie-a directamente para o nosso WhatsApp."
+    numeral="II"
+    kicker="Serviços"
+    title="Seis serviços. O mesmo cuidado em todos."
+    text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas."
   >
-    <ul class="chip-list mt-md" aria-label="Ir para o serviço">
-      {services.map((s) => <li><a class="chip" href={`#${s.id}`}><Icon name={s.icon} size={16} /> {s.title}</a></li>)}
-    </ul>
+    <ol class="inline-list jump" aria-label="Ir para o serviço">
+      {services.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+    </ol>
   </PageHero>
 
-  <!-- TABELAS -->
-  <section class="section section--tight" aria-label="Tabela de preços">
-    <div class="wrap">
-      <p class="small muted center">{estimatorDisclaimer} Todos os preços em Kz (AOA).</p>
-      {services.map((s) => <PriceCategory category={categoryFor(s.priceCategory)} service={s} />)}
-    </div>
-  </section>
-
-  <!-- EXTRAS -->
-  <section class="section bg-cream-2" id="extras" aria-labelledby="extras-title">
-    <div class="wrap">
-      <SectionHead kicker="Extras" title="Serviços adicionais e frequência" text="Pode adicionar estes extras a serviços residenciais ou empresariais. Contratos recorrentes têm desconto sobre o total de cada visita." tone="gold" />
-      <div class="grid grid--2">
-        <div class="table-scroll">
-          <table>
-            <caption class="visually-hidden">Extras</caption>
-            <thead><tr><th scope="col">Extra</th><th scope="col">Preço</th></tr></thead>
-            <tbody>
-              {extras.map((e) => (
-                <tr>
-                  <td>{e.label}{e.note && <span class="muted"> ({e.note})</span>}</td>
-                  <td class="num-cell">+ {formatKz(e.price)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div class="table-scroll">
-          <table>
-            <caption class="visually-hidden">Frequência</caption>
-            <thead><tr><th scope="col">Frequência</th><th scope="col">Desconto</th></tr></thead>
-            <tbody>
-              {frequencies.map((f) => (
-                <tr>
-                  <td>{f.label}</td>
-                  <td class="num-cell">{f.discount ? `−${Math.round(f.discount * 100)}% no total` : '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ESTIMADOR -->
-  <section class="section" id="estimador" aria-labelledby="estimador-title">
-    <div class="wrap">
-      <SectionHead kicker="Estimador" title="Quanto vai custar o seu serviço?" text="Responda a três perguntas rápidas e receba uma estimativa imediata — sem compromisso. No fim, envie o resumo para o nosso WhatsApp." />
-      <Estimator />
-    </div>
-  </section>
+  <div class="services">
+    {services.map((s, i) => (
+      <>
+        <section id={s.id} class="section svc" aria-labelledby={`${s.id}-title`}>
+          <div class="wrap split">
+            <div class="split__aside">
+              <span class="numeral">{s.n}</span>
+              <h2 id={`${s.id}-title`}>{s.title}</h2>
+              <p class="lede">{s.short}</p>
+            </div>
+            <div class="svc__body">
+              <p class="svc__long">{s.long}</p>
+              <p class="kicker">Como trabalhamos</p>
+              <ol class="ledger svc__steps">
+                {s.steps.map((step, k) => (
+                  <li><span class="num">0{k + 1}</span><span>{step}</span></li>
+                ))}
+              </ol>
+              <a href={waLink(whatsappMessages.servico(s.title))} class="btn btn--dark" target="_blank" rel="noopener">
+                <Icon name="whatsapp" /> Pedir orçamento para este serviço
+              </a>
+            </div>
+          </div>
+        </section>
+        {bands[i] && (
+          <div class="band" aria-hidden="true">
+            <Picture src={bands[i].src} formats={['avif', 'webp']} widths={[768, 1280, 1920]} sizes="100vw" alt="" />
+          </div>
+        )}
+      </>
+    ))}
+  </div>
 
   <!-- FAQ -->
-  <section class="section bg-cream-2" id="faq" aria-labelledby="faq-title">
-    <div class="wrap wrap--narrow">
-      <SectionHead kicker="Perguntas frequentes" title="Dúvidas comuns" />
+  <section class="section bg-white" id="faq" aria-labelledby="faq-title">
+    <div class="wrap split">
+      <div class="split__aside">
+        <p class="kicker">Perguntas frequentes</p>
+        <h2 id="faq-title">Dúvidas comuns</h2>
+        <p class="lede">Se a sua não estiver aqui, fale connosco. Respondemos com atenção.</p>
+      </div>
       <Faq items={faq} />
     </div>
   </section>
 
   <ContactSection
-    title="Ainda com dúvidas sobre o preço?"
-    text="Fale connosco directamente — respondemos com atenção e sem compromisso."
-    message={whatsappMessages.precos}
+    title="Qual é o seu espaço?"
+    text="Diga-nos o que precisa. Preparamos uma proposta à medida, sem compromisso."
   />
 </Base>
 
 <style>
-  .chip-list a.chip { text-decoration: none; color: var(--white); background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.25); }
-  .chip-list a.chip:hover { background: rgba(255, 255, 255, 0.2); }
+  .jump { margin-top: 28px; }
+  .jump a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; }
+  .jump a:hover { border-bottom-color: currentColor; }
+
+  .svc + .svc, .band + .svc { border-top: 1px solid var(--line-strong); }
+  .svc .numeral { margin-bottom: 14px; }
+  .svc__long { font-size: 1.12rem; color: var(--ink-2); max-width: 62ch; margin-bottom: 34px; }
+  .svc__steps { margin-bottom: 36px; }
+  .svc__steps li { display: grid; grid-template-columns: 48px 1fr; gap: 12px; padding: 16px 0; align-items: baseline; }
+  .band { height: clamp(260px, 42vw, 560px); background: var(--cream-3); }
+  .band :global(picture), .band :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
 </style>

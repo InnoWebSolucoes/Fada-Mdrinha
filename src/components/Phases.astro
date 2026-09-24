@@ -1,10 +1,10 @@
 ---
 import { phases } from '../data/method';
 ---
-<ol class="phases" aria-label="As cinco fases do Método Fada Madrinha">
+<ol class="cols cols--5 phases" aria-label="As cinco fases do Método Fada Madrinha">
   {phases.map((f, i) => (
-    <li class="phases__item reveal" style={`--reveal-delay:${i * 0.08}s`}>
-      <span class="num">{f.n}</span>
+    <li class="reveal" style={`--reveal-delay:${i * 0.07}s`}>
+      <span class="numeral">{f.n}</span>
       <h3>{f.title}</h3>
       <p>{f.text}</p>
     </li>
@@ -12,25 +12,6 @@ import { phases } from '../data/method';
 </ol>
 
 <style>
-  .phases {
-    list-style: none; padding: 0; margin: 0;
-    display: grid; gap: 18px;
-    counter-reset: fase;
-  }
-  .phases__item {
-    position: relative;
-    padding: 24px 22px 22px;
-    border-radius: var(--radius);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--line-dark);
-  }
-  .phases__item h3 { margin: 10px 0 8px; font-size: 1.3rem; }
-  .phases__item p { margin: 0; color: rgba(255, 255, 255, 0.75); font-size: 0.98rem; }
-  .phases__item::after {
-    content: ''; position: absolute; left: 22px; right: 22px; top: 0; height: 2px;
-    background: linear-gradient(90deg, var(--gold), transparent);
-    border-radius: 2px;
-  }
-  @media (min-width: 700px) { .phases { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1024px) { .phases { grid-template-columns: repeat(5, 1fr); gap: 14px; } .phases__item { padding: 22px 18px; } }
+  .phases { list-style: none; padding: 0; margin: 0; }
+  .phases h3 { font-size: 1.35rem; margin-top: 18px; }
 </style>

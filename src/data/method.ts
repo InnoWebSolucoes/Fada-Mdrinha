@@ -1,5 +1,5 @@
 /**
- * O Método Fada Madrinha — conteúdo do brand book (caps. IV, VI e VII),
+ * O Método Fada Madrinha. Conteúdo do brand book (caps. IV, VI e VII),
  * reescrito para o cliente (não é o manual interno).
  */
 
@@ -12,12 +12,12 @@ export const phases = [
   { n: '05', title: 'Encantar', text: 'Almofadas alinhadas, mantas dobradas, luz natural a entrar. Um pequeno gesto que transforma limpeza em experiência.' },
 ];
 
-/** Diferenciadores (página inicial). */
+/** Compromissos (página inicial). */
 export const differentiators = [
   { title: 'Método próprio', text: 'Cada serviço segue as mesmas cinco fases, para que a qualidade nunca dependa da sorte.' },
   { title: 'Supervisão em cada visita', text: 'Uma Fada Líder acompanha a equipa e faz a inspecção final antes de considerarmos o trabalho concluído.' },
-  { title: 'Pontualidade', text: 'Chegar a horas é uma forma de respeito. Se houver um imprevisto, avisamos nós — antes de ter de ligar.' },
-  { title: 'Discrição e confidencialidade', text: 'Nada sai da sua casa ou empresa. Nada entra sem autorização. O que vemos, fica connosco.' },
+  { title: 'Pontualidade', text: 'Chegar a horas é uma forma de respeito. Se houver um imprevisto, avisamos nós, antes de ter de ligar.' },
+  { title: 'Discrição e confidencialidade', text: 'Nada sai da sua casa ou empresa. Nada entra sem autorização. O que vemos fica connosco.' },
   { title: 'Atendimento próximo', text: 'Acompanhamos antes, durante e depois do serviço. Uma mensagem, uma confirmação, um agradecimento.' },
   { title: 'Compromisso de recuperação', text: 'Se algo não ficar como esperava e a responsabilidade for nossa, corrigimos sem custos adicionais.' },
 ];
@@ -38,7 +38,7 @@ export const journey: JourneyStep[] = [
     n: '01',
     eyebrow: 'Primeiro contacto',
     title: 'Fale connosco. Respondemos com atenção.',
-    text: 'Envia uma mensagem ou telefona. O nosso compromisso é responder o mais rapidamente possível e, antes de falar de preços, compreender o que precisa.',
+    text: 'Envia uma mensagem ou telefona. O nosso compromisso é responder o mais rapidamente possível e, antes de falar de valores, compreender o que precisa.',
     bullets: ['Que tipo de espaço pretende limpar?', 'Qual a dimensão?', 'Quando gostaria de realizar o serviço?', 'Existe alguma necessidade especial?'],
   },
   {
@@ -73,8 +73,8 @@ export const journey: JourneyStep[] = [
     n: '06',
     eyebrow: 'Inspecção final',
     title: 'O Padrão Ouro.',
-    text: 'Antes de sair, a equipa percorre o espaço uma última vez — luzes, janelas, produtos recolhidos, lixo removido, objectos recolocados — e convida-o a fazer uma breve visita connosco.',
-    quote: '“Se esta fosse a minha casa, eu ficaria satisfeito com este resultado?” Se a resposta for não, o serviço ainda não terminou.',
+    text: 'Antes de sair, a equipa percorre o espaço uma última vez: luzes, janelas, produtos recolhidos, lixo removido, objectos recolocados. Depois convida-o a fazer uma breve visita connosco.',
+    quote: 'Se esta fosse a minha casa, eu ficaria satisfeito com este resultado? Se a resposta for não, o serviço ainda não terminou.',
   },
   {
     n: '07',
