@@ -1,58 +1,28 @@
 ---
-import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import SectionHead from '../components/SectionHead.astro';
-import Phases from '../components/Phases.astro';
-import CtaBand from '../components/CtaBand.astro';
-import ContactSection from '../components/ContactSection.astro';
-import { journey, promise } from '../data/method';
-import detailPhoto from '../assets/photos/sala-reunioes.jpg';
+import Star from '../components/Star.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { journey, phases } from '../data/content';
 ---
-<Base
-  title="O Nosso Método"
-  description="Do primeiro contacto ao acompanhamento depois do serviço: conheça a experiência Fada Madrinha, desenhada para que cada contacto seja memorável."
-  darkHeader
->
-  <PageHero
-    tone="gold-deep"
-    numeral="IV"
-    kicker="O Método Fada Madrinha"
-    title="Não limpamos apenas espaços. Cuidamos das pessoas que vivem neles."
-    text="Acreditamos que forma uma opinião sobre nós muito antes de a equipa começar a limpar: na rapidez da resposta, na simpatia do atendimento, na pontualidade, na apresentação. Por isso, desenhámos cada passo da sua experiência."
-    quote="A excelência não acontece por acaso. Ela é desenhada."
-  />
+<Base title="O Nosso Método" description="Do primeiro contacto ao acompanhamento depois do serviço: conheça a experiência Fada Madrinha, desenhada para que cada contacto seja memorável.">
+  <PageHero tone="gold" title="Não limpamos apenas espaços. Cuidamos das pessoas que vivem neles." text="Forma uma opinião sobre nós muito antes de começarmos a limpar: na rapidez da resposta, na simpatia, na pontualidade. Por isso, desenhámos cada passo." />
 
-  <!-- PROMESSA -->
-  <section class="section--tight promise" aria-label="A promessa da marca">
-    <div class="wrap promise__inner">
-      <p class="kicker">O que pode esperar, sempre</p>
-      <ul class="inline-list">
-        {promise.map((p) => <li>{p}</li>)}
-      </ul>
-    </div>
-  </section>
-
-  <!-- JORNADA -->
-  <section class="section" aria-labelledby="jornada-title">
-    <div class="wrap split">
-      <div class="split__aside">
-        <p class="kicker">A sua experiência</p>
-        <h2 id="jornada-title">Do primeiro contacto ao dia seguinte</h2>
-        <p class="lede">Oito momentos, um só padrão. É assim que cuidamos de si.</p>
+  <section class="section" aria-labelledby="j-t">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="j-t" class="reveal">Do primeiro olá ao dia seguinte</h2>
+        <p class="reveal" style="--d:1">Oito momentos, um só padrão. As mensagens são as que recebe de nós.</p>
       </div>
-      <ol class="ledger journey">
-        {journey.map((step, i) => (
-          <li class="reveal" style={`--reveal-delay:${Math.min(i, 3) * 0.05}s`}>
-            <div class="ledger__row journey__row">
-              <span class="numeral">{step.n}</span>
-              <div>
-                <p class="kicker journey__eyebrow">{step.eyebrow}</p>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-                {step.bullets && <ul class="dot-list journey__bullets">{step.bullets.map((b) => <li>{b}</li>)}</ul>}
-                {step.quote && <p class="journey__quote">“{step.quote}”</p>}
-              </div>
+      <ol class="journey">
+        {journey.map((s, i) => (
+          <li class:list={['jstep', 'reveal', { 'jstep--right': i % 2 === 1 }]}>
+            <span class="jstep__n num-dot">{i + 1}</span>
+            <div class="jstep__card">
+              <p class="jstep__moment">{s.moment}</p>
+              <h3>{s.title}</h3>
+              <p class="jstep__text">{s.text}</p>
+              {s.message && <p class="bubble"><span class="visually-hidden">Mensagem da equipa: </span>{s.message}</p>}
             </div>
           </li>
         ))}
@@ -60,49 +30,58 @@ import detailPhoto from '../assets/photos/sala-reunioes.jpg';
     </div>
   </section>
 
-  <!-- CINCO FASES -->
-  <section class="section bg-dark pattern" aria-labelledby="fases-title">
+  <section class="section bg-azul" aria-labelledby="f-t">
+    <Star style="top:12%;left:8%;--s:30px" color="var(--white)" />
     <div class="wrap">
-      <SectionHead kicker="No dia do serviço" title="Cinco fases. O mesmo padrão, sempre." text="Independentemente de quem executa, de qual o cliente ou do horário, cada serviço segue as mesmas cinco fases." />
-      <Phases />
+      <div class="head head--center"><h2 id="f-t" class="reveal">No dia do serviço, cinco fases</h2></div>
+      <ol class="phases">
+        {phases.map((p, i) => (
+          <li class="reveal" style={`--d:${i}`}><span class="num-dot">{i + 1}</span><h3>{p.title}</h3><p>{p.text}</p></li>
+        ))}
+      </ol>
     </div>
   </section>
 
-  <!-- PADRÃO OURO -->
-  <section class="bleed bleed--left gold" aria-labelledby="ouro-title">
-    <div class="bleed__media gold__media">
-      <Picture src={detailPhoto} formats={['avif', 'webp']} widths={[480, 768, 1080, 1400]} sizes="(min-width: 900px) 50vw, 100vw" alt="Colaboradora a limpar com atenção a mesa de uma sala de reuniões" />
-    </div>
-    <div class="bleed__copy reveal">
-      <p class="kicker">O Padrão Ouro</p>
-      <h2 id="ouro-title">Existe apenas uma pergunta.</h2>
-      <blockquote class="pull">
-        <p>Se este espaço fosse meu, eu daria este serviço por terminado?</p>
-        <footer>Se a resposta for não, o trabalho continua.</footer>
-      </blockquote>
-      <p class="gold__text">Os clientes não contratam a Fada Madrinha apenas porque limpamos bem. Contratam porque, quando terminamos, sentem que alguém cuidou da sua casa com o mesmo carinho que eles próprios teriam.</p>
+  <section class="section bg-gold gold" aria-labelledby="g-t">
+    <Star style="top:18%;right:14%;--s:26px;--t:.6s" />
+    <Star style="bottom:20%;left:12%;--s:18px;--t:1.2s" color="var(--pink)" />
+    <div class="wrap wrap--narrow center">
+      <h2 id="g-t" class="gold__label reveal">O Padrão Ouro</h2>
+      <p class="gold__q reveal" style="--d:1">“Se este espaço fosse meu, eu daria este serviço por <span class="swash reveal">terminado</span>?”</p>
+      <p class="lede mx-auto reveal" style="--d:2">Existe apenas esta pergunta. Se a resposta for não, o trabalho continua. Porque os clientes não nos contratam só porque limpamos bem: contratam-nos porque sentem que alguém cuidou do seu espaço com o carinho que eles próprios teriam.</p>
     </div>
   </section>
 
-  <CtaBand title="Mais do que limpeza, <em>uma experiência</em>." text="Peça o seu orçamento e sinta a diferença desde a primeira mensagem." />
-  <ContactSection />
+  <ContactCta />
 </Base>
 
 <style>
-  .promise { background: var(--white); border-bottom: 1px solid var(--line); }
-  .promise__inner { display: grid; gap: 12px; }
-  .promise .kicker { margin: 0; }
-  @media (min-width: 900px) { .promise__inner { grid-template-columns: auto 1fr; align-items: center; gap: 40px; } }
-
-  .journey__row { padding: 34px 0; }
-  .journey__eyebrow { margin-bottom: 8px; font-size: 0.7rem; }
-  .journey h3 { font-size: 1.4rem; margin-bottom: 10px; }
-  .journey__bullets { margin-top: 14px; color: var(--ink-soft); font-size: 0.98rem; }
-  .journey__quote { margin-top: 16px; padding-left: 16px; border-left: 2px solid var(--gold); font-style: italic; color: var(--ink-2) !important; max-width: 58ch; }
-
-  .gold { background: var(--cream-2); }
-  .gold__media { min-height: 360px; }
-  .gold .pull { margin: 8px 0 28px; }
-  .gold__text { color: var(--ink-soft); }
-  @media (min-width: 900px) { .gold__media { min-height: 680px; } }
+  .journey { position: relative; display: grid; gap: 28px; max-width: 1000px; margin: 0 auto; }
+  .journey::before { content: ''; position: absolute; left: 23px; top: 24px; bottom: 24px; width: 3px; border-radius: 3px; background: linear-gradient(var(--pink), var(--gold), var(--blue)); }
+  .jstep { position: relative; display: grid; grid-template-columns: 48px 1fr; gap: 18px; }
+  .jstep__n { position: relative; z-index: 1; background: var(--navy); color: var(--white); }
+  .jstep__card { background: var(--white); border-radius: var(--r-lg); padding: 26px 26px 28px; box-shadow: 0 4px 0 var(--line); transition: transform 0.45s var(--bounce); }
+  .jstep__card:hover { transform: translateY(-4px) rotate(-0.6deg); }
+  .jstep__moment { color: var(--pink-text); font-weight: 600; margin-bottom: 4px; }
+  .jstep h3 { margin-bottom: 8px; }
+  .jstep__text { color: var(--text-soft); }
+  .bubble { margin: 16px 0 0; padding: 14px 18px; background: #dcf5e4; color: #0f3b22; border-radius: 18px 18px 18px 4px; max-width: 44ch; position: relative; }
+  @media (min-width: 900px) {
+    .journey::before { left: 50%; transform: translateX(-50%); }
+    .jstep { grid-template-columns: 1fr 48px 1fr; }
+    .jstep__n { grid-column: 2; grid-row: 1; }
+    .jstep__card { grid-column: 1; grid-row: 1; }
+    .jstep--right .jstep__card { grid-column: 3; }
+  }
+  .phases { display: grid; gap: 16px; }
+  .phases li { background: rgba(255, 255, 255, 0.94); border-radius: var(--r-lg); padding: 26px 24px; }
+  .phases .num-dot { background: var(--navy); color: var(--white); }
+  .phases li:last-child .num-dot { background: var(--pink); }
+  .phases h3 { margin: 16px 0 6px; }
+  .phases p { margin: 0; color: var(--text-soft); }
+  @media (min-width: 700px) { .phases { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .phases { grid-template-columns: repeat(5, 1fr); } }
+  .gold { overflow: hidden; }
+  .gold__label { font-size: 1.2rem; color: var(--gold-text); }
+  .gold__q { font-size: clamp(2rem, 1.3rem + 3vw, 3.8rem); font-weight: 600; line-height: 1.1; letter-spacing: -0.025em; color: var(--navy); margin-bottom: 28px; }
 </style>

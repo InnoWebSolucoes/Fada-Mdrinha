@@ -1,23 +1,11 @@
 ---
-/**
- * Logótipo oficial (PNG extraído do manual de identidade; substituir por SVG
- * quando o cliente enviar os ficheiros originais, ver README).
- * variant="light" para fundos claros; "dark" para fundos escuros.
- */
-interface Props { variant?: 'light' | 'dark'; height?: number; class?: string; priority?: boolean }
-const { variant = 'light', height = 44, class: className, priority = false } = Astro.props;
-const src = `/logo/fada-madrinha-logo-on-${variant}-sm.png`;
-// Proporção do ficheiro original: 1242 × 453
+/** Logótipo oficial (extraído do manual de identidade; trocar por SVG quando o cliente enviar). */
+interface Props { variant?: 'light' | 'dark'; height?: number; priority?: boolean }
+const { variant = 'light', height = 44, priority = false } = Astro.props;
 const width = Math.round(height * (1242 / 453));
 ---
-<img
-  src={src}
-  width={width}
-  height={height}
-  alt="Fada Madrinha"
-  class={className}
-  decoding="async"
-  loading={priority ? 'eager' : 'lazy'}
-  fetchpriority={priority ? 'high' : undefined}
-  style={`height:${height}px;width:auto`}
-/>
+<picture>
+  <source srcset={`/logo/logo-on-${variant}-sm.webp`} type="image/webp" />
+  <img src={`/logo/logo-on-${variant}-sm.png`} width={width} height={height} alt="Fada Madrinha"
+    loading={priority ? 'eager' : 'lazy'} decoding="async" style={`height:${height}px;width:auto`} />
+</picture>

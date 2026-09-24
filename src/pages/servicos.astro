@@ -1,100 +1,71 @@
 ---
-import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PageHero from '../components/PageHero.astro';
-import SectionHead from '../components/SectionHead.astro';
 import Faq from '../components/Faq.astro';
-import ContactSection from '../components/ContactSection.astro';
+import ContactCta from '../components/ContactCta.astro';
 import { waLink, whatsappMessages } from '../config/site';
-import { services } from '../data/services';
-import { faq } from '../data/faq';
-import bandPhoto1 from '../assets/photos/sala-reunioes.jpg';
-import bandPhoto2 from '../assets/photos/janela-escritorio.jpg';
-
-const bands: Record<number, { src: ImageMetadata; alt: string }> = {
-  1: { src: bandPhoto1, alt: 'Colaboradora a limpar com atenção a mesa de uma sala de reuniões' },
-  3: { src: bandPhoto2, alt: 'Mão com luva amarela a limpar a janela de um escritório ao fim da tarde' },
-};
+import { services, faq } from '../data/content';
 ---
-<Base
-  title="Serviços"
-  description="Limpeza residencial, empresarial, higienização especializada, organização de espaços, pós-obra e estofos em Luanda. Conheça como trabalhamos em cada serviço."
-  darkHeader
->
-  <PageHero
-    tone="blue-deep"
-    numeral="II"
-    kicker="Serviços"
-    title="Seis serviços. O mesmo cuidado em todos."
-    text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas."
-  >
-    <ol class="inline-list jump" aria-label="Ir para o serviço">
-      {services.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
-    </ol>
+<Base title="Serviços" description="Limpeza residencial, empresarial, higienização especializada, organização de espaços, pós-obra e estofos em Luanda. Veja como trabalhamos em cada serviço.">
+  <PageHero tone="blue" title="Seis serviços, o mesmo cuidado" text="Cada serviço é adaptado ao seu espaço e à sua rotina. Diga-nos o que precisa e preparamos uma proposta personalizada, clara e sem letras pequenas.">
+    <nav class="jump reveal" style="--d:2" aria-label="Ir para o serviço">
+      {services.map((s) => <a href={`#${s.id}`}>{s.title}</a>)}
+    </nav>
   </PageHero>
 
-  <div class="services">
-    {services.map((s, i) => (
-      <>
-        <section id={s.id} class="section svc" aria-labelledby={`${s.id}-title`}>
-          <div class="wrap split">
-            <div class="split__aside">
-              <span class="numeral">{s.n}</span>
-              <h2 id={`${s.id}-title`}>{s.title}</h2>
-              <p class="lede">{s.short}</p>
-            </div>
-            <div class="svc__body">
-              <p class="svc__long">{s.long}</p>
-              <p class="kicker">Como trabalhamos</p>
-              <ol class="ledger svc__steps">
-                {s.steps.map((step, k) => (
-                  <li><span class="num">0{k + 1}</span><span>{step}</span></li>
-                ))}
-              </ol>
-              <a href={waLink(whatsappMessages.servico(s.title))} class="btn btn--dark" target="_blank" rel="noopener">
-                <Icon name="whatsapp" /> Pedir orçamento para este serviço
-              </a>
-            </div>
-          </div>
-        </section>
-        {bands[i] && (
-          <div class="band" aria-hidden="true">
-            <Picture src={bands[i].src} formats={['avif', 'webp']} widths={[768, 1280, 1920]} sizes="100vw" alt="" />
-          </div>
-        )}
-      </>
-    ))}
-  </div>
-
-  <!-- FAQ -->
-  <section class="section bg-white" id="faq" aria-labelledby="faq-title">
-    <div class="wrap split">
-      <div class="split__aside">
-        <p class="kicker">Perguntas frequentes</p>
-        <h2 id="faq-title">Dúvidas comuns</h2>
-        <p class="lede">Se a sua não estiver aqui, fale connosco. Respondemos com atenção.</p>
+  {services.map((s, i) => (
+    <section id={s.id} class:list={['section', 'svc', `svc--${s.tone}`, { 'svc--alt': i % 2 === 1 }]} aria-labelledby={`${s.id}-t`}>
+      <div class="wrap svc__grid">
+        <div class="svc__badge reveal" aria-hidden="true">
+          <span class="svc__blob"><Icon name={s.icon} size={72} stroke={1.5} /></span>
+        </div>
+        <div class="svc__body">
+          <h2 id={`${s.id}-t`} class="reveal">{s.title}</h2>
+          <p class="svc__short reveal" style="--d:1">{s.short}</p>
+          <p class="svc__long reveal" style="--d:2">{s.long}</p>
+          <h3 class="svc__how reveal" style="--d:3">Como trabalhamos</h3>
+          <ol class="svc__steps">
+            {s.steps.map((st, k) => <li class="reveal" style={`--d:${k + 3}`}><span class="num-dot">{k + 1}</span><span>{st}</span></li>)}
+          </ol>
+          <a href={waLink(whatsappMessages.servico(s.title))} class="btn btn--lg reveal" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
+        </div>
       </div>
+    </section>
+  ))}
+
+  <section class="section bg-gold" aria-labelledby="faq-t">
+    <div class="wrap wrap--narrow">
+      <div class="head head--center"><h2 id="faq-t" class="reveal">Perguntas frequentes</h2></div>
       <Faq items={faq} />
     </div>
   </section>
 
-  <ContactSection
-    title="Qual é o seu espaço?"
-    text="Diga-nos o que precisa. Preparamos uma proposta à medida, sem compromisso."
-  />
+  <ContactCta title="Qual é o seu espaço?" />
 </Base>
 
 <style>
-  .jump { margin-top: 28px; }
-  .jump a { color: inherit; text-decoration: none; border-bottom: 1px solid transparent; }
-  .jump a:hover { border-bottom-color: currentColor; }
-
-  .svc + .svc, .band + .svc { border-top: 1px solid var(--line-strong); }
-  .svc .numeral { margin-bottom: 14px; }
-  .svc__long { font-size: 1.12rem; color: var(--ink-2); max-width: 62ch; margin-bottom: 34px; }
-  .svc__steps { margin-bottom: 36px; }
-  .svc__steps li { display: grid; grid-template-columns: 48px 1fr; gap: 12px; padding: 16px 0; align-items: baseline; }
-  .band { height: clamp(260px, 42vw, 560px); background: var(--cream-3); }
-  .band :global(picture), .band :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+  .jump a { display: inline-flex; align-items: center; min-height: 46px; padding: 0 1.1rem; border-radius: var(--r-pill); background: var(--white); color: var(--navy); font-weight: 500; text-decoration: none; border: 2px solid transparent; transition: transform 0.35s var(--bounce), border-color 0.2s; }
+  .jump a:hover { transform: translateY(-3px); border-color: var(--pink); color: var(--navy); }
+  .svc { scroll-margin-top: var(--header-h); }
+  .svc--alt { background: var(--white); }
+  .svc__grid { display: grid; gap: 36px; align-items: center; }
+  .svc__badge { display: flex; justify-content: center; }
+  .svc__blob { display: grid; place-items: center; width: clamp(180px, 26vw, 300px); aspect-ratio: 1; border-radius: 0 50% 50% 50%; color: var(--white); transition: transform 0.6s var(--bounce); }
+  .svc:hover .svc__blob { transform: rotate(-8deg) scale(1.04); }
+  .svc--alt .svc__blob { border-radius: 50% 50% 0 50%; }
+  .svc--blue .svc__blob { background: var(--blue); } .svc--deep .svc__blob { background: var(--blue-deep); } .svc--pink .svc__blob { background: var(--pink); }
+  .svc--gold .svc__blob { background: var(--gold); color: var(--navy); } .svc--plum .svc__blob { background: var(--plum); } .svc--navy .svc__blob { background: var(--navy); }
+  .svc__short { font-size: 1.25rem; color: var(--navy); font-weight: 500; }
+  .svc__long { color: var(--text-soft); max-width: 58ch; margin-bottom: 28px; }
+  .svc__how { font-size: 1.1rem; color: var(--pink-text); margin-bottom: 14px; }
+  .svc__steps { display: grid; gap: 12px; margin-bottom: 32px; }
+  .svc__steps li { display: flex; align-items: center; gap: 14px; }
+  .svc__steps .num-dot { width: 38px; height: 38px; font-size: 1rem; background: var(--tint-blue); color: var(--navy); }
+  .svc--alt .svc__steps .num-dot { background: var(--tint-pink); color: var(--pink-text); }
+  @media (min-width: 900px) {
+    .svc__grid { grid-template-columns: 0.8fr 1.2fr; gap: 72px; }
+    .svc--alt .svc__badge { order: 2; }
+  }
 </style>

@@ -1,0 +1,108 @@
+---
+/**
+ * A fada da Fada Madrinha (a figura do próprio símbolo da marca) voa pela página
+ * enquanto se faz scroll: segue uma curva, vira-se para onde vai, inclina com a
+ * velocidade, bate as asas e deixa um rasto de brilhos.
+ * Desligar em src/config/site.ts (features.fairy). Oculta com prefers-reduced-motion.
+ */
+---
+<div class="fairy-layer" aria-hidden="true">
+  <div class="fairy" data-fairy>
+    <div class="fairy__flip" data-fairy-flip>
+      <div class="fairy__bob">
+        <img class="fairy__body" src="/fairy/fada.png" width="331" height="404" alt="" decoding="async" />
+        <img class="fairy__wings" src="/fairy/fada.png" width="331" height="404" alt="" decoding="async" />
+      </div>
+    </div>
+  </div>
+  <div class="fairy-dust" data-fairy-dust></div>
+</div>
+
+<style>
+  .fairy-layer { position: fixed; inset: 0; z-index: 80; pointer-events: none; overflow: hidden; }
+  .fairy { position: absolute; left: 0; top: 0; width: var(--fairy-w, 96px); will-change: transform; opacity: 0; transition: opacity 0.6s; }
+  .fairy.is-ready { opacity: 1; }
+  .fairy__flip { transition: transform 0.35s var(--ease); }
+  .fairy__flip.is-right { transform: scaleX(-1); }
+  .fairy__bob { position: relative; aspect-ratio: 331 / 404; animation: fairy-bob 2.4s ease-in-out infinite; filter: drop-shadow(0 6px 10px rgba(11, 53, 86, 0.18)); }
+  .fairy__bob img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  /* Asas e corpo: a mesma imagem recortada em duas partes complementares. */
+  .fairy__body { clip-path: polygon(0 0, 20% 0, 21% 14%, 26% 22%, 28% 30%, 29% 45%, 33% 46%, 56% 50%, 72% 48%, 72% 0, 100% 0, 100% 100%, 0 100%); }
+  .fairy__wings { clip-path: polygon(20% 0, 72% 0, 72% 48%, 56% 50%, 33% 46%, 29% 45%, 28% 30%, 26% 22%, 21% 14%); transform-origin: 30% 45%; animation: fairy-flap 0.2s ease-in-out infinite alternate; }
+  @keyframes fairy-flap { from { transform: scaleX(1) skewY(0deg); } to { transform: scaleX(0.72) skewY(-6deg); } }
+  @keyframes fairy-bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+
+  .fairy-dust { position: absolute; inset: 0; }
+  .fairy-dust :global(.dust) { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); color: var(--c); animation: dust 1s ease-out forwards; }
+  .fairy-dust :global(.dust svg) { width: 100%; height: 100%; }
+  @keyframes dust {
+    0% { opacity: 1; transform: translate(var(--x), var(--y)) scale(1) rotate(0deg); }
+    100% { opacity: 0; transform: translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))) scale(0.2) rotate(120deg); }
+  }
+  @media (min-width: 900px) { .fairy { --fairy-w: 128px; } }
+  @media (prefers-reduced-motion: reduce) { .fairy-layer { display: none; } }
+</style>
+
+<script>
+  const fairy = document.querySelector<HTMLElement>('[data-fairy]');
+  const flip = document.querySelector<HTMLElement>('[data-fairy-flip]');
+  const dust = document.querySelector<HTMLElement>('[data-fairy-dust]');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (fairy && flip && dust && !reduce) {
+    const colors = ['#dab84f', '#da4f8c', '#0d8de5', '#f2d98a'];
+    const star = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.9 6.6 3.4 9.3 12 12-8.6 2.7-11.1 5.4-12 12-.9-6.6-3.4-9.3-12-12 8.6-2.7 11.1-5.4 12-12Z"/></svg>';
+    let x = innerWidth * 0.8, y = innerHeight * 0.3, px = x, py = y, t = 0, live = 0, facingRight = false;
+
+    // Onde a fada "quer" estar, a partir do progresso do scroll: uma curva que atravessa o ecrã.
+    const target = () => {
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const p = max > 0 ? scrollY / max : 0;
+      const w = innerWidth, h = innerHeight, m = Math.min(90, w * 0.08);
+      // |sen|^0.35 mantém a fada quase sempre junto às margens e faz a travessia do conteúdo depressa.
+      const s = Math.sin(p * Math.PI * 7 + 1.1);
+      const tx = m + (w - 2 * m) * (0.5 + 0.5 * Math.sign(s) * Math.pow(Math.abs(s), 0.35));
+      const ty = h * (0.3 + 0.2 * Math.sin(p * Math.PI * 11 + 0.4)) + Math.sin(t / 40) * 10;
+      return [tx, ty];
+    };
+
+    const sparkle = (sx: number, sy: number) => {
+      if (live > 36) return;
+      const el = document.createElement('span');
+      const s = 6 + Math.random() * 12;
+      el.className = 'dust';
+      el.innerHTML = star;
+      el.style.setProperty('--s', `${s}px`);
+      el.style.setProperty('--c', colors[(Math.random() * colors.length) | 0]);
+      el.style.setProperty('--x', `${sx - s / 2}px`);
+      el.style.setProperty('--y', `${sy - s / 2}px`);
+      el.style.setProperty('--dx', `${(Math.random() - 0.5) * 40}px`);
+      el.style.setProperty('--dy', `${20 + Math.random() * 40}px`);
+      live++;
+      el.addEventListener('animationend', () => { el.remove(); live--; }, { once: true });
+      dust.appendChild(el);
+    };
+
+    const frame = () => {
+      t++;
+      const [tx, ty] = target();
+      x += (tx - x) * 0.06;
+      y += (ty - y) * 0.06;
+      const vx = x - px, vy = y - py, speed = Math.hypot(vx, vy);
+      if (vx > 0.4 && !facingRight) { facingRight = true; flip.classList.add('is-right'); }
+      else if (vx < -0.4 && facingRight) { facingRight = false; flip.classList.remove('is-right'); }
+      const w = fairy.offsetWidth, h = w * (404 / 331);
+      const tilt = Math.max(-18, Math.min(18, vx * 1.6));
+      fairy.style.transform = `translate3d(${x - w / 2}px, ${y - h / 2}px, 0) rotate(${tilt}deg)`;
+      // Os brilhos saem dos pés (o lado de trás, oposto ao da cabeça).
+      const tailX = x + (facingRight ? -1 : 1) * w * 0.4, tailY = y + h * 0.35;
+      if (speed > 1.2 && t % 2 === 0) sparkle(tailX, tailY);
+      else if (t % 24 === 0) sparkle(tailX, tailY);
+      px = x; py = y;
+      if (!document.hidden) requestAnimationFrame(frame);
+    };
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) requestAnimationFrame(frame); });
+    fairy.classList.add('is-ready');
+    requestAnimationFrame(frame);
+  }
+</script>

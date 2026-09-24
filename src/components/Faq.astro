@@ -1,32 +1,46 @@
 ---
-/** Acordeão nativo (<details>), acessível por teclado sem JS. */
+/** Perguntas frequentes: <details> nativo, com abertura animada em JS (progressive enhancement). */
 import Icon from './Icon.astro';
-interface Props { items: { q: string; a: string }[] }
+interface Props { items: readonly { q: string; a: string }[] }
 const { items } = Astro.props;
 ---
-<div class="faq">
-  {items.map((item, i) => (
-    <details class="faq__item" open={i === 0}>
-      <summary class="faq__q">
-        <span class="num">{String(i + 1).padStart(2, '0')}</span>
-        <span class="faq__text">{item.q}</span>
-        <span class="faq__icon" aria-hidden="true"><Icon name="plus" size={18} /></span>
-      </summary>
-      <div class="faq__a"><p>{item.a}</p></div>
+<div class="faq" data-faq>
+  {items.map((it, i) => (
+    <details class="faq__item reveal" style={`--d:${i}`}>
+      <summary><span>{it.q}</span><span class="faq__icon"><Icon name="plus" size={20} stroke={2.4} /></span></summary>
+      <div class="faq__a"><p>{it.a}</p></div>
     </details>
   ))}
 </div>
 
 <style>
-  .faq { border-top: 1px solid var(--line-strong); }
-  .faq__item { border-bottom: 1px solid var(--line); }
-  .faq__q {
-    display: grid; grid-template-columns: 48px 1fr 32px; align-items: center; gap: 12px;
-    padding: 20px 0; cursor: pointer; list-style: none; font-size: 1.12rem;
-  }
-  .faq__q::-webkit-details-marker { display: none; }
-  .faq__icon { display: grid; place-items: center; width: 32px; height: 32px; border: 1px solid var(--line-strong); border-radius: 50%; transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease); }
-  .faq__item[open] .faq__icon { transform: rotate(45deg); background: var(--gold); border-color: var(--gold); }
-  .faq__a { padding: 0 0 22px 60px; color: var(--ink-soft); max-width: 66ch; }
-  @media (max-width: 480px) { .faq__q { grid-template-columns: 36px 1fr 32px; } .faq__a { padding-left: 48px; } }
+  .faq { display: grid; gap: 14px; }
+  .faq__item { background: var(--white); border-radius: var(--r); border: 2px solid transparent; transition: border-color 0.25s; }
+  .faq__item[open] { border-color: var(--blue); }
+  summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 68px; padding: 16px 20px 16px 24px; cursor: pointer; list-style: none; font-size: 1.12rem; font-weight: 600; color: var(--navy); }
+  summary::-webkit-details-marker { display: none; }
+  .faq__icon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--tint-pink); color: var(--pink-text); transition: transform 0.45s var(--bounce), background-color 0.25s; }
+  .faq__item[open] .faq__icon { transform: rotate(135deg); background: var(--pink); color: var(--white); }
+  .faq__a { overflow: hidden; }
+  .faq__a p { padding: 0 24px 22px; margin: 0; color: var(--text-soft); max-width: 64ch; }
 </style>
+
+<script>
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll<HTMLDetailsElement>('[data-faq] details').forEach((d) => {
+    const summary = d.querySelector('summary')!;
+    const body = d.querySelector<HTMLElement>('.faq__a')!;
+    summary.addEventListener('click', (e) => {
+      if (reduce) return;
+      e.preventDefault();
+      if (d.open) {
+        const a = body.animate([{ height: `${body.offsetHeight}px` }, { height: '0px' }], { duration: 260, easing: 'ease-in' });
+        a.onfinish = () => { d.open = false; };
+      } else {
+        d.open = true;
+        const h = body.offsetHeight;
+        body.animate([{ height: '0px' }, { height: `${h}px` }], { duration: 420, easing: 'cubic-bezier(0.16,1,0.3,1)' });
+      }
+    });
+  });
+</script>

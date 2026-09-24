@@ -1,0 +1,32 @@
+---
+/** Faixa em movimento contínuo. Pausa ao passar o rato; estática com prefers-reduced-motion. */
+interface Props { items: readonly string[]; tone?: 'azul' | 'pink' | 'gold' }
+const { items, tone = 'azul' } = Astro.props;
+const star = 'M12 0c.9 6.6 3.4 9.3 12 12-8.6 2.7-11.1 5.4-12 12-.9-6.6-3.4-9.3-12-12 8.6-2.7 11.1-5.4 12-12Z';
+---
+<div class:list={['marquee', `marquee--${tone}`]}>
+  <p class="visually-hidden">{items.join(', ')}</p>
+  <div class="marquee__track" aria-hidden="true">
+    {[0, 1].map(() => (
+      <ul class="marquee__list">
+        {items.map((i) => (
+          <li><span>{i}</span><svg viewBox="0 0 24 24"><path fill="currentColor" d={star} /></svg></li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee { overflow: hidden; padding-block: 18px; transform: rotate(-1.5deg); margin-block: -8px; position: relative; z-index: 2; }
+  .marquee--azul { background: var(--blue); color: var(--navy); }
+  .marquee--pink { background: var(--pink); color: var(--ink); }
+  .marquee--gold { background: var(--gold); color: var(--navy); }
+  .marquee__track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+  .marquee:hover .marquee__track { animation-play-state: paused; }
+  .marquee__list { display: flex; align-items: center; }
+  .marquee__list li { display: flex; align-items: center; gap: 28px; padding-right: 28px; font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem); font-weight: 600; white-space: nowrap; }
+  .marquee__list svg { width: 22px; height: 22px; color: var(--white); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } }
+</style>

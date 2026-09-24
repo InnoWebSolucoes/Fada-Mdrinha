@@ -2,51 +2,38 @@
 import Logo from './Logo.astro';
 import { site, nav, telLink, mailLink, waLink } from '../config/site';
 ---
-<footer class="site-footer bg-dark">
-  <div class="wrap">
-    <div class="site-footer__top">
-      <div class="site-footer__brand">
-        <a href="/" aria-label="Fada Madrinha, página inicial"><Logo variant="dark" height={46} /></a>
-        <p class="site-footer__tagline">{site.tagline}</p>
-        <p class="site-footer__desc">Limpeza profissional residencial e empresarial em Talatona, Luanda.</p>
-      </div>
-
-      <nav class="site-footer__col" aria-label="Navegação do rodapé">
-        <h2>Navegação</h2>
-        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      </nav>
-
-      <div class="site-footer__col">
-        <h2>Contacto</h2>
-        <a href={waLink()} target="_blank" rel="noopener">WhatsApp</a>
-        <a href={telLink}>{site.phone.display}</a>
-        <a href={mailLink}>{site.email}</a>
-        <a href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.handle}</a>
-        <span>{site.address.display}</span>
-      </div>
+<footer class="site-footer">
+  <div class="wrap site-footer__top">
+    <div>
+      <a href="/" aria-label="Fada Madrinha, página inicial" class="site-footer__logo"><Logo variant="dark" height={48} /></a>
+      <p class="site-footer__tag">{site.tagline}</p>
     </div>
-
-    <div class="site-footer__bottom">
-      <span>© {site.copyrightYear} {site.legalName}. Todos os direitos reservados.</span>
-      <span class="site-footer__sig">{site.tagline}</span>
+    <nav class="site-footer__col" aria-labelledby="f-pages">
+      <h2 id="f-pages">Páginas</h2>
+      <a href="/">Início</a>
+      {nav.map((i) => <a href={i.href}>{i.label}</a>)}
+    </nav>
+    <div class="site-footer__col">
+      <h2>Contacto</h2>
+      <a href={waLink()} target="_blank" rel="noopener">WhatsApp</a>
+      <a href={telLink}>{site.phone.display}</a>
+      <a href={mailLink}>{site.email}</a>
+      <a href={site.instagram.url} target="_blank" rel="noopener">Instagram @{site.instagram.handle}</a>
+      <span>{site.address.display}</span>
     </div>
   </div>
+  <p class="wrap site-footer__copy">© {site.copyrightYear} Fada Madrinha. Todos os direitos reservados.</p>
 </footer>
 
 <style>
-  .site-footer { padding-block: clamp(56px, 7vw, 96px) 28px; }
-  .site-footer__top { display: grid; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid var(--line-dark); }
-  .site-footer__brand a { display: inline-flex; }
-  .site-footer__tagline { margin: 22px 0 6px; color: var(--gold); font-size: 1.1rem; }
-  .site-footer__desc { color: rgba(255, 255, 255, 0.62); font-size: 0.95rem; max-width: 34ch; }
-  .site-footer__col { display: grid; gap: 10px; align-content: start; }
-  .site-footer__col h2 {
-    font-family: var(--font-label); font-size: 0.74rem; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--gold-light); margin: 0 0 8px; font-weight: 600;
-  }
-  .site-footer__col a, .site-footer__col span { color: rgba(255, 255, 255, 0.82); text-decoration: none; font-size: 1rem; width: fit-content; }
+  .site-footer { background: var(--ink); color: rgba(255, 255, 255, 0.8); padding-block: clamp(56px, 7vw, 88px) 24px; }
+  .site-footer__top { display: grid; gap: 40px; padding-bottom: 36px; border-bottom: 1px solid rgba(255, 255, 255, 0.14); }
+  .site-footer__logo { display: inline-flex; }
+  .site-footer__tag { margin-top: 20px; color: var(--gold); font-size: 1.15rem; }
+  .site-footer__col { display: grid; align-content: start; }
+  .site-footer__col h2 { font-size: 1.05rem; color: var(--white); letter-spacing: 0; margin-bottom: 6px; }
+  .site-footer__col a, .site-footer__col span { display: flex; align-items: center; min-height: 44px; width: fit-content; color: rgba(255, 255, 255, 0.78); text-decoration: none; }
   .site-footer__col a:hover { color: var(--white); text-decoration: underline; }
-  .site-footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding-top: 22px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.5); }
-  .site-footer__sig { color: rgba(255, 255, 255, 0.7); }
+  .site-footer__copy { margin: 0; padding-top: 20px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.55); }
   @media (min-width: 760px) { .site-footer__top { grid-template-columns: 1.5fr 1fr 1.2fr; } }
 </style>

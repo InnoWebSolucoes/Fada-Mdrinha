@@ -5,7 +5,7 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# Hashed build assets (CSS, JS, optimised images) can be cached forever.
+# Ficheiros com hash (CSS, JS, imagens optimizadas): cache para sempre.
 [[headers]]
   for = "/_astro/*"
   [headers.values]
@@ -22,11 +22,11 @@
     Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/icons/*"
+  for = "/fairy/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
-# HTML is revalidated on every visit so copy/price edits go live immediately.
+# HTML revalidado a cada visita, para alterações de texto ficarem logo visíveis.
 [[headers]]
   for = "/*"
   [headers.values]
@@ -36,7 +36,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
-# Old demo URLs (fadamadrinhaa.netlify.app used .html paths)
+# URLs antigos do protótipo
 [[redirects]]
   from = "/index.html"
   to = "/"

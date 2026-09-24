@@ -3,150 +3,137 @@ import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PageHero from '../components/PageHero.astro';
-import SectionHead from '../components/SectionHead.astro';
-import ContactSection from '../components/ContactSection.astro';
-import { waLink, whatsappMessages } from '../config/site';
-import { segments, officeOrder, twentyPoints, commitments, complaintSteps } from '../data/empresas';
-import kitchenPhoto from '../assets/photos/hero-cozinha.jpg';
-import meetingPhoto from '../assets/photos/sala-reunioes.jpg';
+import Wave from '../components/Wave.astro';
+import Faq from '../components/Faq.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { site, waLink, whatsappMessages } from '../config/site';
+import { segments, officeOrder, twentyPointGroups, commitments, complaintSteps, faq } from '../data/content';
+import janela from '../assets/photos/janela.jpg';
+const companyFaq = faq.filter((f) => f.empresas);
 ---
-<Base
-  title="Empresas"
-  description="Limpeza profissional para escritórios, clínicas, condomínios, imobiliárias, alojamento local, hotéis boutique, escolas e lojas em Luanda. Padrão operacional, supervisão e confidencialidade."
-  darkHeader
->
-  <PageHero
-    tone="dark"
-    numeral="III"
-    kicker="Cliente empresarial"
-    title="Uma solução personalizada para a sua empresa"
-    text="A Fada Madrinha está preparada para desenvolver um plano de limpeza à medida da sua operação, garantindo elevados padrões de qualidade, discrição e pontualidade."
-  >
-    <div class="actions" style="margin-top: 28px">
-      <a href={waLink(whatsappMessages.empresas)} class="btn btn--gold btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir proposta para a minha empresa</a>
+<Base title="Empresas" description="Limpeza profissional para escritórios, clínicas, condomínios, imobiliárias, alojamento local, hotéis boutique, escolas e lojas em Luanda. Supervisão, pontualidade e confidencialidade.">
+  <PageHero tone="deep" title="Uma solução à medida da sua empresa" text="Planos de limpeza para a sua operação, com elevados padrões de qualidade, discrição e pontualidade.">
+    <div class="actions reveal" style="--d:2;margin-top:28px">
+      <a href={waLink(whatsappMessages.empresas)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
     </div>
+    <p class="reassure reveal" style="--d:3;color:rgba(255,255,255,.85)">{site.replyPromise}</p>
   </PageHero>
 
-  <!-- SEGMENTOS -->
-  <section class="section" aria-labelledby="segmentos-title">
+  <section class="section" aria-labelledby="seg-t">
     <div class="wrap">
-      <SectionHead kicker="Segmentos" title="Espaços que já sabemos cuidar" text="Cada tipo de espaço tem as suas exigências. Adaptamos a frequência, a equipa e a ordem de trabalho a cada operação." />
-      <ol class="cols cols--4 plain">
-        {segments.map((s, i) => (
-          <li class="reveal" style={`--reveal-delay:${(i % 4) * 0.05}s`}>
-            <span class="num">{String(i + 1).padStart(2, '0')}</span>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </li>
-        ))}
-      </ol>
+      <div class="head head--center"><h2 id="seg-t" class="reveal">Espaços que sabemos cuidar</h2></div>
+      <ul class="segs">
+        {segments.map((s, i) => <li class="reveal" style={`--d:${i % 4}`}>{s}</li>)}
+      </ul>
     </div>
   </section>
 
-  <!-- PADRÃO OPERACIONAL -->
-  <section class="bleed bg-dark std" aria-labelledby="padrao-title">
-    <div class="bleed__copy reveal">
-      <p class="kicker">Padrão operacional</p>
-      <h2 id="padrao-title">Existe uma ordem oficial. Nunca limpamos aleatoriamente.</h2>
-      <p class="lede">Cada serviço realizado pela Fada Madrinha transmite exactamente a mesma qualidade, independentemente de quem o executa, do cliente ou do horário. Esse padrão chama-se Método Fada Madrinha.</p>
-      <p class="kicker std__sub">Ordem de trabalho em escritórios</p>
-      <ol class="ledger std__order">
-        {officeOrder.map((step, i) => <li><span class="num">0{i + 1}</span><span>{step}</span></li>)}
-      </ol>
-      <p class="small std__note">De cima para baixo. Do mais limpo para o mais sujo. Da divisão mais distante para a saída.</p>
-    </div>
-    <div class="bleed__media std__media">
-      <Picture src={meetingPhoto} formats={['avif', 'webp']} widths={[480, 768, 1080, 1400]} sizes="(min-width: 900px) 50vw, 100vw" alt="Equipa de limpeza a preparar uma sala de reuniões" />
-    </div>
-  </section>
-
-  <!-- 20 PONTOS -->
-  <section class="section bg-cream-2" aria-labelledby="pontos-title">
-    <div class="wrap split">
-      <div class="split__aside">
-        <p class="kicker">Inspecção final</p>
-        <h2 id="pontos-title">Os 20 Pontos de Excelência</h2>
-        <p class="lede">Nenhum serviço termina antes desta etapa. A Fada Líder verifica cada um destes pontos antes de considerar o trabalho concluído.</p>
+  <section class="section bg-white" aria-labelledby="ord-t">
+    <div class="wrap ord">
+      <div>
+        <h2 id="ord-t" class="reveal">Existe uma ordem oficial. Nunca limpamos ao acaso.</h2>
+        <p class="lede reveal" style="--d:1">Nos escritórios, a equipa segue sempre esta sequência:</p>
+        <ol class="ord__list">
+          {officeOrder.map((o, i) => <li class="reveal" style={`--d:${i + 1}`}><span class="num-dot">{i + 1}</span>{o}</li>)}
+        </ol>
+        <p class="ord__note reveal">De cima para baixo. Do mais limpo para o mais sujo. Da divisão mais distante para a saída.</p>
       </div>
-      <ol class="points">
-        {twentyPoints.map((p, i) => (
-          <li><span class="num">{String(i + 1).padStart(2, '0')}</span>{p}</li>
-        ))}
-      </ol>
+      <div class="ord__art reveal">
+        <Picture src={janela} formats={['avif', 'webp']} widths={[320, 480, 720]} sizes="(min-width: 900px) 400px, 80vw" alt="Mão com luva amarela a limpar a janela de um escritório" />
+      </div>
     </div>
   </section>
 
-  <!-- COMPROMISSOS -->
-  <section class="section bg-white" aria-labelledby="compromissos-title">
+  <section class="section bg-gold" aria-labelledby="pts-t">
     <div class="wrap">
-      <SectionHead kicker="Compromissos" title="O que a sua empresa pode esperar de nós" text="Quatro compromissos assumidos em cada contrato e medidos em cada visita." />
-      <ol class="cols cols--2 plain commit">
+      <div class="head head--center">
+        <h2 id="pts-t" class="reveal">Os 20 Pontos de Excelência</h2>
+        <p class="reveal" style="--d:1">Nenhum serviço termina antes da inspecção final. A Fada Líder verifica cada ponto antes de o considerar concluído.</p>
+      </div>
+      <div class="pts">
+        {twentyPointGroups.map((g, i) => (
+          <div class="pts__group reveal" style={`--d:${i % 3}`}>
+            <h3>{g.title}</h3>
+            <ul>{g.points.map((p) => <li><Icon name="check" size={18} stroke={2.6} /> {p}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="com-t">
+    <div class="wrap">
+      <div class="head head--center"><h2 id="com-t" class="reveal">Quatro compromissos em cada contrato</h2></div>
+      <ul class="commit">
         {commitments.map((c, i) => (
-          <li class="reveal" style={`--reveal-delay:${(i % 2) * 0.07}s`}>
-            <span class="numeral">0{i + 1}</span>
-            <h3>{c.title}</h3>
-            <p>{c.text}</p>
+          <li class="reveal" style={`--d:${i}`}>
+            <span class="commit__icon"><Icon name={(['clock', 'eye', 'shield', 'heart'] as const)[i]} size={28} /></span>
+            <h3>{c.title}</h3><p>{c.text}</p>
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
   </section>
 
-  <!-- RECLAMAÇÕES -->
-  <section class="section bg-blue-deep pattern" aria-labelledby="reclamacoes-title">
+  <Wave color="var(--tint-pink)" />
+  <section class="section bg-pink" aria-labelledby="rec-t">
     <div class="wrap">
-      <SectionHead kicker="Se algo correr mal" title="Uma reclamação é uma oportunidade de melhorar. Nunca um incómodo." text="Um protocolo simples, com um responsável e um prazo. Primeiro resolve-se, depois explica-se." />
-      <ol class="cols cols--4 plain">
+      <div class="head head--center">
+        <h2 id="rec-t" class="reveal">Se algo correr mal, resolvemos primeiro</h2>
+        <p class="reveal" style="--d:1">Uma reclamação é uma oportunidade de melhorar, nunca um incómodo.</p>
+      </div>
+      <ol class="proto">
         {complaintSteps.map((s, i) => (
-          <li class="reveal" style={`--reveal-delay:${i * 0.07}s`}>
-            <span class="numeral">0{i + 1}</span>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
-          </li>
+          <li class="reveal" style={`--d:${i}`}><span class="num-dot">{i + 1}</span><h3>{s.title}</h3><p>{s.text}</p></li>
         ))}
       </ol>
     </div>
   </section>
+  <Wave color="var(--white)" bg="var(--tint-pink)" flip />
 
-  <!-- PROPOSTA -->
-  <section class="bleed bleed--left emp-cta" aria-labelledby="cta-emp-title">
-    <div class="bleed__media emp-cta__media">
-      <Picture src={kitchenPhoto} formats={['avif', 'webp']} widths={[480, 768, 1080, 1400]} sizes="(min-width: 900px) 50vw, 100vw" alt="Equipa da Fada Madrinha, de polos azuis, a limpar a copa de um escritório" />
-    </div>
-    <div class="bleed__copy reveal">
-      <p class="kicker">Proposta comercial</p>
-      <h2 id="cta-emp-title">Agradecemos a oportunidade de apresentar os nossos serviços</h2>
-      <p class="lede">Envie-nos o tipo de espaço, a área aproximada e a frequência pretendida. Preparamos uma proposta clara, elegante e fácil de comparar.</p>
-      <div class="actions">
-        <a href={waLink(whatsappMessages.empresas)} class="btn btn--primary btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir proposta</a>
-        <a href="/metodo" class="btn btn--ghost btn--lg">Conhecer o método</a>
-      </div>
+  <section class="section bg-white" aria-labelledby="fq-t">
+    <div class="wrap wrap--narrow">
+      <div class="head head--center"><h2 id="fq-t" class="reveal">Perguntas das empresas</h2></div>
+      <Faq items={companyFaq} />
     </div>
   </section>
 
-  <ContactSection
-    title="Vamos falar sobre a sua empresa?"
-    text="Fale connosco pelo WhatsApp ou e-mail. Respondemos com uma proposta institucional, clara e sem compromisso."
-    message={whatsappMessages.empresas}
-    tips={false}
-  />
+  <ContactCta title="Vamos falar sobre a sua empresa?" text="Diga-nos o tipo de espaço, a área aproximada e a frequência pretendida. Preparamos uma proposta clara e fácil de comparar." message={whatsappMessages.empresas} />
 </Base>
 
 <style>
-  .plain { list-style: none; padding: 0; margin: 0; }
-  .commit .numeral { margin-bottom: 6px; }
-
-  .std__media { min-height: 380px; }
-  .std__sub { margin-top: 40px; }
-  .std__order li { display: grid; grid-template-columns: 44px 1fr; gap: 10px; padding: 12px 0; }
-  .std__note { margin-top: 18px; color: rgba(255, 255, 255, 0.6); }
-  @media (min-width: 900px) { .std__media { min-height: 720px; } }
-
-  .points { list-style: none; padding: 0; margin: 0; display: grid; border-top: 1px solid var(--line-strong); }
-  .points li { display: flex; gap: 14px; align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 1.05rem; }
-  @media (min-width: 640px) { .points { grid-template-columns: 1fr 1fr; column-gap: 40px; } }
-
-  .emp-cta { background: var(--cream-2); }
-  .emp-cta__media { min-height: 360px; }
-  @media (min-width: 900px) { .emp-cta__media { min-height: 620px; } }
+  .segs { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 900px; margin: 0 auto; }
+  .segs li { padding: 0.8rem 1.4rem; border-radius: var(--r-pill); background: var(--white); color: var(--navy); font-size: clamp(1.05rem, 1rem + 0.4vw, 1.3rem); font-weight: 500; box-shadow: 0 4px 0 var(--line); transition: transform 0.35s var(--bounce); }
+  .segs li:nth-child(4n+1) { background: var(--tint-blue); } .segs li:nth-child(4n+2) { background: var(--tint-pink); } .segs li:nth-child(4n+3) { background: var(--tint-gold); }
+  .segs li:hover { transform: translateY(-4px) rotate(-2deg); }
+  .ord { display: grid; gap: 48px; align-items: center; }
+  .ord__list { display: grid; gap: 10px; margin: 24px 0; }
+  .ord__list li { display: flex; align-items: center; gap: 14px; font-size: 1.1rem; color: var(--navy); }
+  .ord__list .num-dot { width: 40px; height: 40px; font-size: 1rem; background: var(--blue); color: var(--white); }
+  .ord__note { color: var(--text-soft); }
+  .ord__art { width: min(100%, 400px); aspect-ratio: 1; justify-self: center; border-radius: 50% 50% 0 50%; overflow: hidden; }
+  .ord__art :global(picture), .ord__art :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @media (min-width: 900px) { .ord { grid-template-columns: 1.2fr 0.8fr; gap: 80px; } }
+  .pts { display: grid; gap: 20px; }
+  .pts__group { background: var(--white); border-radius: var(--r-lg); padding: 28px; }
+  .pts__group h3 { color: var(--gold-text); margin-bottom: 12px; }
+  .pts__group ul { display: grid; gap: 8px; }
+  .pts__group li { display: flex; align-items: center; gap: 10px; }
+  .pts__group svg { color: var(--white); background: var(--gold); border-radius: 50%; padding: 2px; flex: none; }
+  @media (min-width: 700px) { .pts { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .pts { grid-template-columns: repeat(3, 1fr); } }
+  .commit { display: grid; gap: 24px; }
+  .commit li { background: var(--white); border-radius: var(--r-lg); padding: 30px 28px; transition: transform 0.45s var(--bounce); }
+  .commit li:hover { transform: translateY(-6px); }
+  .commit__icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 0 50% 50% 50%; background: var(--blue-deep); color: var(--white); margin-bottom: 18px; }
+  .commit p { color: var(--text-soft); margin: 0; }
+  @media (min-width: 700px) { .commit { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .commit { grid-template-columns: repeat(4, 1fr); } }
+  .proto { display: grid; gap: 20px; }
+  .proto li { background: var(--white); border-radius: var(--r-lg); padding: 28px; }
+  .proto .num-dot { background: var(--pink); color: var(--white); }
+  .proto h3 { margin: 16px 0 6px; color: var(--plum); }
+  .proto p { color: var(--text-soft); margin: 0; }
+  @media (min-width: 700px) { .proto { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .proto { grid-template-columns: repeat(4, 1fr); } }
 </style>

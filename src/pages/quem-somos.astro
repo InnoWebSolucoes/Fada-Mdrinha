@@ -2,165 +2,123 @@
 import { Picture } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
-import SectionHead from '../components/SectionHead.astro';
-import CtaBand from '../components/CtaBand.astro';
-import ContactSection from '../components/ContactSection.astro';
-import { site } from '../config/site';
-import { team, principles, oath } from '../data/team';
-import originPhoto from '../assets/photos/engomar-uniforme.jpg';
-
-const essence = [
-  { title: 'Confiança', text: 'Organização, profissionalismo e limpeza em cada visita, para que nos possa confiar o seu espaço sem reservas.', tone: 'blue' },
-  { title: 'Excelência', text: 'Sofisticação, qualidade e valor premium. Um padrão de serviço consistente, em cada casa e em cada empresa.', tone: 'gold' },
-  { title: 'Cuidado', text: 'Delicadeza e proximidade em cada detalhe. Tratamos o seu espaço como se fosse o nosso.', tone: 'pink' },
-];
+import Star from '../components/Star.astro';
+import Wave from '../components/Wave.astro';
+import ContactCta from '../components/ContactCta.astro';
+import { team, values, principles, oath } from '../data/content';
 ---
-<Base
-  title="Quem Somos"
-  description="Conheça a história, a missão, os valores e a equipa da Fada Madrinha, limpeza profissional em Luanda com método, cuidado e confiança."
-  darkHeader
->
-  <PageHero
-    tone="plum"
-    numeral="I"
-    kicker="Quem somos"
-    title="Duas amigas, uma crença e uma equipa que cuida do que importa"
-    text="A história, os valores e as pessoas por trás da Fada Madrinha."
-  />
+<Base title="Quem Somos" description="Conheça a história, a missão, os valores e a equipa da Fada Madrinha, limpeza profissional em Luanda com método, cuidado e confiança.">
+  <PageHero tone="pink" title="Duas amigas, uma crença, uma equipa que cuida" text="A Fada Madrinha nasce de Irina André e Nguelengue Savinona, duas amigas que sempre entenderam que um espaço limpo e arrumado não é um privilégio. É essencial." />
 
-  <!-- ORIGEM -->
-  <section class="bleed origin" aria-labelledby="origem-title">
-    <div class="bleed__copy reveal">
-      <p class="kicker">A nossa origem</p>
-      <h2 id="origem-title">Um espaço cuidado não é um privilégio. É essencial.</h2>
-      <p>
-        A Fada Madrinha surge da percepção cuidadosa de duas amigas, <strong>Irina André</strong> e <strong>Nguelengue Savinona</strong>, que sempre entenderam que ter um ambiente limpo e arrumado impacta directamente a forma como vivemos e trabalhamos.
-      </p>
-      <p>
-        O nome foi escolhido com cuidado. Assim como na narrativa, a fada madrinha aparece, realiza transformações e melhora tudo sem que ninguém precise de se preocupar com os detalhes de como isso acontece. É exactamente isso que fazemos.
-      </p>
-      <p>
-        A ideia nasceu de uma percepção simples: os espaços em Angola precisam de um serviço de limpeza e organização que vá além do básico, com método, com cuidado e com identidade própria.
-      </p>
-      <p class="origin__sig">“{site.tagline}”</p>
-    </div>
-    <div class="bleed__media origin__media">
-      <Picture
-        src={originPhoto}
-        formats={['avif', 'webp']}
-        widths={[480, 768, 1100]}
-        sizes="(min-width: 900px) 50vw, 100vw"
-        alt="Colaboradora da Fada Madrinha, de uniforme azul, a engomar roupa com um sorriso numa divisão luminosa"
-      />
+  <section class="section" aria-labelledby="nome-title">
+    <div class="wrap wrap--narrow center">
+      <h2 id="nome-title" class="reveal">Porquê “Fada Madrinha”?</h2>
+      <p class="story reveal" style="--d:1">Assim como na história, a fada madrinha aparece, realiza transformações e melhora tudo sem que ninguém precise de se preocupar com os detalhes. <span class="swash reveal">É exactamente isso que fazemos.</span></p>
+      <p class="lede mx-auto reveal" style="--d:2">A ideia nasceu de uma percepção simples: os espaços em Angola precisam de um serviço de limpeza e organização que vá além do básico, com método, com cuidado e com identidade própria.</p>
     </div>
   </section>
 
-  <!-- ESSÊNCIA -->
-  <section class="section bg-white" aria-labelledby="essencia-title">
+  <section class="section bg-white" aria-labelledby="val-title">
     <div class="wrap">
-      <SectionHead kicker="A nossa essência" title="Três valores. Três cores." text="Azul para a confiança, dourado para a excelência, rosa para o cuidado. É assim que a marca se apresenta e é assim que trabalhamos." />
-      <div class="cols cols--3 essence">
-        {essence.map((e, i) => (
-          <div class={`essence__item essence__item--${e.tone} reveal`} style={`--reveal-delay:${i * 0.08}s`}>
-            <h3>{e.title}</h3>
-            <p>{e.text}</p>
-          </div>
-        ))}
+      <div class="head head--center">
+        <h2 id="val-title" class="reveal">Três valores, três cores</h2>
+        <p class="reveal" style="--d:1">As cores do nosso símbolo têm significado. Azul para a confiança, dourado para a excelência, rosa para o cuidado.</p>
       </div>
-    </div>
-  </section>
-
-  <!-- MISSÃO -->
-  <section class="section bg-blue-deep pattern" aria-labelledby="missao-title">
-    <div class="wrap wrap--narrow mission">
-      <p class="kicker kicker--center">Missão</p>
-      <h2 id="missao-title">Organizamos e cuidamos dos ambientes com excelência</h2>
-      <p class="lede">
-        Transformamos espaços de trabalho e de vida em locais mais produtivos, acolhedores e inspiradores, para que as pessoas e as organizações concentrem o seu tempo e energia no que realmente importa.
-      </p>
-    </div>
-  </section>
-
-  <!-- EQUIPA -->
-  <section class="section" id="equipa" aria-labelledby="equipa-title">
-    <div class="wrap">
-      <SectionHead kicker="A nossa equipa" title="As pessoas por trás da Fada Madrinha" text="Uma equipa pequena, próxima e comprometida com o mesmo padrão em cada serviço." />
-      <div class="team">
-        {team.map((m, i) => (
-          <article class="team__card reveal" style={`--reveal-delay:${i * 0.08}s`}>
-            <div class="photo team__photo">
-              <Picture src={m.photo} formats={['avif', 'webp']} widths={[360, 540, 720]} sizes="(min-width: 900px) 380px, 90vw" alt={m.alt} />
-            </div>
-            <div class="team__meta">
-              <h3>{m.name}</h3>
-              <p class="team__role">{m.role}</p>
-              <p class="team__bio">{m.bio}</p>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- PRINCÍPIOS -->
-  <section class="section bg-white" aria-labelledby="principios-title">
-    <div class="wrap split">
-      <div class="split__aside">
-        <p class="kicker">O que defendemos</p>
-        <h2 id="principios-title">Princípios que orientam a nossa equipa</h2>
-        <p class="lede">Uma selecção dos princípios que guiam o dia-a-dia de quem veste o uniforme da Fada Madrinha.</p>
-      </div>
-      <ol class="ledger">
-        {principles.map((p, i) => (
-          <li class="reveal" style={`--reveal-delay:${Math.min(i, 3) * 0.05}s`}>
-            <div class="ledger__row">
-              <span class="numeral">0{i + 1}</span>
-              <div>
-                <h3>{p.title}</h3>
-                <p>{p.text}</p>
-              </div>
-            </div>
+      <ul class="swatches">
+        {values.map((v, i) => (
+          <li class={`swatch swatch--${v.tone} reveal`} style={`--d:${i}`}>
+            <span class="swatch__chip" aria-hidden="true"></span>
+            <h3>{v.title}</h3>
+            <p>{v.words}</p>
           </li>
         ))}
-      </ol>
+      </ul>
     </div>
   </section>
 
-  <!-- JURAMENTO -->
-  <section class="section bg-dark pattern" aria-label="O Juramento Fada Madrinha">
-    <div class="wrap wrap--narrow">
-      <blockquote class="pull reveal">
+  <section class="section bg-azul mission" aria-labelledby="mis-title">
+    <Star style="top:14%;left:10%;--s:30px" color="var(--white)" />
+    <Star style="bottom:16%;right:12%;--s:22px;--t:1s" color="var(--gold)" />
+    <div class="wrap wrap--narrow center">
+      <h2 id="mis-title" class="reveal">A nossa missão</h2>
+      <p class="mission__text reveal" style="--d:1">Organizar e cuidar dos ambientes com excelência, transformando espaços de trabalho e de vida em locais mais produtivos, acolhedores e inspiradores.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="eq-title">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="eq-title" class="reveal">As pessoas por trás da magia</h2>
+        <p class="reveal" style="--d:1">Uma equipa pequena, próxima e comprometida com o mesmo padrão em cada serviço.</p>
+      </div>
+      <ul class="team">
+        {team.map((m, i) => (
+          <li class="member reveal" style={`--d:${i}`}>
+            <div class={`member__photo member__photo--${i}`}>
+              <Picture src={m.photo} formats={['avif', 'webp']} widths={[280, 420, 560]} sizes="(min-width: 900px) 300px, 70vw" alt={m.alt} />
+            </div>
+            <h3>{m.name}</h3>
+            <p class="member__role">{m.role}</p>
+            <p class="member__bio">{m.bio}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Wave color="var(--tint-pink)" />
+  <section class="section bg-pink" aria-labelledby="pr-title">
+    <div class="wrap">
+      <div class="head head--center">
+        <h2 id="pr-title" class="reveal">O que cada Fada promete</h2>
+        <p class="reveal" style="--d:1">Seis dos princípios que orientam a nossa equipa todos os dias.</p>
+      </div>
+      <ul class="principles">
+        {principles.map((p, i) => (
+          <li class="reveal" style={`--d:${i % 3}`}><h3>{p.title}</h3><p>{p.text}</p></li>
+        ))}
+      </ul>
+      <blockquote class="oath reveal">
+        <img src="/fairy/fada.png" width="331" height="404" alt="" class="oath__fairy" />
         <p>{oath}</p>
-        <footer>O Juramento Fada Madrinha</footer>
+        <footer>O Juramento Fada Madrinha, feito por cada colaborador no fim da integração</footer>
       </blockquote>
     </div>
   </section>
 
-  <CtaBand />
-  <ContactSection />
+  <ContactCta />
 </Base>
 
 <style>
-  .origin { background: var(--cream); }
-  .origin p { color: var(--ink-soft); }
-  .origin__sig { margin-top: 26px; font-size: 1.2rem; color: var(--gold-text) !important; }
-  .origin__media { min-height: 420px; }
-  @media (min-width: 900px) { .origin__media { min-height: 720px; } }
-
-  .essence__item { border-top-width: 3px; }
-  .essence__item--blue { border-top-color: var(--blue); }
-  .essence__item--gold { border-top-color: var(--gold); }
-  .essence__item--pink { border-top-color: var(--pink); }
-  .essence h3 { font-size: 1.6rem; }
-
-  .mission { text-align: center; }
-  .mission .lede { margin-inline: auto; }
-
-  .team { display: grid; gap: 40px; }
-  .team__photo { aspect-ratio: 4 / 5; }
-  .team__meta { padding-top: 18px; border-top: 1px solid var(--line-strong); margin-top: 18px; }
-  .team__meta h3 { margin-bottom: 4px; font-size: 1.35rem; }
-  .team__role { font-family: var(--font-label); font-size: 0.74rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-text); font-weight: 600; margin-bottom: 10px; }
-  .team__bio { color: var(--ink-soft); font-size: 0.98rem; }
-  @media (min-width: 760px) { .team { grid-template-columns: repeat(3, 1fr); gap: 32px; } }
+  .story { font-size: clamp(1.4rem, 1.1rem + 1.3vw, 2.2rem); line-height: 1.3; font-weight: 500; color: var(--navy); margin-bottom: 28px; }
+  .swatches { display: grid; gap: 20px; }
+  .swatch { border-radius: var(--r-lg); padding: 36px 32px; min-height: 280px; display: flex; flex-direction: column; justify-content: flex-end; color: var(--ink); transition: transform 0.45s var(--bounce); }
+  .swatch:hover { transform: translateY(-8px) rotate(-1deg); }
+  .swatch h3 { color: var(--ink); font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.6rem); margin-bottom: 8px; }
+  .swatch p { margin: 0; max-width: 28ch; }
+  .swatch__chip { width: 56px; height: 56px; border-radius: 0 50% 50% 50%; background: rgba(255, 255, 255, 0.55); margin-bottom: auto; }
+  .swatch--blue { background: var(--blue); } .swatch--gold { background: var(--gold); } .swatch--pink { background: var(--pink); }
+  @media (min-width: 800px) { .swatches { grid-template-columns: repeat(3, 1fr); } .swatch { min-height: 340px; } }
+  .mission { overflow: hidden; }
+  .mission h2 { color: var(--navy); }
+  .mission__text { font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2.3rem); line-height: 1.3; color: var(--white); font-weight: 600; text-shadow: 0 2px 0 rgba(11, 53, 86, 0.25); }
+  .team { display: grid; gap: 48px; }
+  .member { text-align: center; }
+  .member__photo { width: min(100%, 300px); aspect-ratio: 1; margin: 0 auto 22px; overflow: hidden; transition: transform 0.5s var(--bounce); }
+  .member:hover .member__photo { transform: scale(1.04) rotate(-2deg); }
+  .member__photo :global(picture), .member__photo :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .member__photo--0 { border-radius: 0 50% 50% 50%; } .member__photo--1 { border-radius: 50%; } .member__photo--2 { border-radius: 50% 50% 0 50%; }
+  .member__role { color: var(--pink-text); font-weight: 600; margin-bottom: 8px; }
+  .member__bio { color: var(--text-soft); max-width: 32ch; margin-inline: auto; }
+  @media (min-width: 800px) { .team { grid-template-columns: repeat(3, 1fr); gap: 32px; } }
+  .principles { display: grid; gap: 20px; }
+  .principles li { background: var(--white); border-radius: var(--r); padding: 26px 24px; }
+  .principles h3 { font-size: 1.2rem; margin-bottom: 6px; }
+  .principles p { color: var(--text-soft); margin: 0; }
+  @media (min-width: 700px) { .principles { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .principles { grid-template-columns: repeat(3, 1fr); } }
+  .oath { position: relative; margin: clamp(56px, 7vw, 88px) auto 0; max-width: 860px; padding: clamp(36px, 5vw, 56px); background: var(--white); border-radius: var(--r-lg); border-top-left-radius: 4px; text-align: center; }
+  .oath__fairy { width: 90px; height: auto; margin: -80px auto 12px; }
+  .oath p { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); line-height: 1.6; color: var(--navy); }
+  .oath footer { margin-top: 18px; color: var(--pink-text); font-weight: 600; }
 </style>

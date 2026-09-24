@@ -1,28 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import ContactSection from '../components/ContactSection.astro';
+import Star from '../components/Star.astro';
 import { waLink } from '../config/site';
 ---
-<Base title="Página não encontrada" description="A página que procura não existe ou foi movida." noindex darkHeader>
-  <section class="nf bg-dark pattern">
+<Base title="Página não encontrada" description="A página que procura não existe ou foi movida." noindex>
+  <section class="nf">
+    <Star style="top:20%;left:18%;--s:26px" />
+    <Star style="top:30%;right:20%;--s:18px;--t:.8s" color="var(--pink)" />
+    <Star style="bottom:22%;left:30%;--s:14px;--t:1.4s" color="var(--blue)" />
     <div class="wrap nf__inner">
-      <span class="nf__numeral" aria-hidden="true">404</span>
-      <p class="kicker">Página não encontrada</p>
-      <h1>Esta página não está onde devia.</h1>
-      <p class="lede">Até uma fada madrinha se perde de vez em quando. Volte ao início ou fale connosco. Cuidamos do resto.</p>
-      <div class="actions">
-        <a href="/" class="btn btn--gold btn--lg">Voltar ao início</a>
-        <a href={waLink()} class="btn btn--ghost btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Falar no WhatsApp</a>
+      <img src="/fairy/fada.png" width="331" height="404" alt="" class="nf__fairy float" />
+      <h1>Oops! Esta página voou para longe.</h1>
+      <p class="lede mx-auto">Até uma fada madrinha se perde de vez em quando. Volte ao início ou fale connosco, que nós tratamos do resto.</p>
+      <div class="actions actions--center">
+        <a href="/" class="btn btn--lg">Voltar ao início</a>
+        <a href={waLink()} class="btn btn--outline btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Falar connosco</a>
       </div>
     </div>
   </section>
-  <ContactSection tips={false} />
 </Base>
 
 <style>
-  .nf { padding-block: clamp(72px, 10vw, 140px); }
-  .nf__inner { max-width: 760px; }
-  .nf__numeral { display: block; font-size: clamp(5rem, 14vw, 10rem); line-height: 0.85; letter-spacing: -0.04em; color: rgba(255, 255, 255, 0.2); margin-bottom: 24px; }
+  .nf { position: relative; overflow: hidden; padding-block: clamp(72px, 10vw, 140px); background: var(--tint-blue); text-align: center; }
+  .nf__fairy { width: 150px; height: auto; margin: 0 auto 24px; }
   .nf .lede { margin-bottom: 32px; }
 </style>

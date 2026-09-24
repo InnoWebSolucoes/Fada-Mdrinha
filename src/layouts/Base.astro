@@ -1,51 +1,32 @@
 ---
 import '@fontsource/jost/400.css';
 import '@fontsource/jost/500.css';
+import '@fontsource/jost/600.css';
 import '@fontsource/barlow-semi-condensed/600.css';
 import '../styles/fonts.css';
 import '../styles/global.css';
-
+import Announcement from '../components/Announcement.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import FairyFlight from '../components/FairyFlight.astro';
 import { site } from '../config/site';
 
-interface Props {
-  title: string;
-  description: string;
-  ogImage?: string;
-  noindex?: boolean;
-  /** Cabeçalho escuro (para páginas que começam com uma secção escura). */
-  darkHeader?: boolean;
-}
-const { title, description, ogImage = site.ogImage, noindex = false, darkHeader = false } = Astro.props;
-
-const cleanPath = Astro.url.pathname.replace(/index\.html$/, '').replace(/\.html$/, '').replace(/\/$/, '') || '/';
-const canonical = new URL(cleanPath, site.url).href;
-const ogImageUrl = new URL(ogImage, site.url).href;
+interface Props { title: string; description: string; noindex?: boolean }
+const { title, description, noindex = false } = Astro.props;
+const clean = Astro.url.pathname.replace(/index\.html$/, '').replace(/\/$/, '') || '/';
+const canonical = new URL(clean, site.url).href;
+const og = new URL(site.ogImage, site.url).href;
 const fullTitle = title.includes(site.name) ? title : `${title} | ${site.name}`;
-
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': ['CleaningService', 'LocalBusiness'],
-  '@id': `${site.url}/#business`,
-  name: site.name,
-  url: site.url,
-  slogan: site.tagline,
-  description: site.description,
-  telephone: site.phone.e164,
-  email: site.email,
-  image: ogImageUrl,
-  logo: new URL('/logo/fada-madrinha-logo-on-light.png', site.url).href,
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: site.address.locality,
-    addressRegion: site.address.region,
-    addressCountry: site.address.country,
-  },
+  name: site.name, url: site.url, slogan: site.tagline, description: site.description,
+  telephone: site.phone.e164, email: site.email, image: og,
+  logo: new URL('/logo/logo-on-light.png', site.url).href,
+  address: { '@type': 'PostalAddress', addressLocality: site.address.locality, addressRegion: site.address.region, addressCountry: site.address.country },
   areaServed: { '@type': 'City', name: 'Luanda' },
   sameAs: [site.instagram.url],
-  contactPoint: { '@type': 'ContactPoint', telephone: site.phone.e164, contactType: 'customer service', availableLanguage: 'pt' },
 };
 ---
 <!doctype html>
@@ -56,54 +37,43 @@ const jsonLd = {
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <meta name="theme-color" content={darkHeader ? '#0a0a0c' : '#fafaf6'} />
-    <meta name="generator" content={Astro.generator} />
-
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#0b3556" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
-
+    <link rel="preload" href="/fairy/fada.png" as="image" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={site.ogLocale} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content={og} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImageUrl} />
-
+    <meta name="twitter:image" content={og} />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body>
     <a href="#conteudo" class="skip-link">Saltar para o conteúdo</a>
-    <Header dark={darkHeader} />
-    <main id="conteudo" tabindex="-1">
-      <slot />
-    </main>
+    <Announcement />
+    <Header />
+    <main id="conteudo" tabindex="-1"><slot /></main>
     <Footer />
     <WhatsAppFloat />
-
+    {site.features.fairy && <FairyFlight />}
     <script>
       const els = document.querySelectorAll('.reveal');
-      if ('IntersectionObserver' in window && els.length) {
+      if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver((entries) => {
-          for (const e of entries) {
-            if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
-          }
-        }, { rootMargin: '0px 0px -6% 0px', threshold: 0.06 });
+          entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+        }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
         els.forEach((el) => io.observe(el));
-      } else {
-        els.forEach((el) => el.classList.add('is-visible'));
-      }
+      } else els.forEach((el) => el.classList.add('is-in'));
     </script>
   </body>
 </html>

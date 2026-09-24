@@ -2,107 +2,55 @@
 
 Site institucional estático da **Fada Madrinha** (limpeza profissional, Talatona, Luanda), desenvolvido pela Innoweb.
 
-- **Stack:** [Astro](https://astro.build) (output estático), CSS puro com variáveis, JavaScript mínimo (menu móvel e animação de entrada).
-- **Sem backend:** nenhum formulário envia dados para servidores. Todo o contacto é feito por links de WhatsApp (`wa.me`), `mailto:` e `tel:`.
-- **Sem preços:** o site apresenta serviços e método; o orçamento é sempre pedido por WhatsApp.
-- **Deploy:** Netlify (ver `netlify.toml`).
+- **Stack:** Astro (output estático), CSS com variáveis, JavaScript mínimo.
+- **Sem backend:** todo o contacto é feito por WhatsApp (`wa.me`), `tel:` e `mailto:`.
+- **Sem preços:** o orçamento é sempre pedido por WhatsApp.
+- **Deploy:** Netlify (`netlify.toml`).
 
-## Como correr
+## Correr
 
 ```bash
 npm install
 npm run dev       # http://localhost:4321
 npm run build     # gera /dist
-npm run preview   # serve o /dist localmente
+npm run preview   # serve o /dist
 ```
-
-Requer Node 22+.
 
 ## Onde está cada coisa
 
 | Quero alterar… | Ficheiro |
 |---|---|
-| Telefone, WhatsApp, e-mail, morada, Instagram, domínio | `src/config/site.ts` |
+| Telefone, WhatsApp, e-mail, morada, Instagram, domínio, barra de anúncio | `src/config/site.ts` |
 | Mensagens pré-preenchidas do WhatsApp | `src/config/site.ts` (`whatsappMessages`) |
-| Ligar/desligar "Antes e depois" e "Clube Encanto" | `src/config/site.ts` (`features`) |
-| Os 6 serviços (título, descrição, "como trabalhamos") | `src/data/services.ts` |
-| Perguntas frequentes | `src/data/faq.ts` |
-| Equipa, princípios, juramento | `src/data/team.ts` |
-| Cinco fases, compromissos, jornada do cliente | `src/data/method.ts` |
-| Segmentos, 20 pontos, compromissos, protocolo de reclamações | `src/data/empresas.ts` |
-| Cores, tipografia, botões, primitivas de layout | `src/styles/global.css` (tokens em `:root`) |
+| Ligar/desligar a fada animada e o Clube Encanto | `src/config/site.ts` (`features`) |
+| Todo o texto reutilizado: serviços, "como funciona", comparação, incluído, método, jornada, empresas, equipa, valores, FAQ | `src/data/content.ts` |
+| Cores, tipografia, botões | `src/styles/global.css` (`:root`) |
 | Texto das páginas | `src/pages/*.astro` |
-| Cabeçalho, rodapé, botão flutuante | `src/components/Header.astro`, `Footer.astro`, `WhatsAppFloat.astro` |
 
-### Páginas
+## Animações
 
-| URL | Ficheiro |
+| Animação | Onde |
 |---|---|
-| `/` | `src/pages/index.astro` |
-| `/quem-somos` | `src/pages/quem-somos.astro` |
-| `/servicos` | `src/pages/servicos.astro` |
-| `/empresas` | `src/pages/empresas.astro` |
-| `/metodo` | `src/pages/metodo.astro` |
-| `/404` | `src/pages/404.astro` |
+| A fada que voa pela página ao fazer scroll (bate as asas, vira-se, deixa brilhos) | `src/components/FairyFlight.astro` |
+| Título do hero palavra a palavra, fotografias e autocolante | `src/pages/index.astro` (secção HERO) |
+| Faixa de serviços em movimento | `src/components/Marquee.astro` |
+| Secções que aparecem ao fazer scroll (`.reveal`) | `src/styles/global.css` + script em `src/layouts/Base.astro` |
+| Riscado animado em "A limpeza de sempre" | `src/pages/index.astro` (`.strike`) |
+| Estrelas a cintilar, formas a flutuar | `src/components/Star.astro`, `.float` em `global.css` |
+| FAQ com abertura animada | `src/components/Faq.astro` |
 
-A secção **Contacto** (`src/components/ContactSection.astro`) aparece no fim de todas as páginas com o id `#contacto`; não existe página separada.
+Todas respeitam `prefers-reduced-motion` (a fada desaparece e o resto fica estático).
 
-## Sistema visual
+A fada é a figura do próprio símbolo da marca, extraída de `reference/Identidade_visual_Final.pdf` (p. 4) para `public/fairy/fada.png`. As asas são animadas recortando a mesma imagem em duas partes (`clip-path` em `FairyFlight.astro`). Quando o cliente enviar o logótipo em SVG, substituir por uma versão vectorial.
 
-Primitivas em `global.css` usadas em todas as páginas:
+## Fontes
 
-- `.kicker`: rótulo em maiúsculas com linha curta (fonte de rótulos).
-- `.numeral` / `.num`: numerais grandes e pequenos em dourado.
-- `.ledger`: lista com linhas finas (`.ledger__row` para número + texto).
-- `.cols .cols--2/3/4/5`: colunas editoriais, cada uma com uma linha no topo.
-- `.split`: duas colunas com apontamento fixo à esquerda (`.split__aside`).
-- `.bleed` / `.bleed--left`: texto alinhado à grelha e fotografia até à margem do ecrã (`.bleed__copy`, `.bleed__media`).
-- `.pull`: citação em destaque. `.inline-list`, `.dot-list`: listas sem ícones.
+Century Gothic (licença Monotype) ainda não licenciada para web; usa-se Jost. Para activar: colocar os `.woff2` em `public/fonts/` e descomentar `src/styles/fonts.css`.
 
-Não há cartões com fundo branco e cantos arredondados; a hierarquia é feita com linhas, escala tipográfica e cor de fundo por secção.
+## Logótipo e imagens
 
-## Fontes (Century Gothic)
+`public/logo/` (logótipo extraído do manual, PNG/WebP), `public/fairy/`, `src/assets/photos/`, `src/assets/team/`. As fotografias passam por `<Picture>` (AVIF/WebP responsivo).
 
-A fonte da marca é a **Century Gothic** (licença Monotype). Enquanto não houver licença de webfont, o site usa **Jost** (self-hosted via `@fontsource/jost`). Para activar a Century Gothic:
+## Deploy (Netlify)
 
-1. Colocar `CenturyGothic-Regular.woff2` e `CenturyGothic-Bold.woff2` em `public/fonts/`.
-2. Descomentar o bloco `@font-face` em `src/styles/fonts.css`.
-
-A pilha `--font-brand` em `global.css` já começa por `"Century Gothic"`. Os rótulos em maiúsculas usam `--font-label` (Bahnschrift do sistema, depois Barlow Semi Condensed).
-
-## Logótipo
-
-Os ficheiros em `public/logo/` foram **extraídos do PDF de identidade visual** (raster, com transparência):
-
-- `fada-madrinha-logo-on-dark.png`: versão oficial (para fundos escuros)
-- `fada-madrinha-logo-on-light.png`: a mesma arte com a palavra "Madrinha" em preto, para fundos claros
-- `fada-madrinha-mark.png`: só o símbolo (favicon, padrão de fundo, marca de água)
-- `*-sm.png`: versões reduzidas usadas no cabeçalho e rodapé
-
-Quando o cliente enviar os ficheiros vectoriais (SVG), basta substituir estes ficheiros mantendo os nomes. O favicon (`public/favicon.ico`, `public/icons/`, `public/apple-touch-icon.png`) e a imagem Open Graph (`public/og-image.jpg`) devem ser regenerados a partir do SVG.
-
-## Imagens
-
-Fotografias em `src/assets/photos/` (redimensionadas a 2400 px) e `src/assets/team/`. São servidas através de `<Picture>` do Astro, que gera AVIF/WebP e tamanhos responsivos no build. Para trocar uma foto, substituir o ficheiro e ajustar o `alt` na página correspondente.
-
-## Activar "Antes e depois"
-
-1. Colocar pares de fotos em `src/assets/antes-depois/`.
-2. Em `src/pages/index.astro`, importar as imagens e preencher `beforeAfterPairs` (há um exemplo comentado).
-3. Em `src/config/site.ts`, mudar `features.beforeAfter` para `true`.
-
-## Activar "Clube Encanto" / Programa de Indicação
-
-Confirmar os benefícios com o cliente, ajustar o texto em `src/components/Loyalty.astro` e mudar `features.loyalty` para `true` em `src/config/site.ts`.
-
-## SEO
-
-Títulos e descrições únicos por página (props `title`/`description` do layout `Base.astro`), canonical, Open Graph/Twitter, JSON-LD `CleaningService`/`LocalBusiness` só com dados reais, `sitemap-index.xml` (gerado por `@astrojs/sitemap`) e `robots.txt`. O domínio canónico está em `src/config/site.ts` **e** em `astro.config.mjs` (`site`); manter iguais.
-
-## Deploy na Netlify
-
-1. Ligar o repositório GitHub à Netlify (New site, Import from Git).
-2. Build command: `npm run build`. Publish directory: `dist` (já em `netlify.toml`).
-3. Definir o domínio `www.fadamadrinha.com` em *Domain management* e activar HTTPS.
-
-O `netlify.toml` define cache imutável para `/_astro/*` e `/fonts/*`, cabeçalhos de segurança e redireccionamentos dos URLs antigos do protótipo (`*.html`).
+Ligar o repositório, build `npm run build`, publish `dist`, domínio `www.fadamadrinha.com`. Cache imutável para `/_astro/*` já configurada.

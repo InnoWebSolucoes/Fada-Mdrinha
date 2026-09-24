@@ -1,22 +1,8 @@
 /*
  * Century Gothic (fonte oficial da marca, licença Monotype).
  * Quando os ficheiros licenciados estiverem em /public/fonts, descomentar este bloco.
- * A pilha em global.css (--font-brand) já começa por "Century Gothic".
  */
-
 /*
-@font-face {
-  font-family: 'Century Gothic';
-  src: url('/fonts/CenturyGothic-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Century Gothic';
-  src: url('/fonts/CenturyGothic-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
+@font-face { font-family: 'Century Gothic'; src: url('/fonts/CenturyGothic-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Century Gothic'; src: url('/fonts/CenturyGothic-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 */

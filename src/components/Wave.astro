@@ -1,0 +1,8 @@
+---
+/** Onda entre secções. `color` é a cor da secção seguinte; `bg` a da anterior. */
+interface Props { color: string; bg?: string; flip?: boolean }
+const { color, bg = 'transparent', flip = false } = Astro.props;
+---
+<svg class="wave" viewBox="0 0 1440 90" preserveAspectRatio="none" aria-hidden="true" style={`background:${bg};${flip ? 'transform:scaleX(-1)' : ''}`}>
+  <path fill={color} d="M0 48c120-26 240-40 360-28s240 52 360 52 240-44 360-52 240 12 360 24v46H0Z" />
+</svg>

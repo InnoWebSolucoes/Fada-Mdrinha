@@ -1,0 +1,46 @@
+---
+/** Fecho de todas as páginas: o gradiente rosa→azul do manual, com brilhos. */
+import Icon from './Icon.astro';
+import Star from './Star.astro';
+import { site, waLink, whatsappMessages, telLink, mailLink } from '../config/site';
+interface Props { title?: string; text?: string; message?: string }
+const {
+  title = 'Vamos cuidar do seu espaço?',
+  text = 'Diga-nos o que precisa. Preparamos uma proposta personalizada, clara e sem compromisso.',
+  message = whatsappMessages.geral,
+} = Astro.props;
+---
+<section id="contacto" class="cta" aria-labelledby="cta-title">
+  <Star style="top:14%;left:8%;--s:26px;--t:.1s" color="var(--gold)" />
+  <Star style="top:70%;left:14%;--s:16px;--t:.9s" color="#fff" />
+  <Star style="top:22%;right:10%;--s:20px;--t:1.4s" color="#fff" />
+  <Star style="bottom:16%;right:18%;--s:30px;--t:.5s" color="var(--gold)" />
+  <div class="wrap cta__inner">
+    <h2 id="cta-title" class="reveal">{title}</h2>
+    <p class="cta__text reveal" style="--d:1">{text}</p>
+    <div class="actions actions--center reveal" style="--d:2">
+      <a href={waLink(message)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
+      <a href={telLink} class="btn btn--outline-light btn--lg"><Icon name="phone" /> Ligar</a>
+    </div>
+    <p class="cta__promise reveal" style="--d:3">{site.replyPromise}</p>
+    <ul class="cta__details reveal" style="--d:4">
+      <li><Icon name="phone" size={20} /><a href={telLink}>{site.phone.display}</a></li>
+      <li><Icon name="mail" size={20} /><a href={mailLink}>{site.email}</a></li>
+      <li><Icon name="instagram" size={20} /><a href={site.instagram.url} target="_blank" rel="noopener">@{site.instagram.handle}</a></li>
+      <li><Icon name="pin" size={20} /><span>{site.address.display}</span></li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .cta { position: relative; overflow: hidden; background: var(--grad-brand); color: var(--white); padding-block: clamp(80px, 10vw, 140px); text-align: center; }
+  .cta__inner { position: relative; }
+  .cta h2 { color: var(--white); font-size: clamp(2.4rem, 1.4rem + 4vw, 4.4rem); max-width: 14ch; margin-inline: auto; }
+  .cta__text { font-size: clamp(1.1rem, 1rem + 0.5vw, 1.35rem); color: rgba(255, 255, 255, 0.92); max-width: 44ch; margin: 0 auto 32px; }
+  .cta__promise { margin-top: 18px; color: rgba(255, 255, 255, 0.9); }
+  .cta__details { margin-top: 48px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; }
+  .cta__details li { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+  .cta__details a { color: var(--white); }
+  .cta__details a:hover { color: var(--gold); }
+  .cta :focus-visible { outline-color: var(--white); }
+</style>
