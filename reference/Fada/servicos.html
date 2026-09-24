@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serviços & Preços | Fada Madrinha</title>
+    <meta
+      name="description"
+      content="Tabela de preços da Fada Madrinha para limpeza residencial, empresarial, higienização, organização, pós-obra e estofos. Calcule já uma estimativa."
+    />
+    <link rel="canonical" href="https://www.fadamadrinha.com/servicos.html" />
+    <link rel="icon" type="image/png" sizes="32x32" href="" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="images/apple-touch-icon.png"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Work+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/servicos.css" />
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <a
+          href="index.html"
+          class="logo"
+          aria-label="Fada Madrinha — página inicial"
+        >
+          <span class="logo-text"
+            ><span class="fada">fada</span
+            ><span class="madrinha">MADRINHA</span></span
+          >
+        </a>
+        <div class="nav-links">
+          <a href="quem-somos.html">Quem Somos</a>
+          <a href="servicos.html" class="active">Serviços</a>
+          <a href="index.html#empresas">Empresas</a>
+          <a href="index.html#contacto">Contacto</a>
+        </div>
+        <div class="nav-cta">
+          <a
+            href="https://wa.me/244975520533?text=Ol%C3%A1!%20Gostaria%20de%20pedir%20um%20or%C3%A7amento%20de%20limpeza."
+            class="btn btn-dark btn-sm-hide"
+            >Pedir orçamento</a
+          >
+          <button
+            class="burger"
+            id="burgerBtn"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </nav>
+      <div class="mobile-menu" id="mobileMenu">
+        <a href="quem-somos.html">Quem Somos</a>
+        <a href="servicos.html">Serviços</a>
+        <a href="index.html#empresas">Empresas</a>
+        <a href="index.html#contacto">Contacto</a>
+        <a
+          href="https://wa.me/244975520533?text=Ol%C3%A1!%20Gostaria%20de%20pedir%20um%20or%C3%A7amento%20de%20limpeza."
+          class="btn btn-primary"
+          >Pedir orçamento</a
+        >
+      </div>
+    </header>
+
+    <a
+      class="wa-float"
+      href="https://wa.me/244975520533?text=Ol%C3%A1!%20Gostaria%20de%20pedir%20um%20or%C3%A7amento%20de%20limpeza."
+      aria-label="Falar no WhatsApp"
+      target="_blank"
+      rel="noopener"
+    >
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M17.5 14.4c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1-.3-.1-1.2-.4-2.2-1.4-.8-.7-1.4-1.6-1.5-1.9-.2-.3 0-.4.1-.6l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.8-2-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s1 2.5 1.1 2.7c.1.2 2 3 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.7 1.9-1.3.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.3z"
+          fill="#fff"
+        />
+        <path
+          d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2Zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4.2 15 3.7 13.5 3.7 12c0-4.6 3.7-8.3 8.3-8.3s8.3 3.7 8.3 8.3-3.7 8.2-8.3 8.2Z"
+          fill="#fff"
+        />
+      </svg>
+    </a>
+
+    <section class="page-hero">
+      <div class="wrap">
+        <div class="kicker">Serviços &amp; Preços</div>
+        <h1>Preços claros, sem letras pequenas</h1>
+        <p>
+          Valores de referência para os nossos serviços em Luanda. Use a
+          calculadora mais abaixo para uma estimativa rápida e personalizada.
+        </p>
+      </div>
+    </section>
+
+    <section id="tabela">
+      <div class="wrap">
+        <div class="cat-block">
+          <div class="cat-head">
+            <h3>🏠 Limpeza Residencial</h3>
+            <span>Preço por visita</span>
+          </div>
+          <div class="price-grid">
+            <div class="price-card">
+              <h4>Apartamento Pequeno</h4>
+              <div class="unit">T1 / T2 — até 80m²</div>
+              <div class="price">15.000 <small>AOA</small></div>
+              <ul>
+                <li>Sala, quarto(s) e cozinha</li>
+                <li>Casa de banho completa</li>
+                <li>Pó, chão e superfícies</li>
+                <li>Equipa de 1 pessoa</li>
+              </ul>
+            </div>
+            <div class="price-card popular">
+              <span class="price-badge">Mais escolhido</span>
+              <h4>Apartamento Médio</h4>
+              <div class="unit">T3 — até 150m²</div>
+              <div class="price">25.000 <small>AOA</small></div>
+              <ul>
+                <li>Tudo do plano Pequeno</li>
+                <li>Varanda e área de serviço</li>
+                <li>Interior de vidros</li>
+                <li>Equipa de 1–2 pessoas</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>Moradia Grande</h4>
+              <div class="unit">150m² ou mais</div>
+              <div class="price">40.000 <small>AOA</small></div>
+              <ul>
+                <li>Tudo do plano Médio</li>
+                <li>Múltiplos pisos e quartos</li>
+                <li>Áreas exteriores cobertas</li>
+                <li>Equipa de 2+ pessoas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block">
+          <div class="cat-head">
+            <h3>🏢 Limpeza Empresarial</h3>
+            <span>Contrato mensal, frequência a combinar</span>
+          </div>
+          <div class="price-grid">
+            <div class="price-card">
+              <h4>Escritório Pequeno</h4>
+              <div class="unit">Até 100m²</div>
+              <div class="price">30.000 <small>AOA/mês</small></div>
+              <ul>
+                <li>1x por semana</li>
+                <li>Áreas comuns e casas de banho</li>
+                <li>Recolha de lixo</li>
+              </ul>
+            </div>
+            <div class="price-card popular">
+              <span class="price-badge">Mais escolhido</span>
+              <h4>Escritório Médio</h4>
+              <div class="unit">100–300m²</div>
+              <div class="price">60.000 <small>AOA/mês</small></div>
+              <ul>
+                <li>2–3x por semana</li>
+                <li>Copa / kitchenette</li>
+                <li>Vidros interiores</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>Espaço Comercial Grande</h4>
+              <div class="unit">300m²+</div>
+              <div class="price">Sob consulta</div>
+              <ul>
+                <li>Equipa dedicada</li>
+                <li>Plano à medida da operação</li>
+                <li>Supervisão semanal</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block">
+          <div class="cat-head">
+            <h3>💧 Higienização Especializada</h3>
+            <span>Preço por serviço</span>
+          </div>
+          <div class="price-grid two">
+            <div class="price-card">
+              <h4>Higienização Parcial</h4>
+              <div class="unit">1 divisão</div>
+              <div class="price">12.000 <small>AOA</small></div>
+              <ul>
+                <li>Tratamento profundo de superfícies</li>
+                <li>Produtos especializados</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>Higienização Completa</h4>
+              <div class="unit">Casa ou escritório inteiro</div>
+              <div class="price">35.000 <small>AOA</small></div>
+              <ul>
+                <li>Todas as divisões</li>
+                <li>Foco em pontos de maior contacto</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block">
+          <div class="cat-head">
+            <h3>📦 Organização de Espaços</h3>
+            <span>Preço por serviço</span>
+          </div>
+          <div class="price-grid two">
+            <div class="price-card">
+              <h4>Organização Parcial</h4>
+              <div class="unit">1 divisão (closet, cozinha...)</div>
+              <div class="price">18.000 <small>AOA</small></div>
+              <ul>
+                <li>Arrumação funcional</li>
+                <li>Sugestões de otimização</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>Organização Completa</h4>
+              <div class="unit">Casa inteira</div>
+              <div class="price">45.000 <small>AOA</small></div>
+              <ul>
+                <li>Todas as divisões</li>
+                <li>Sistema de arrumação duradouro</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block">
+          <div class="cat-head">
+            <h3>🏗️ Limpeza Pós-Obra</h3>
+            <span>Preço por serviço</span>
+          </div>
+          <div class="price-grid">
+            <div class="price-card">
+              <h4>Até 100m²</h4>
+              <div class="unit">Apartamento pequeno</div>
+              <div class="price">45.000 <small>AOA</small></div>
+              <ul>
+                <li>Remoção de resíduos de obra</li>
+                <li>Poeira fina em todas as superfícies</li>
+              </ul>
+            </div>
+            <div class="price-card popular">
+              <span class="price-badge">Mais escolhido</span>
+              <h4>100–250m²</h4>
+              <div class="unit">Casa ou escritório</div>
+              <div class="price">80.000 <small>AOA</small></div>
+              <ul>
+                <li>Tudo do plano anterior</li>
+                <li>Vidros e caixilhos</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>250m² ou mais</h4>
+              <div class="unit">Espaço grande</div>
+              <div class="price">130.000 <small>AOA</small></div>
+              <ul>
+                <li>Equipa alargada</li>
+                <li>Entrega faseada por área</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="cat-block" style="margin-bottom: 0">
+          <div class="cat-head">
+            <h3>🛋️ Limpeza de Sofás e Estofos</h3>
+            <span>Preço por peça</span>
+          </div>
+          <div class="price-grid">
+            <div class="price-card">
+              <h4>Sofá 2 Lugares</h4>
+              <div class="unit">&nbsp;</div>
+              <div class="price">10.000 <small>AOA</small></div>
+              <ul>
+                <li>Aspiração e pré-tratamento</li>
+                <li>Extração profissional</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>Sofá 3 Lugares</h4>
+              <div class="unit">&nbsp;</div>
+              <div class="price">14.000 <small>AOA</small></div>
+              <ul>
+                <li>Aspiração e pré-tratamento</li>
+                <li>Extração profissional</li>
+              </ul>
+            </div>
+            <div class="price-card">
+              <h4>Sofá de Canto / Colchão</h4>
+              <div class="unit">&nbsp;</div>
+              <div class="price">18.000 <small>AOA</small></div>
+              <ul>
+                <li>Aspiração e pré-tratamento</li>
+                <li>Extração profissional</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" style="background: var(--cream-deep)">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Extras</div>
+          <h2>Serviços adicionais</h2>
+          <p>
+            Pode adicionar estes extras a qualquer serviço residencial ou
+            empresarial.
+          </p>
+        </div>
+        <div class="table-scroll">
+          <table class="avulso-table">
+            <thead>
+              <tr>
+                <th>Extra</th>
+                <th>Preço (AOA)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Limpeza interior de armários</td>
+                <td>+ 5.000</td>
+              </tr>
+              <tr>
+                <td>Interior do frigorífico</td>
+                <td>+ 4.000</td>
+              </tr>
+              <tr>
+                <td>Passar roupa a ferro (por hora)</td>
+                <td>+ 8.000</td>
+              </tr>
+              <tr>
+                <td>Limpeza de vidros exteriores</td>
+                <td>+ 6.000</td>
+              </tr>
+              <tr>
+                <td>Contrato mensal (recorrente)</td>
+                <td>-15% no total</td>
+              </tr>
+              <tr>
+                <td>Contrato quinzenal (recorrente)</td>
+                <td>-8% no total</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculadora">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Calculadora</div>
+          <h2>Quanto vai custar o seu serviço?</h2>
+          <p>
+            Responda a 3 perguntas rápidas e receba uma estimativa imediata —
+            sem compromisso.
+          </p>
+        </div>
+
+        <div class="calc">
+          <div class="calc-progress">
+            <span id="stepLabel">Passo 1 de 4 — Tipo de serviço</span>
+          </div>
+          <div class="calc-bar">
+            <div class="calc-bar-fill" id="barFill"></div>
+          </div>
+
+          <!-- STEP 1 -->
+          <div class="calc-step active" data-step="1">
+            <h3>Que serviço procura?</h3>
+            <div class="calc-grid" id="typeGrid"></div>
+          </div>
+
+          <!-- STEP 2 -->
+          <div class="calc-step" data-step="2">
+            <h3>Qual o tamanho do espaço?</h3>
+            <div class="calc-list" id="sizeList"></div>
+          </div>
+
+          <!-- STEP 3 -->
+          <div class="calc-step" data-step="3">
+            <h3>Extras &amp; frequência</h3>
+            <p
+              style="
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 13.5px;
+                margin-bottom: 14px;
+              "
+            >
+              Extras (opcional)
+            </p>
+            <div
+              class="calc-list"
+              id="extrasList"
+              style="margin-bottom: 28px"
+            ></div>
+            <p
+              style="
+                color: rgba(255, 255, 255, 0.6);
+                font-size: 13.5px;
+                margin-bottom: 14px;
+              "
+            >
+              Frequência
+            </p>
+            <div class="calc-list" id="freqList"></div>
+          </div>
+
+          <!-- STEP 4 -->
+          <div class="calc-step" data-step="4">
+            <h3>A sua estimativa</h3>
+            <div class="calc-result">
+              <div class="label">Valor estimado para o seu serviço</div>
+              <div class="amount" id="resultAmount">—</div>
+              <div class="breakdown" id="resultBreakdown"></div>
+              <div class="contact-actions" style="margin-bottom: 6px">
+                <a
+                  href="#"
+                  id="waResultBtn"
+                  target="_blank"
+                  rel="noopener"
+                  class="btn btn-whatsapp"
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.6 1.4 5.1L2 22l5.1-1.3c1.4.8 3.1 1.2 4.9 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2Z"
+                      fill="#fff"
+                    />
+                  </svg>
+                  Enviar para WhatsApp
+                </a>
+                <button class="btn btn-ghost" id="restartBtn" type="button">
+                  Recomeçar
+                </button>
+              </div>
+              <p class="calc-note">
+                Estimativa indicativa e fictícia (protótipo). Proposta final
+                confirmada após avaliação do espaço.
+              </p>
+            </div>
+          </div>
+
+          <div class="calc-actions">
+            <button
+              class="btn btn-ghost"
+              id="backBtn"
+              type="button"
+              style="visibility: hidden"
+            >
+              ← Voltar
+            </button>
+            <button class="btn btn-primary" id="nextBtn" type="button" disabled>
+              Continuar →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight" style="background: var(--cream-deep)">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="kicker">Perguntas frequentes</div>
+          <h2>Dúvidas comuns</h2>
+        </div>
+        <div id="faqList">
+          <div class="faq-item open">
+            <div class="faq-q">
+              <span>Os preços são fixos?</span><span class="plus">+</span>
+            </div>
+            <div class="faq-a">
+              <p>
+                São valores de referência. O preço final é confirmado após
+                percebermos o estado e a dimensão exata do espaço — sem
+                surpresas na hora de pagar.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>Como faço o pagamento?</span><span class="plus">+</span>
+            </div>
+            <div class="faq-a">
+              <p>
+                Aceitamos transferência bancária e pagamento em numerário no
+                momento do serviço. Para contratos mensais, combinamos o melhor
+                ciclo de faturação consigo.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>Preciso de fornecer produtos de limpeza?</span
+              ><span class="plus">+</span>
+            </div>
+            <div class="faq-a">
+              <p>
+                Não. A nossa equipa leva todos os produtos e equipamentos
+                profissionais necessários, incluídos no preço do serviço.
+              </p>
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">
+              <span>Com quanto tempo de antecedência devo agendar?</span
+              ><span class="plus">+</span>
+            </div>
+            <div class="faq-a">
+              <p>
+                Recomendamos 2 a 3 dias de antecedência. Para pedidos urgentes,
+                fale connosco pelo WhatsApp e verificamos disponibilidade.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="wrap">
+        <div class="contact-cta">
+          <h2>Ainda com dúvidas sobre o preço?</h2>
+          <p>
+            Fale connosco diretamente — respondemos rápido e sem compromisso.
+          </p>
+          <div class="contact-actions">
+            <a
+              href="https://wa.me/244975520533?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20os%20pre%C3%A7os%20dos%20servi%C3%A7os."
+              class="btn btn-whatsapp"
+              target="_blank"
+              rel="noopener"
+              >Falar no WhatsApp</a
+            >
+            <a href="index.html#contacto" class="btn btn-ghost"
+              >Ver todos os contactos</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="wrap">
+        <div class="footer-top">
+          <a href="index.html" class="logo">
+            <span class="logo-text"
+              ><span class="fada">fada</span
+              ><span class="madrinha">MADRINHA</span></span
+            >
+          </a>
+          <div class="footer-cols">
+            <div class="footer-col">
+              <h5>Navegação</h5>
+              <a href="quem-somos.html">Quem Somos</a>
+              <a href="servicos.html">Serviços</a>
+              <a href="index.html#empresas">Empresas</a>
+              <a href="index.html#contacto">Contacto</a>
+            </div>
+            <div class="footer-col">
+              <h5>Contacto</h5>
+              <a href="tel:+244975520533">+244 975 520 533</a>
+              <a href="mailto:fadamadrinha7@gmail.com"
+                >fadamadrinha7@gmail.com</a
+              >
+              <span
+                style="
+                  display: block;
+                  color: var(--ink-soft);
+                  font-size: 14.5px;
+                "
+                >Talatona, Luanda</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2026 Fada Madrinha. Todos os direitos reservados.</span>
+          <span class="footer-sig"
+            >Transformamos espaços. Criamos bem-estar.</span
+          >
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/servicos.js"></script>
+  </body>
+</html>

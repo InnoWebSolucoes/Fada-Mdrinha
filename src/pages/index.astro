@@ -1,0 +1,194 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import Phases from '../components/Phases.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import Loyalty from '../components/Loyalty.astro';
+import CtaBand from '../components/CtaBand.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { site, waLink, whatsappMessages } from '../config/site';
+import { services } from '../data/services';
+import { differentiators } from '../data/method';
+import { segments } from '../data/empresas';
+import heroPhoto from '../assets/photos/hero-cozinha.jpg';
+import officePhoto from '../assets/photos/janela-escritorio.jpg';
+
+/*
+ * Antes & Depois — sem fotografias reais ainda. Quando existirem:
+ *   import salaAntes from '../assets/antes-depois/sala-antes.jpg';
+ *   import salaDepois from '../assets/antes-depois/sala-depois.jpg';
+ *   const beforeAfterPairs = [{ before: salaAntes, after: salaDepois, label: 'Sala de estar' }];
+ * e activar `features.beforeAfter` em src/config/site.ts.
+ */
+const beforeAfterPairs = site.features.beforeAfter ? [] : [];
+---
+<Base
+  title="Fada Madrinha | Limpeza Profissional em Luanda"
+  description="Limpeza residencial e empresarial em Talatona, Luanda, com método próprio, supervisão em cada visita e atendimento próximo. Peça já o seu orçamento pelo WhatsApp."
+>
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap hero__inner">
+      <div class="hero__copy">
+        <p class="kicker">Limpeza profissional em Luanda</p>
+        <h1 id="hero-title">Transformamos espaços.<br />Criamos <em>bem-estar</em>.</h1>
+        <p class="lede">
+          A Fada Madrinha cuida de casas e empresas com o método, o cuidado e a discrição de quem trata o seu espaço como se fosse o nosso.
+        </p>
+        <div class="actions">
+          <a href={waLink()} class="btn btn--primary btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
+          <a href="#servicos" class="btn btn--ghost btn--lg">Ver serviços</a>
+        </div>
+        <ul class="hero__trust" aria-label="Porquê a Fada Madrinha">
+          <li><Icon name="check" size={18} /> Método próprio em cinco fases</li>
+          <li><Icon name="check" size={18} /> Supervisão em cada visita</li>
+          <li><Icon name="check" size={18} /> Residencial &amp; empresarial</li>
+        </ul>
+      </div>
+      <div class="hero__media">
+        <div class="hero__glow" aria-hidden="true"></div>
+        <Picture
+          src={heroPhoto}
+          formats={['avif', 'webp']}
+          widths={[480, 768, 1080, 1400]}
+          sizes="(min-width: 1024px) 560px, (min-width: 640px) 80vw, 100vw"
+          alt="Colaboradora da Fada Madrinha, de polo azul, a limpar a bancada de uma cozinha luminosa"
+          loading="eager"
+          fetchpriority="high"
+          class="hero__img"
+        />
+        <p class="hero__caption"><span class="num">Fada Madrinha</span> Cada detalhe faz a diferença.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVIÇOS -->
+  <section id="servicos" class="section" aria-labelledby="servicos-title">
+    <div class="wrap">
+      <SectionHead kicker="Serviços" title="Cuidado profissional para cada tipo de espaço" text="Cada serviço é adaptado às necessidades específicas do cliente — sempre com o mesmo padrão de excelência." />
+      <div class="grid grid--3">
+        {services.map((s, i) => <ServiceCard service={s} delay={i * 0.06} />)}
+      </div>
+      <div class="actions actions--center mt-lg">
+        <a href="/servicos" class="btn btn--dark">Ver tabela de preços e estimador <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORQUÊ -->
+  <section id="porque" class="section bg-cream-2" aria-labelledby="porque-title">
+    <div class="wrap">
+      <SectionHead kicker="Porquê a Fada Madrinha" title="Porque a qualidade não deve depender da sorte" text="Seis compromissos que fazem parte de cada visita — em casa ou na sua empresa." tone="gold" />
+      <div class="grid grid--3 why">
+        {differentiators.map((d, i) => (
+          <div class="why__item reveal" style={`--reveal-delay:${i * 0.06}s`}>
+            <span class="num">0{i + 1}</span>
+            <h3>{d.title}</h3>
+            <p>{d.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTODO -->
+  <section id="metodo" class="section bg-dark pattern" aria-labelledby="metodo-title">
+    <div class="wrap">
+      <SectionHead kicker="Como trabalhamos" title="Cinco fases. O mesmo padrão, sempre." text="O Método Fada Madrinha garante que cada serviço transmite exactamente a mesma qualidade — independentemente de quem o executa." tone="gold" />
+      <Phases />
+      <div class="actions mt-lg">
+        <a href="/metodo" class="btn btn--gold">Conhecer o nosso método <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANTES & DEPOIS (escondido até existirem fotos reais) -->
+  {site.features.beforeAfter && <BeforeAfter pairs={beforeAfterPairs} />}
+
+  <!-- EMPRESAS -->
+  <section id="empresas" class="section" aria-labelledby="empresas-title">
+    <div class="wrap biz">
+      <div class="biz__media reveal">
+        <Picture
+          src={officePhoto}
+          formats={['avif', 'webp']}
+          widths={[480, 768, 1080]}
+          sizes="(min-width: 900px) 480px, 100vw"
+          alt="Mão com luva amarela a limpar a janela de um escritório ao fim da tarde, com a cidade ao fundo"
+          class="biz__img"
+        />
+      </div>
+      <div class="biz__copy reveal">
+        <p class="kicker kicker--gold">Para empresas</p>
+        <h2 id="empresas-title">Limpeza profissional para a sua empresa</h2>
+        <p class="lede">Um espaço limpo transmite profissionalismo, cuidado e confiança a clientes e colaboradores. Planos recorrentes com supervisão, discrição e pontualidade.</p>
+        <ul class="chip-list biz__segments" aria-label="Segmentos">
+          {segments.map((s) => <li class="chip">{s.title}</li>)}
+        </ul>
+        <div class="actions">
+          <a href="/empresas" class="btn btn--dark">Soluções para empresas <Icon name="arrow" /></a>
+          <a href={waLink(whatsappMessages.empresas)} class="btn btn--ghost" target="_blank" rel="noopener">Falar sobre a minha empresa</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Loyalty />
+
+  <CtaBand />
+
+  <ContactSection />
+</Base>
+
+<style>
+  /* Hero */
+  .hero { padding-block: clamp(40px, 6vw, 88px) clamp(48px, 7vw, 96px); overflow: hidden; }
+  .hero__inner { display: grid; gap: 40px; align-items: center; }
+  .hero__copy .lede { margin-bottom: 26px; }
+  .hero h1 { margin-bottom: 18px; }
+  .hero__trust {
+    list-style: none; padding: 0; margin: 28px 0 0;
+    display: flex; flex-wrap: wrap; gap: 10px 22px;
+    font-size: 0.95rem; color: var(--ink-soft);
+  }
+  .hero__trust li { display: inline-flex; align-items: center; gap: 0.45em; }
+  .hero__trust svg { color: var(--gold-deep); }
+  .hero__media { position: relative; }
+  .hero__glow {
+    position: absolute; inset: -8% -10% 6% -6%; z-index: -1;
+    background: var(--grad-brand); opacity: 0.18;
+    border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+    filter: blur(28px);
+  }
+  .hero__img, .hero__media :global(img) {
+    border-radius: var(--radius);
+    aspect-ratio: 5 / 4; object-fit: cover; width: 100%;
+    box-shadow: var(--shadow-lg);
+  }
+  .hero__caption {
+    position: absolute; left: 18px; bottom: 18px;
+    display: inline-flex; flex-direction: column; gap: 2px;
+    padding: 12px 16px; border-radius: var(--radius-sm);
+    background: rgba(250, 250, 246, 0.92); backdrop-filter: blur(8px);
+    font-size: 0.95rem; box-shadow: var(--shadow);
+  }
+  @media (min-width: 900px) {
+    .hero__inner { grid-template-columns: 1.1fr 1fr; gap: 56px; }
+  }
+
+  /* Porquê */
+  .why__item { padding: 26px 24px; border-radius: var(--radius); background: var(--white); border: 1px solid var(--line); }
+  .why__item h3 { margin: 12px 0 8px; font-size: 1.2rem; }
+  .why__item p { margin: 0; color: var(--ink-soft); font-size: 0.98rem; }
+
+  /* Empresas */
+  .biz { display: grid; gap: 36px; align-items: center; }
+  .biz__img, .biz__media :global(img) { border-radius: var(--radius); aspect-ratio: 4 / 5; object-fit: cover; width: 100%; box-shadow: var(--shadow); }
+  .biz__segments { margin: 22px 0 26px; }
+  @media (min-width: 900px) {
+    .biz { grid-template-columns: 0.9fr 1.1fr; gap: 64px; }
+  }
+</style>

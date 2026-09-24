@@ -1,0 +1,126 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import Phases from '../components/Phases.astro';
+import CtaBand from '../components/CtaBand.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { journey, promise } from '../data/method';
+import detailPhoto from '../assets/photos/sala-reunioes.jpg';
+---
+<Base
+  title="O Nosso Método"
+  description="Do primeiro contacto ao acompanhamento depois do serviço: conheça a experiência Fada Madrinha, desenhada para que cada contacto seja memorável."
+>
+  <PageHero
+    tone="gold-deep"
+    kicker="O Método Fada Madrinha"
+    title="Não limpamos apenas espaços. Cuidamos das pessoas que vivem neles."
+    text="Acreditamos que forma uma opinião sobre nós muito antes de a equipa começar a limpar: na rapidez da resposta, na simpatia do atendimento, na pontualidade, na apresentação. Por isso, desenhámos cada passo da sua experiência."
+    quote="A excelência não acontece por acaso. Ela é desenhada."
+  />
+
+  <!-- PROMESSA -->
+  <section class="section section--tight" aria-label="A promessa da marca">
+    <div class="wrap promise">
+      <p class="promise__lead">Quando escolhe a Fada Madrinha, sabe exactamente o que esperar:</p>
+      <ul class="chip-list">
+        {promise.map((p) => <li class="chip"><Icon name="check" size={16} /> {p}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- JORNADA -->
+  <section class="section section--flush-top" aria-labelledby="jornada-title">
+    <div class="wrap">
+      <SectionHead kicker="A sua experiência" title="Do primeiro contacto ao dia seguinte" text="Oito momentos, um só padrão. É assim que cuidamos de si." />
+      <ol class="journey">
+        {journey.map((step, i) => (
+          <li class="journey__item reveal" style={`--reveal-delay:${Math.min(i, 3) * 0.06}s`}>
+            <div class="journey__marker" aria-hidden="true"><span>{step.n}</span></div>
+            <div class="journey__body">
+              <p class="kicker kicker--gold kicker--plain">{step.eyebrow}</p>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+              {step.bullets && (
+                <ul class="check-list journey__bullets">
+                  {step.bullets.map((b) => <li><Icon name="check" /> {b}</li>)}
+                </ul>
+              )}
+              {step.quote && <p class="journey__quote">“{step.quote}”</p>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CINCO FASES -->
+  <section class="section bg-dark pattern" aria-labelledby="fases-title">
+    <div class="wrap">
+      <SectionHead kicker="No dia do serviço" title="Cinco fases. O mesmo padrão, sempre." text="Independentemente de quem executa, de qual o cliente ou do horário, cada serviço segue as mesmas cinco fases." tone="gold" />
+      <Phases />
+    </div>
+  </section>
+
+  <!-- PADRÃO OURO -->
+  <section class="section" aria-labelledby="ouro-title">
+    <div class="wrap gold">
+      <div class="gold__media reveal">
+        <Picture src={detailPhoto} formats={['avif', 'webp']} widths={[480, 768, 1080]} sizes="(min-width: 900px) 440px, 100vw" alt="Colaboradora a limpar com atenção a mesa de uma sala de reuniões" class="gold__img" />
+      </div>
+      <div class="reveal">
+        <p class="kicker kicker--gold">O Padrão Ouro</p>
+        <h2 id="ouro-title">Existe apenas uma pergunta.</h2>
+        <blockquote class="quote">
+          <p>Se este espaço fosse meu, eu daria este serviço por terminado?</p>
+          <footer>Se a resposta for não, o trabalho continua.</footer>
+        </blockquote>
+        <p class="mt-md" style="color: var(--ink-soft)">Os clientes não contratam a Fada Madrinha apenas porque limpamos bem. Contratam porque, quando terminamos, sentem que alguém cuidou da sua casa com o mesmo carinho que eles próprios teriam.</p>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand title="Mais do que limpeza, <em>uma experiência</em>." text="Peça o seu orçamento e sinta a diferença desde a primeira mensagem." />
+  <ContactSection />
+</Base>
+
+<style>
+  .promise { display: grid; gap: 14px; }
+  .promise__lead { font-weight: 500; color: var(--ink-soft); margin: 0; }
+  @media (min-width: 900px) { .promise { grid-template-columns: auto 1fr; align-items: center; gap: 28px; } }
+
+  .journey { list-style: none; padding: 0; margin: 0; position: relative; display: grid; gap: 8px; }
+  .journey::before {
+    content: ''; position: absolute; left: 27px; top: 28px; bottom: 28px; width: 2px;
+    background: linear-gradient(180deg, var(--gold), var(--pink), var(--blue));
+    opacity: 0.6;
+  }
+  .journey__item { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 18px; padding-block: 16px; }
+  .journey__marker {
+    display: grid; place-items: center; width: 56px; height: 56px; border-radius: 50%;
+    background: var(--ink); color: var(--gold); border: 4px solid var(--cream);
+    font-family: var(--font-label); font-weight: 600; letter-spacing: 0.08em; font-size: 0.9rem;
+    position: relative; z-index: 1;
+  }
+  .journey__body { padding: 20px 22px; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+  .journey__body .kicker { margin-bottom: 6px; }
+  .journey__body h3 { margin-bottom: 8px; }
+  .journey__body > p:not(.kicker) { color: var(--ink-soft); }
+  .journey__bullets { margin: 12px 0 0; font-size: 0.97rem; }
+  .journey__quote {
+    margin: 14px 0 0; padding: 12px 16px;
+    border-left: 3px solid var(--gold);
+    background: var(--cream-2); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-style: italic; color: var(--ink-2) !important;
+  }
+  @media (min-width: 900px) {
+    .journey__item { grid-template-columns: 56px minmax(0, 720px); }
+  }
+
+  .gold { display: grid; gap: 36px; align-items: center; }
+  .gold__img, .gold__media :global(img) { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; box-shadow: var(--shadow); }
+  @media (min-width: 900px) { .gold { grid-template-columns: 0.85fr 1.15fr; gap: 64px; } }
+</style>

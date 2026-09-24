@@ -1,0 +1,19 @@
+---
+interface Props {
+  kicker?: string;
+  title: string;
+  text?: string;
+  center?: boolean;
+  tone?: 'blue' | 'gold' | 'pink';
+  /** Nível do título (h2 por omissão). */
+  as?: 'h1' | 'h2' | 'h3';
+  class?: string;
+}
+const { kicker, title, text, center = false, tone = 'blue', as: Tag = 'h2', class: className } = Astro.props;
+---
+<div class:list={['section-head', { 'section-head--center': center }, className]}>
+  {kicker && <p class:list={['kicker', { 'kicker--gold': tone === 'gold', 'kicker--pink': tone === 'pink' }]}>{kicker}</p>}
+  <Tag set:html={title} />
+  {text && <p>{text}</p>}
+  <slot />
+</div>

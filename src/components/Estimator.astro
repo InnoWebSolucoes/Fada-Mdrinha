@@ -1,0 +1,311 @@
+---
+/**
+ * Estimador de preço — 100% client-side.
+ * O passo 1 é renderizado no servidor (radios); os passos seguintes são
+ * preenchidos em JS a partir de src/data/pricing.ts. Sem JS, o utilizador vê
+ * as tabelas de preços acima e uma nota a indicar que o estimador precisa de JS.
+ */
+import Icon from './Icon.astro';
+import { priceCategories, estimatorDisclaimer } from '../data/pricing';
+import { services } from '../data/services';
+
+const iconFor = (catId: string) => services.find((s) => s.priceCategory === catId)?.icon ?? 'sparkle';
+const toneFor = (catId: string) => services.find((s) => s.priceCategory === catId)?.tone ?? 'blue';
+---
+<div class="est" data-estimator>
+  <div class="est__progress">
+    <p class="est__step-label" id="est-step-label" aria-live="polite">Passo 1 de 4 — Tipo de serviço</p>
+    <div class="est__bar" aria-hidden="true"><div class="est__bar-fill" data-bar style="width:25%"></div></div>
+  </div>
+
+  <noscript>
+    <p class="est__noscript">O estimador precisa de JavaScript. Consulte as tabelas de preços acima ou fale connosco pelo WhatsApp.</p>
+  </noscript>
+
+  <form class="est__form" novalidate data-form>
+    <!-- PASSO 1 -->
+    <fieldset class="est__step" data-step="service">
+      <legend class="est__legend" tabindex="-1">Que serviço procura?</legend>
+      <div class="est__grid">
+        {priceCategories.map((cat, i) => (
+          <label class="est__option est__option--card">
+            <input type="radio" name="service" value={cat.id} required={i === 0} />
+            <span class="est__option-body">
+              <span class:list={['icon-badge', 'icon-badge--sm', `tone-${toneFor(cat.id)}`]}><Icon name={iconFor(cat.id)} size={20} /></span>
+              <span class="est__option-title">{cat.title}</span>
+              <span class="est__option-sub">{cat.note}</span>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- PASSO 2 (preenchido em JS) -->
+    <fieldset class="est__step" data-step="size" hidden>
+      <legend class="est__legend" tabindex="-1" data-size-question>Qual o tamanho do espaço?</legend>
+      <div class="est__list" data-size-list></div>
+    </fieldset>
+
+    <!-- PASSO 3 (preenchido em JS) -->
+    <fieldset class="est__step" data-step="options" hidden>
+      <legend class="est__legend" tabindex="-1">Extras e frequência</legend>
+      <div data-extras-block>
+        <p class="est__sub">Extras <span class="muted">(opcional)</span></p>
+        <div class="est__list" data-extras-list></div>
+      </div>
+      <div data-freq-block>
+        <p class="est__sub">Frequência</p>
+        <div class="est__list" data-freq-list></div>
+      </div>
+    </fieldset>
+
+    <!-- PASSO 4 -->
+    <div class="est__step" data-step="result" hidden>
+      <h3 class="est__legend" tabindex="-1">A sua estimativa</h3>
+      <div class="est__result" aria-live="polite">
+        <p class="est__result-label">Valor estimado para o seu serviço</p>
+        <p class="est__amount" data-amount>—</p>
+        <ul class="est__breakdown" data-breakdown></ul>
+      </div>
+      <div class="actions">
+        <a href="#" class="btn btn--whatsapp btn--lg" data-wa target="_blank" rel="noopener">
+          <Icon name="whatsapp" /> Enviar para WhatsApp
+        </a>
+        <button type="button" class="btn btn--ghost" data-restart><Icon name="refresh" /> Recomeçar</button>
+      </div>
+      <p class="est__note">{estimatorDisclaimer}</p>
+    </div>
+
+    <div class="est__actions">
+      <button type="button" class="btn btn--ghost" data-back hidden>← Voltar</button>
+      <button type="button" class="btn btn--gold" data-next disabled>Continuar →</button>
+    </div>
+  </form>
+</div>
+
+<style>
+  .est {
+    background: var(--ink);
+    color: var(--cream);
+    border-radius: var(--radius);
+    padding: clamp(22px, 4vw, 44px);
+    box-shadow: var(--shadow-lg);
+  }
+  .est__progress { margin-bottom: 26px; }
+  .est__step-label { font-family: var(--font-label); font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+  .est__bar { height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.12); overflow: hidden; }
+  .est__bar-fill { height: 100%; background: linear-gradient(90deg, var(--pink), var(--gold)); transition: width var(--dur) var(--ease); }
+  .est__noscript { padding: 16px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.08); }
+
+  fieldset.est__step { border: 0; padding: 0; margin: 0; min-width: 0; }
+  .est__step[hidden] { display: none; }
+  .est__legend { display: block; font-size: clamp(1.3rem, 1.1rem + 1vw, 1.7rem); font-weight: 500; margin: 0 0 18px; padding: 0; color: var(--white); }
+  .est__legend:focus { outline: none; }
+  .est__sub { font-family: var(--font-label); font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); margin: 22px 0 10px; }
+  .est__sub .muted { text-transform: none; letter-spacing: 0; color: rgba(255, 255, 255, 0.5); }
+
+  .est__grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); }
+  .est__list { display: grid; gap: 10px; }
+
+  .est__option { display: block; cursor: pointer; }
+  .est__option input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .est__option-body {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.05);
+    transition: border-color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+  }
+  .est__option--card .est__option-body { flex-direction: column; align-items: flex-start; gap: 4px; padding: 18px; height: 100%; }
+  .est__option-body:hover { border-color: rgba(255, 255, 255, 0.4); }
+  .est__option input:checked + .est__option-body { border-color: var(--gold); background: rgba(218, 184, 79, 0.12); }
+  .est__option input:focus-visible + .est__option-body { outline: 3px solid var(--blue); outline-offset: 2px; }
+  .est__option-title { font-weight: 500; }
+  .est__option-sub { font-size: 0.88rem; color: rgba(255, 255, 255, 0.6); }
+  .est__option-price { margin-left: auto; font-weight: 500; color: var(--gold); white-space: nowrap; }
+  .icon-badge--sm { width: 40px; height: 40px; border-radius: 12px; margin-bottom: 8px; }
+
+  .est__result { margin: 8px 0 22px; padding: 22px; border-radius: var(--radius-sm); background: rgba(255, 255, 255, 0.06); }
+  .est__result-label { font-size: 0.92rem; color: rgba(255, 255, 255, 0.65); margin-bottom: 4px; }
+  .est__amount { font-size: clamp(2.2rem, 1.8rem + 2vw, 3.2rem); font-weight: 500; letter-spacing: -0.02em; color: var(--gold); margin-bottom: 12px; line-height: 1.1; }
+  .est__breakdown { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 0.95rem; color: rgba(255, 255, 255, 0.8); }
+  .est__breakdown li { display: flex; justify-content: space-between; gap: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 6px; }
+  .est__breakdown li span:last-child { white-space: nowrap; }
+  .est__note { margin-top: 18px; font-size: 0.9rem; color: rgba(255, 255, 255, 0.6); }
+
+  .est__actions { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; }
+  .est__actions [hidden] { display: none; }
+  .est__actions .btn--ghost { color: var(--cream); }
+</style>
+
+<script>
+  import { priceCategories, extras, frequencies, formatKz, estimatorDisclaimer } from '../data/pricing';
+  import { waLink, whatsappMessages } from '../config/site';
+
+  type StepId = 'service' | 'size' | 'options' | 'result';
+  const STEP_TITLES: Record<StepId, string> = {
+    service: 'Tipo de serviço',
+    size: 'Tamanho do espaço',
+    options: 'Extras e frequência',
+    result: 'A sua estimativa',
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-estimator]').forEach(init);
+
+  function init(root: HTMLElement) {
+    const form = root.querySelector<HTMLFormElement>('[data-form]')!;
+    const stepEls = new Map<StepId, HTMLElement>();
+    form.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => stepEls.set(el.dataset.step as StepId, el));
+    const label = root.querySelector<HTMLElement>('#est-step-label')!;
+    const bar = root.querySelector<HTMLElement>('[data-bar]')!;
+    const backBtn = root.querySelector<HTMLButtonElement>('[data-back]')!;
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-next]')!;
+    const sizeList = root.querySelector<HTMLElement>('[data-size-list]')!;
+    const sizeQuestion = root.querySelector<HTMLElement>('[data-size-question]')!;
+    const extrasBlock = root.querySelector<HTMLElement>('[data-extras-block]')!;
+    const extrasList = root.querySelector<HTMLElement>('[data-extras-list]')!;
+    const freqBlock = root.querySelector<HTMLElement>('[data-freq-block]')!;
+    const freqList = root.querySelector<HTMLElement>('[data-freq-list]')!;
+    const amountEl = root.querySelector<HTMLElement>('[data-amount]')!;
+    const breakdownEl = root.querySelector<HTMLElement>('[data-breakdown]')!;
+    const waBtn = root.querySelector<HTMLAnchorElement>('[data-wa]')!;
+    const restartBtn = root.querySelector<HTMLButtonElement>('[data-restart]')!;
+
+    let steps: StepId[] = ['service', 'size', 'options', 'result'];
+    let idx = 0;
+
+    const selected = (name: string) => form.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value ?? null;
+    const category = () => priceCategories.find((c) => c.id === selected('service')) ?? null;
+    const plan = () => category()?.plans.find((p) => p.id === selected('plan')) ?? null;
+
+    function option(name: string, type: 'radio' | 'checkbox', value: string, title: string, sub?: string, price?: string, checked = false) {
+      return `<label class="est__option">
+        <input type="${type}" name="${name}" value="${value}" ${checked ? 'checked' : ''}>
+        <span class="est__option-body">
+          <span class="est__option-title">${title}</span>
+          ${sub ? `<span class="est__option-sub">${sub}</span>` : ''}
+          ${price ? `<span class="est__option-price">${price}</span>` : ''}
+        </span>
+      </label>`;
+    }
+
+    function buildSize() {
+      const cat = category();
+      if (!cat) return;
+      sizeQuestion.textContent = cat.sizeQuestion;
+      sizeList.innerHTML = cat.plans
+        .map((p) => option('plan', 'radio', p.id, p.name, p.unit, p.price === null ? 'Sob consulta' : formatKz(p.price) + (p.per ?? '')))
+        .join('');
+    }
+
+    function buildOptions() {
+      const cat = category();
+      if (!cat) return;
+      extrasBlock.hidden = !cat.allowsExtras;
+      freqBlock.hidden = !cat.allowsFrequency;
+      extrasList.innerHTML = cat.allowsExtras
+        ? extras.map((e) => option('extra', 'checkbox', e.id, e.label, e.note, '+ ' + formatKz(e.price))).join('')
+        : '';
+      freqList.innerHTML = cat.allowsFrequency
+        ? frequencies.map((f, i) => option('freq', 'radio', f.id, f.label, f.hint, undefined, i === 0)).join('')
+        : '';
+    }
+
+    function computeSteps() {
+      const cat = category();
+      const hasOptions = !!cat && (cat.allowsExtras || cat.allowsFrequency);
+      steps = hasOptions ? ['service', 'size', 'options', 'result'] : ['service', 'size', 'result'];
+    }
+
+    function buildResult() {
+      const cat = category();
+      const p = plan();
+      if (!cat || !p) return;
+      const chosenExtras = cat.allowsExtras
+        ? Array.from(form.querySelectorAll<HTMLInputElement>('input[name="extra"]:checked')).map((i) => extras.find((e) => e.id === i.value)!).filter(Boolean)
+        : [];
+      const freq = cat.allowsFrequency ? frequencies.find((f) => f.id === selected('freq')) ?? frequencies[0] : null;
+
+      const rows: string[] = [];
+      const lines: string[] = [];
+      let total: number | null = null;
+
+      lines.push(`• Serviço: ${cat.title} — ${p.name} (${p.unit})`);
+      if (p.price === null) {
+        amountEl.textContent = 'Sob consulta';
+        rows.push(`<li><span>${cat.title} — ${p.name}</span><span>Sob consulta</span></li>`);
+      } else {
+        total = p.price;
+        rows.push(`<li><span>${cat.title} — ${p.name}</span><span>${formatKz(p.price)}${p.per ?? ''}</span></li>`);
+        for (const e of chosenExtras) {
+          total += e.price;
+          rows.push(`<li><span>${e.label}${e.note ? ` (${e.note})` : ''}</span><span>+ ${formatKz(e.price)}</span></li>`);
+        }
+        if (freq && freq.discount > 0) {
+          const d = Math.round(total * freq.discount);
+          total -= d;
+          rows.push(`<li><span>${freq.label}</span><span>− ${formatKz(d)}</span></li>`);
+        }
+        amountEl.textContent = formatKz(total) + (p.per ?? '');
+      }
+      if (chosenExtras.length) lines.push(`• Extras: ${chosenExtras.map((e) => e.label).join(', ')}`);
+      if (freq) lines.push(`• Frequência: ${freq.label}`);
+      lines.push(`• Estimativa: ${total === null ? 'sob consulta' : formatKz(total) + (p.per ?? '')}`);
+      lines.push(`(${estimatorDisclaimer})`);
+
+      breakdownEl.innerHTML = rows.join('');
+      waBtn.href = waLink(`${whatsappMessages.estimador}\n${lines.join('\n')}`);
+    }
+
+    function canContinue(): boolean {
+      const step = steps[idx];
+      if (step === 'service') return !!selected('service');
+      if (step === 'size') return !!selected('plan');
+      if (step === 'options') return !category()?.allowsFrequency || !!selected('freq');
+      return false;
+    }
+
+    function render(focus = false) {
+      const step = steps[idx];
+      stepEls.forEach((el, id) => { el.hidden = id !== step; });
+      // O passo "options" pode não existir neste fluxo; mantém-se escondido.
+      label.textContent = `Passo ${idx + 1} de ${steps.length} — ${STEP_TITLES[step]}`;
+      bar.style.width = `${((idx + 1) / steps.length) * 100}%`;
+      backBtn.hidden = idx === 0;
+      const isResult = step === 'result';
+      nextBtn.hidden = isResult;
+      nextBtn.disabled = !canContinue();
+      if (focus) stepEls.get(step)?.querySelector<HTMLElement>('.est__legend')?.focus();
+    }
+
+    function next() {
+      if (!canContinue()) return;
+      const current = steps[idx];
+      if (current === 'service') { computeSteps(); buildSize(); }
+      if (current === 'size') { if (steps.includes('options')) buildOptions(); }
+      idx = Math.min(idx + 1, steps.length - 1);
+      if (steps[idx] === 'result') buildResult();
+      render(true);
+    }
+
+    function back() {
+      idx = Math.max(idx - 1, 0);
+      render(true);
+    }
+
+    function restart() {
+      form.reset();
+      idx = 0;
+      steps = ['service', 'size', 'options', 'result'];
+      render(true);
+    }
+
+    form.addEventListener('change', () => { nextBtn.disabled = !canContinue(); });
+    form.addEventListener('submit', (e) => { e.preventDefault(); next(); });
+    nextBtn.addEventListener('click', next);
+    backBtn.addEventListener('click', back);
+    restartBtn.addEventListener('click', restart);
+    render();
+  }
+</script>

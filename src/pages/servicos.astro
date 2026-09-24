@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import PriceCategory from '../components/PriceCategory.astro';
+import Estimator from '../components/Estimator.astro';
+import Faq from '../components/Faq.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { whatsappMessages } from '../config/site';
+import { services } from '../data/services';
+import { priceCategories, extras, frequencies, faq, formatKz, estimatorDisclaimer } from '../data/pricing';
+
+const categoryFor = (id: string) => priceCategories.find((c) => c.id === id)!;
+---
+<Base
+  title="Serviços & Preços"
+  description="Tabela de preços da Fada Madrinha para limpeza residencial, empresarial, higienização, organização, pós-obra e estofos em Luanda. Calcule uma estimativa e envie-a por WhatsApp."
+>
+  <PageHero
+    tone="blue-deep"
+    kicker="Serviços &amp; preços"
+    title="Preços claros, sem letras pequenas"
+    text="Valores de referência para os nossos serviços em Luanda. Use o estimador para uma simulação rápida e envie-a directamente para o nosso WhatsApp."
+  >
+    <ul class="chip-list mt-md" aria-label="Ir para o serviço">
+      {services.map((s) => <li><a class="chip" href={`#${s.id}`}><Icon name={s.icon} size={16} /> {s.title}</a></li>)}
+    </ul>
+  </PageHero>
+
+  <!-- TABELAS -->
+  <section class="section section--tight" aria-label="Tabela de preços">
+    <div class="wrap">
+      <p class="small muted center">{estimatorDisclaimer} Todos os preços em Kz (AOA).</p>
+      {services.map((s) => <PriceCategory category={categoryFor(s.priceCategory)} service={s} />)}
+    </div>
+  </section>
+
+  <!-- EXTRAS -->
+  <section class="section bg-cream-2" id="extras" aria-labelledby="extras-title">
+    <div class="wrap">
+      <SectionHead kicker="Extras" title="Serviços adicionais e frequência" text="Pode adicionar estes extras a serviços residenciais ou empresariais. Contratos recorrentes têm desconto sobre o total de cada visita." tone="gold" />
+      <div class="grid grid--2">
+        <div class="table-scroll">
+          <table>
+            <caption class="visually-hidden">Extras</caption>
+            <thead><tr><th scope="col">Extra</th><th scope="col">Preço</th></tr></thead>
+            <tbody>
+              {extras.map((e) => (
+                <tr>
+                  <td>{e.label}{e.note && <span class="muted"> ({e.note})</span>}</td>
+                  <td class="num-cell">+ {formatKz(e.price)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <caption class="visually-hidden">Frequência</caption>
+            <thead><tr><th scope="col">Frequência</th><th scope="col">Desconto</th></tr></thead>
+            <tbody>
+              {frequencies.map((f) => (
+                <tr>
+                  <td>{f.label}</td>
+                  <td class="num-cell">{f.discount ? `−${Math.round(f.discount * 100)}% no total` : '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTIMADOR -->
+  <section class="section" id="estimador" aria-labelledby="estimador-title">
+    <div class="wrap">
+      <SectionHead kicker="Estimador" title="Quanto vai custar o seu serviço?" text="Responda a três perguntas rápidas e receba uma estimativa imediata — sem compromisso. No fim, envie o resumo para o nosso WhatsApp." />
+      <Estimator />
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section bg-cream-2" id="faq" aria-labelledby="faq-title">
+    <div class="wrap wrap--narrow">
+      <SectionHead kicker="Perguntas frequentes" title="Dúvidas comuns" />
+      <Faq items={faq} />
+    </div>
+  </section>
+
+  <ContactSection
+    title="Ainda com dúvidas sobre o preço?"
+    text="Fale connosco directamente — respondemos com atenção e sem compromisso."
+    message={whatsappMessages.precos}
+  />
+</Base>
+
+<style>
+  .chip-list a.chip { text-decoration: none; color: var(--white); background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.25); }
+  .chip-list a.chip:hover { background: rgba(255, 255, 255, 0.2); }
+</style>

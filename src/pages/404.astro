@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { waLink } from '../config/site';
+---
+<Base title="Página não encontrada" description="A página que procura não existe ou foi movida." noindex>
+  <section class="nf bg-dark pattern">
+    <div class="wrap nf__inner">
+      <img src="/logo/fada-madrinha-mark.png" width="120" height="120" alt="" class="nf__mark" />
+      <p class="kicker">Erro 404</p>
+      <h1>Esta página não está onde devia.</h1>
+      <p class="lede">Até uma fada madrinha se perde de vez em quando. Volte ao início ou fale connosco — cuidamos do resto.</p>
+      <div class="actions actions--center">
+        <a href="/" class="btn btn--gold btn--lg">Voltar ao início</a>
+        <a href={waLink()} class="btn btn--ghost btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Falar no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+  <ContactSection tips={false} />
+</Base>
+
+<style>
+  .nf { min-height: 60vh; display: grid; place-items: center; padding-block: 64px; }
+  .nf__inner { text-align: center; max-width: 640px; }
+  .nf__mark { margin: 0 auto 24px; }
+  .nf .lede { margin-inline: auto; margin-bottom: 28px; }
+  .nf .kicker { justify-content: center; }
+</style>

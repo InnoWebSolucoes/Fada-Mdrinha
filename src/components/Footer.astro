@@ -1,0 +1,66 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site, nav, telLink, mailLink, waLink } from '../config/site';
+---
+<footer class="site-footer bg-dark pattern">
+  <div class="wrap">
+    <div class="site-footer__top">
+      <div class="site-footer__brand">
+        <a href="/" aria-label="Fada Madrinha — página inicial"><Logo variant="dark" height={48} /></a>
+        <p class="site-footer__tagline">{site.tagline}</p>
+        <p class="site-footer__desc">Limpeza profissional residencial e empresarial em Talatona, Luanda.</p>
+      </div>
+
+      <nav class="site-footer__col" aria-label="Navegação do rodapé">
+        <h2>Navegação</h2>
+        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+
+      <div class="site-footer__col">
+        <h2>Contacto</h2>
+        <a href={waLink()} target="_blank" rel="noopener"><Icon name="whatsapp" size={18} /> WhatsApp</a>
+        <a href={telLink}><Icon name="phone" size={18} /> {site.phone.display}</a>
+        <a href={mailLink}><Icon name="mail" size={18} /> {site.email}</a>
+        <a href={site.instagram.url} target="_blank" rel="noopener"><Icon name="instagram" size={18} /> @{site.instagram.handle}</a>
+        <span><Icon name="pin" size={18} /> {site.address.display}</span>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>© {site.copyrightYear} {site.legalName}. Todos os direitos reservados.</span>
+      <span class="site-footer__sig">{site.tagline}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding-block: clamp(48px, 7vw, 80px) 28px; }
+  .site-footer__top {
+    display: grid; gap: 36px;
+    grid-template-columns: 1fr;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--line-dark);
+  }
+  .site-footer__brand a { display: inline-flex; }
+  .site-footer__tagline { margin: 18px 0 6px; color: var(--gold); font-size: 1.05rem; }
+  .site-footer__desc { color: rgba(255, 255, 255, 0.65); font-size: 0.95rem; max-width: 34ch; }
+  .site-footer__col { display: grid; gap: 10px; align-content: start; }
+  .site-footer__col h2 {
+    font-family: var(--font-label); font-size: 0.78rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold); margin: 0 0 6px; font-weight: 600;
+  }
+  .site-footer__col a, .site-footer__col span {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    color: rgba(255, 255, 255, 0.82); text-decoration: none; font-size: 0.98rem;
+    width: fit-content;
+  }
+  .site-footer__col a:hover { color: var(--white); text-decoration: underline; }
+  .site-footer__col svg { color: var(--gold); opacity: 0.9; }
+  .site-footer__bottom {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px;
+    padding-top: 22px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.55);
+  }
+  .site-footer__sig { color: rgba(255, 255, 255, 0.7); }
+  @media (min-width: 760px) { .site-footer__top { grid-template-columns: 1.4fr 1fr 1.2fr; } }
+</style>

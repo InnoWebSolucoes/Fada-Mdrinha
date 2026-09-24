@@ -1,0 +1,84 @@
+---
+import Icon from './Icon.astro';
+import { formatKz, type PriceCategory } from '../data/pricing';
+import { waLink, whatsappMessages } from '../config/site';
+import type { Service } from '../data/services';
+
+interface Props { category: PriceCategory; service: Service }
+const { category, service } = Astro.props;
+---
+<section id={service.id} class="price-cat" aria-labelledby={`${service.id}-title`}>
+  <div class="price-cat__head">
+    <div>
+      <span class:list={['icon-badge', `tone-${service.tone}`]}><Icon name={service.icon} /></span>
+      <h2 id={`${service.id}-title`}>{category.title}</h2>
+      <p class="price-cat__desc">{service.long}</p>
+    </div>
+    <p class="price-cat__note"><Icon name="clock" size={18} /> {category.note}</p>
+  </div>
+
+  <div class="price-grid">
+    {category.plans.map((plan) => (
+      <article class:list={['price-card', { 'price-card--popular': plan.popular }]}>
+        {plan.popular && <span class="price-card__badge">Mais escolhido</span>}
+        <h3>{plan.name}</h3>
+        <p class="price-card__unit">{plan.unit}</p>
+        <p class="price-card__price">
+          {plan.price === null ? <span class="price-card__consult">Sob consulta</span> : (
+            <>{formatKz(plan.price)}{plan.per && <small>{plan.per}</small>}</>
+          )}
+        </p>
+        <ul class="check-list">
+          {plan.includes.map((item) => <li><Icon name="check" /> {item}</li>)}
+        </ul>
+        <a
+          href={waLink(whatsappMessages.servico(`${category.title} — ${plan.name}`))}
+          class="btn btn--ghost btn--sm price-card__cta"
+          target="_blank"
+          rel="noopener"
+        >Pedir este serviço</a>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .price-cat { padding-block: clamp(36px, 5vw, 56px); border-bottom: 1px solid var(--line); }
+  .price-cat:last-of-type { border-bottom: 0; }
+  .price-cat__head { display: grid; gap: 12px; margin-bottom: 26px; }
+  .price-cat__head h2 { margin-bottom: 8px; }
+  .price-cat__desc { color: var(--ink-soft); max-width: 64ch; }
+  .price-cat__note {
+    display: inline-flex; align-items: center; gap: 0.5em; align-self: start;
+    padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
+    background: var(--cream-2); font-size: 0.9rem; color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .price-grid { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+
+  .price-card {
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px 24px 22px;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .price-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .price-card--popular { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold); }
+  .price-card__badge {
+    position: absolute; top: -12px; left: 22px;
+    padding: 0.3rem 0.75rem; border-radius: var(--radius-pill);
+    background: var(--gold); color: var(--ink);
+    font-family: var(--font-label); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 600;
+  }
+  .price-card h3 { font-size: 1.15rem; margin: 0 0 2px; }
+  .price-card__unit { color: var(--ink-mute); font-size: 0.92rem; margin-bottom: 14px; }
+  .price-card__price { font-size: 1.9rem; font-weight: 500; letter-spacing: -0.02em; margin-bottom: 16px; color: var(--ink); }
+  .price-card__price small { font-size: 0.95rem; color: var(--ink-mute); margin-left: 2px; font-weight: 400; }
+  .price-card__consult { font-size: 1.35rem; color: var(--blue-text); }
+  .price-card .check-list { flex: 1; font-size: 0.95rem; }
+  .price-card__cta { margin-top: 20px; align-self: start; }
+  @media (min-width: 800px) { .price-cat__head { grid-template-columns: 1fr auto; align-items: start; } }
+</style>

@@ -1,0 +1,37 @@
+---
+/**
+ * Clube Encanto + Programa de Indicação.
+ * PROPOSTAS do brand book (cap. X) — ainda não confirmadas pelo cliente.
+ * Só é renderizado quando site.features.loyalty = true.
+ * TODO (cliente): confirmar benefícios concretos antes de activar.
+ */
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { site } from '../config/site';
+---
+{site.features.loyalty && (
+  <section class="section bg-cream-2" id="clube-encanto" aria-labelledby="clube-title">
+    <div class="wrap">
+      <SectionHead kicker="Fidelização" title="Clube Encanto" text="Mais do que recompensas, o objectivo é fortalecer a relação com quem confia em nós." tone="pink" />
+      <div class="grid grid--2">
+        <article class="card">
+          <span class="icon-badge tone-pink"><Icon name="heart" /></span>
+          <h3>Clube Encanto</h3>
+          <p>Cada cliente acumula benefícios. Após determinados serviços poderá receber:</p>
+          <ul class="check-list">
+            <li><Icon name="check" /> Descontos</li>
+            <li><Icon name="check" /> Serviços complementares</li>
+            <li><Icon name="check" /> Prioridade de agendamento</li>
+            <li><Icon name="check" /> Oferta de aromatização premium</li>
+            <li><Icon name="check" /> Limpeza de uma divisão adicional em datas especiais</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="icon-badge tone-gold"><Icon name="star" /></span>
+          <h3>Programa de Indicação</h3>
+          <p>Quando recomenda a Fada Madrinha e essa recomendação resulta num novo contrato, ambos recebem um benefício. Assim transformamos clientes satisfeitos em embaixadores da marca.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+)}

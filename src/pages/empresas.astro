@@ -1,0 +1,181 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import PageHero from '../components/PageHero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { waLink, whatsappMessages } from '../config/site';
+import { segments, officeOrder, twentyPoints, commitments, complaintSteps } from '../data/empresas';
+import kitchenPhoto from '../assets/photos/hero-cozinha.jpg';
+import meetingPhoto from '../assets/photos/sala-reunioes.jpg';
+
+const commitmentIcons = ['clock', 'eye', 'shield', 'refresh'] as const;
+---
+<Base
+  title="Empresas"
+  description="Limpeza profissional para escritórios, clínicas, condomínios, imobiliárias, alojamento local, hotéis boutique, escolas e lojas em Luanda. Padrão operacional, supervisão e confidencialidade."
+>
+  <PageHero
+    tone="dark"
+    kicker="Cliente empresarial"
+    title="Uma solução personalizada para a sua empresa"
+    text="A Fada Madrinha está preparada para desenvolver um plano de limpeza à medida da sua operação, garantindo elevados padrões de qualidade, discrição e pontualidade."
+  >
+    <div class="actions mt-md">
+      <a href={waLink(whatsappMessages.empresas)} class="btn btn--gold btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir proposta para a minha empresa</a>
+    </div>
+  </PageHero>
+
+  <!-- SEGMENTOS -->
+  <section class="section" aria-labelledby="segmentos-title">
+    <div class="wrap">
+      <SectionHead kicker="Segmentos" title="Espaços que já sabemos cuidar" text="Cada tipo de espaço tem as suas exigências. Adaptamos a frequência, a equipa e a ordem de trabalho a cada operação." />
+      <div class="grid grid--4">
+        {segments.map((s, i) => (
+          <article class="card card--static seg reveal" style={`--reveal-delay:${i * 0.04}s`}>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PADRÃO OPERACIONAL -->
+  <section class="section bg-dark pattern" aria-labelledby="padrao-title">
+    <div class="wrap std">
+      <div class="std__copy reveal">
+        <p class="kicker">Padrão operacional</p>
+        <h2 id="padrao-title">Existe uma ordem oficial. Nunca limpamos aleatoriamente.</h2>
+        <p class="lede">Cada serviço realizado pela Fada Madrinha deve transmitir exactamente a mesma qualidade — independentemente de quem o executa, do cliente ou do horário. Esse padrão chama-se Método Fada Madrinha.</p>
+        <h3 class="std__sub">Ordem de trabalho em escritórios</h3>
+        <ol class="std__order">
+          {officeOrder.map((step) => <li>{step}</li>)}
+        </ol>
+        <p class="small" style="color: rgba(255,255,255,.6)">De cima para baixo. Do mais limpo para o mais sujo. Da divisão mais distante para a saída.</p>
+      </div>
+      <div class="std__media reveal">
+        <Picture
+          src={meetingPhoto}
+          formats={['avif', 'webp']}
+          widths={[480, 768, 1080]}
+          sizes="(min-width: 900px) 480px, 100vw"
+          alt="Equipa de limpeza a preparar uma sala de reuniões"
+          class="std__img"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- 20 PONTOS -->
+  <section class="section bg-cream-2" aria-labelledby="pontos-title">
+    <div class="wrap">
+      <SectionHead center kicker="Inspecção final" title="Os 20 Pontos de Excelência" text="Nenhum serviço termina antes desta etapa. A Fada Líder verifica cada um destes pontos antes de considerar o trabalho concluído." tone="gold" />
+      <ol class="points">
+        {twentyPoints.map((p, i) => (
+          <li class="points__item reveal" style={`--reveal-delay:${(i % 5) * 0.04}s`}>
+            <span class="points__n">{String(i + 1).padStart(2, '0')}</span>
+            {p}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- COMPROMISSOS -->
+  <section class="section" aria-labelledby="compromissos-title">
+    <div class="wrap">
+      <SectionHead kicker="Compromissos" title="O que a sua empresa pode esperar de nós" text="Quatro compromissos assumidos em cada contrato — e medidos em cada visita." />
+      <div class="grid commit">
+        {commitments.map((c, i) => (
+          <article class="card reveal" style={`--reveal-delay:${i * 0.06}s`}>
+            <span class:list={['icon-badge', i % 2 ? 'tone-blue-deep' : 'tone-blue']}><Icon name={commitmentIcons[i]} /></span>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RECLAMAÇÕES -->
+  <section class="section bg-blue-deep pattern" aria-labelledby="reclamacoes-title">
+    <div class="wrap">
+      <SectionHead kicker="Se algo correr mal" title="Uma reclamação é uma oportunidade de melhorar. Nunca um incómodo." text="Um protocolo simples, com um responsável e um prazo. Primeiro resolve-se, depois explica-se." />
+      <ol class="proto">
+        {complaintSteps.map((s, i) => (
+          <li class="proto__item reveal" style={`--reveal-delay:${i * 0.08}s`}>
+            <span class="num">0{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CTA EMPRESAS -->
+  <section class="section" aria-labelledby="cta-emp-title">
+    <div class="wrap emp-cta">
+      <div class="emp-cta__media reveal">
+        <Picture src={kitchenPhoto} formats={['avif', 'webp']} widths={[480, 768, 1080]} sizes="(min-width: 900px) 460px, 100vw" alt="Equipa da Fada Madrinha, de polos azuis, a limpar a copa de um escritório" class="emp-cta__img" />
+      </div>
+      <div class="reveal">
+        <p class="kicker kicker--gold">Proposta comercial</p>
+        <h2 id="cta-emp-title">Agradecemos a oportunidade de apresentar os nossos serviços</h2>
+        <p class="lede">Envie-nos o tipo de espaço, a área aproximada e a frequência pretendida. Preparamos uma proposta clara, elegante e fácil de comparar.</p>
+        <div class="actions">
+          <a href={waLink(whatsappMessages.empresas)} class="btn btn--primary btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir proposta</a>
+          <a href="/metodo" class="btn btn--ghost btn--lg">Conhecer o método</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContactSection
+    title="Vamos falar sobre a sua empresa?"
+    text="Fale connosco pelo WhatsApp ou e-mail. Respondemos com uma proposta institucional, clara e sem compromisso."
+    message={whatsappMessages.empresas}
+    tips={false}
+  />
+</Base>
+
+<style>
+  .seg h3 { font-size: 1.1rem; margin-bottom: 6px; }
+  .seg p { font-size: 0.95rem; margin: 0; }
+
+  .std { display: grid; gap: 36px; align-items: center; }
+  .std__sub { margin-top: 28px; font-size: 1.05rem; color: var(--gold); }
+  .std__order { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 12px 0 16px; counter-reset: ord; }
+  .std__order li {
+    counter-increment: ord;
+    display: inline-flex; align-items: center; gap: 0.5em;
+    padding: 0.45rem 0.9rem; border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.07); border: 1px solid var(--line-dark); font-size: 0.95rem;
+  }
+  .std__order li::before { content: counter(ord); font-family: var(--font-label); font-size: 0.75rem; color: var(--gold); letter-spacing: 0.1em; }
+  .std__img, .std__media :global(img) { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; box-shadow: var(--shadow-lg); }
+  @media (min-width: 900px) { .std { grid-template-columns: 1.1fr 0.9fr; gap: 64px; } }
+
+  .points { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .points__item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 16px; border-radius: var(--radius-sm);
+    background: var(--white); border: 1px solid var(--line); font-weight: 500; font-size: 0.97rem;
+  }
+  .points__n { font-family: var(--font-label); font-size: 0.78rem; letter-spacing: 0.1em; color: var(--gold-text); font-weight: 600; }
+
+  @media (min-width: 700px) { .commit { grid-template-columns: repeat(2, 1fr); } }
+
+  .proto { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  .proto__item { padding: 22px; border-radius: var(--radius); background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); }
+  .proto__item h3 { margin: 8px 0 6px; font-size: 1.2rem; }
+  .proto__item p { margin: 0; color: rgba(255, 255, 255, 0.8); font-size: 0.98rem; }
+  @media (min-width: 700px) { .proto { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .proto { grid-template-columns: repeat(4, 1fr); } }
+
+  .emp-cta { display: grid; gap: 36px; align-items: center; }
+  .emp-cta__img, .emp-cta__media :global(img) { border-radius: var(--radius); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; box-shadow: var(--shadow); }
+  @media (min-width: 900px) { .emp-cta { grid-template-columns: 0.9fr 1.1fr; gap: 64px; } }
+</style>
