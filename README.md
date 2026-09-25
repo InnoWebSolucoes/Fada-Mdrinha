@@ -57,6 +57,6 @@ O site é servido em **https://innoweb.agency/fada-madrinha**. Este repositório
 
 - `base: '/fada-madrinha'` em `astro.config.mjs`, e o build vai para `dist/fada-madrinha`, para os caminhos serem iguais nos dois sítios.
 - Links internos e ficheiros de `public/` usam sempre `withBase()` (`src/config/site.ts`); um `href="/..."` directo parte o site.
-- `vercel.json` redirecciona o endereço antigo (`fada-mdrinha.vercel.app/...`) para o innoweb.agency.
+- `vercel.json` redirecciona `fada-mdrinha.vercel.app/...` para `/fada-madrinha/...` no mesmo endereço. Quando o innoweb.agency estiver no ar, pode passar a redireccionar para `https://innoweb.agency/fada-madrinha/...`.
 - Para mudar para um domínio próprio: alterar `site`/`base` em `astro.config.mjs`, `site.url` em `src/config/site.ts` e os redirects em `vercel.json`.
 - Nota: `fadamadrinha.com` pertence a outra empresa (confeitaria no Brasil).
