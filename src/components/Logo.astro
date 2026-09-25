@@ -1,11 +1,12 @@
 ---
+import { withBase } from '../config/site';
 /** Logótipo oficial (extraído do manual de identidade; trocar por SVG quando o cliente enviar). */
 interface Props { variant?: 'light' | 'dark'; height?: number; priority?: boolean }
 const { variant = 'light', height = 44, priority = false } = Astro.props;
 const width = Math.round(height * (1242 / 453));
 ---
 <picture>
-  <source srcset={`/logo/logo-on-${variant}-sm.webp`} type="image/webp" />
-  <img src={`/logo/logo-on-${variant}-sm.png`} width={width} height={height} alt="Fada Madrinha"
+  <source srcset={withBase(`/logo/logo-on-${variant}-sm.webp`)} type="image/webp" />
+  <img src={withBase(`/logo/logo-on-${variant}-sm.png`)} width={width} height={height} alt="Fada Madrinha"
     loading={priority ? 'eager' : 'lazy'} decoding="async" style={`height:${height}px;width:auto`} />
 </picture>

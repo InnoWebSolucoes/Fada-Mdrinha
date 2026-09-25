@@ -1,3 +1,4 @@
+# O site principal está na Vercel (vercel.json); este ficheiro fica para um eventual deploy na Netlify.
 [build]
   command = "npm run build"
   publish = "dist"
@@ -7,22 +8,22 @@
 
 # Ficheiros com hash (CSS, JS, imagens optimizadas): cache para sempre.
 [[headers]]
-  for = "/_astro/*"
+  for = "/fada-madrinha/_astro/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/fonts/*"
+  for = "/fada-madrinha/fonts/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
 [[headers]]
-  for = "/logo/*"
+  for = "/fada-madrinha/logo/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
 [[headers]]
-  for = "/fairy/*"
+  for = "/fada-madrinha/fairy/*"
   [headers.values]
     Cache-Control = "public, max-age=604800"
 
@@ -39,13 +40,13 @@
 # URLs antigos do protótipo
 [[redirects]]
   from = "/index.html"
-  to = "/"
+  to = "/fada-madrinha"
   status = 301
 [[redirects]]
   from = "/quem-somos.html"
-  to = "/quem-somos"
+  to = "/fada-madrinha/quem-somos"
   status = 301
 [[redirects]]
   from = "/servicos.html"
-  to = "/servicos"
+  to = "/fada-madrinha/servicos"
   status = 301

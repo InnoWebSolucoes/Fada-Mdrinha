@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    { "source": "/", "destination": "https://innoweb.agency/fada-madrinha", "permanent": false },
+    { "source": "/:path((?!fada-madrinha).*)", "destination": "https://innoweb.agency/fada-madrinha/:path", "permanent": false }
+  ],
+  "headers": [
+    {
+      "source": "/fada-madrinha/_astro/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}

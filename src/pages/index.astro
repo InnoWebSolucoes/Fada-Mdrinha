@@ -7,7 +7,7 @@ import Wave from '../components/Wave.astro';
 import Marquee from '../components/Marquee.astro';
 import Faq from '../components/Faq.astro';
 import ContactCta from '../components/ContactCta.astro';
-import { site, waLink, whatsappMessages } from '../config/site';
+import { site, waLink, whatsappMessages, withBase } from '../config/site';
 import { services, howItWorks, compare, included, phases, segments, faq } from '../data/content';
 import cozinha from '../assets/photos/cozinha.jpg';
 import engomar from '../assets/photos/engomar.jpg';
@@ -85,11 +85,11 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
         <div class="compare__col compare__col--old reveal">
           <h3>A limpeza de sempre</h3>
           <ul>
-            {compare.others.map((o, i) => <li class="reveal strike" style={`--d:${i + 1}`}><Icon name="x" size={22} stroke={2.6} /><span>{o}</span></li>)}
+            {compare.others.map((o, i) => <li class="reveal strike" style={`--d:${i + 1}`}><Icon name="x" size={22} stroke={2.6} /><span><span class="strike__t">{o}</span></span></li>)}
           </ul>
         </div>
         <div class="compare__col compare__col--new reveal" style="--d:2">
-          <img src="/logo/mark.png" width="72" height="72" alt="" class="compare__mark" />
+          <img src={withBase('/logo/mark.png')} width="72" height="72" alt="" class="compare__mark" />
           <h3>Com a Fada Madrinha</h3>
           <ul>
             {compare.us.map((o, i) => <li class="reveal" style={`--d:${i + 2}`}><Icon name="check" size={22} stroke={2.6} /><span>{o}</span></li>)}
@@ -110,7 +110,7 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
       <ul class="tiles">
         {services.map((s, i) => (
           <li class={`tile tile--${s.tone} reveal`} style={`--d:${i % 3}`}>
-            <a href={`/servicos#${s.id}`}>
+            <a href={withBase(`/servicos#${s.id}`)}>
               <span class="tile__icon"><Icon name={s.icon} size={30} /></span>
               <h3>{s.title}</h3>
               <p>{s.short}</p>
@@ -144,7 +144,7 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
         <p>“Se este espaço fosse meu, eu daria este serviço por terminado?”</p>
         <footer>A pergunta que cada Fada faz antes de sair. Se a resposta for não, o trabalho continua.</footer>
       </blockquote>
-      <div class="actions reveal"><a href="/metodo" class="btn btn--white">Conhecer o nosso método</a></div>
+      <div class="actions reveal"><a href={withBase('/metodo')} class="btn btn--white">Conhecer o nosso método</a></div>
     </div>
   </section>
 
@@ -180,7 +180,7 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
         <ul class="biz__segs reveal" style="--d:2">{segments.map((s) => <li>{s}</li>)}</ul>
         <div class="actions reveal" style="--d:3">
           <a href={waLink(whatsappMessages.empresas)} class="btn btn--white btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Pedir orçamento</a>
-          <a href="/empresas" class="btn btn--outline-light btn--lg">Soluções para empresas</a>
+          <a href={withBase('/empresas')} class="btn btn--outline-light btn--lg">Soluções para empresas</a>
         </div>
       </div>
     </div>
@@ -263,8 +263,9 @@ const headline = ['Transformamos', 'espaços.', 'Criamos', 'bem-estar.'];
   .compare__col--new { background: var(--white); box-shadow: 0 20px 50px rgba(161, 52, 102, 0.16); }
   .compare__col--new svg { color: var(--white); background: var(--pink); border-radius: 50%; padding: 3px; }
   .compare__mark { position: absolute; top: -28px; right: 24px; width: 72px; height: 72px; }
-  .strike span { background: linear-gradient(currentColor, currentColor) no-repeat 0 55% / 0 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 0.6s var(--ease); transition-delay: calc(0.3s + var(--d, 0) * 120ms); }
-  .strike.is-in span, html:not(.js) .strike span { background-size: 100% 2px; }
+  /* O risco vive num span inline (o de fora é item flex, logo bloco): clone repete-o em cada linha. */
+  .strike__t { background: linear-gradient(currentColor, currentColor) no-repeat 0 55% / 0 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size 0.6s var(--ease); transition-delay: calc(0.3s + var(--d, 0) * 120ms); }
+  .strike.is-in .strike__t, html:not(.js) .strike .strike__t { background-size: 100% 2px; }
   @media (min-width: 800px) { .compare__grid { grid-template-columns: 0.9fr 1.1fr; align-items: center; } }
 
   /* SERVIÇOS */

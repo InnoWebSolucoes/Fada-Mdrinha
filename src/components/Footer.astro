@@ -1,16 +1,16 @@
 ---
 import Logo from './Logo.astro';
-import { site, nav, telLink, mailLink, waLink } from '../config/site';
+import { site, nav, telLink, mailLink, waLink, withBase } from '../config/site';
 ---
 <footer class="site-footer">
   <div class="wrap site-footer__top">
     <div>
-      <a href="/" aria-label="Fada Madrinha, página inicial" class="site-footer__logo"><Logo variant="dark" height={48} /></a>
+      <a href={withBase('/')} aria-label="Fada Madrinha, página inicial" class="site-footer__logo"><Logo variant="dark" height={48} /></a>
       <p class="site-footer__tag">{site.tagline}</p>
     </div>
     <nav class="site-footer__col" aria-labelledby="f-pages">
       <h2 id="f-pages">Páginas</h2>
-      <a href="/">Início</a>
+      <a href={withBase('/')}>Início</a>
       {nav.map((i) => <a href={i.href}>{i.label}</a>)}
     </nav>
     <div class="site-footer__col">
@@ -22,7 +22,10 @@ import { site, nav, telLink, mailLink, waLink } from '../config/site';
       <span>{site.address.display}</span>
     </div>
   </div>
-  <p class="wrap site-footer__copy">© {site.copyrightYear} Fada Madrinha. Todos os direitos reservados.</p>
+  <div class="wrap site-footer__bottom">
+    <p class="site-footer__copy">© {site.copyrightYear} Fada Madrinha. Todos os direitos reservados.</p>
+    <a class="site-footer__credit" href="https://innoweb.agency" target="_blank" rel="noopener">Made by Innoweb Solutions Agency</a>
+  </div>
 </footer>
 
 <style>
@@ -34,6 +37,11 @@ import { site, nav, telLink, mailLink, waLink } from '../config/site';
   .site-footer__col h2 { font-size: 1.05rem; color: var(--white); letter-spacing: 0; margin-bottom: 6px; }
   .site-footer__col a, .site-footer__col span { display: flex; align-items: center; min-height: 44px; width: fit-content; color: rgba(255, 255, 255, 0.78); text-decoration: none; }
   .site-footer__col a:hover { color: var(--white); text-decoration: underline; }
-  .site-footer__copy { margin: 0; padding-top: 20px; font-size: 0.88rem; color: rgba(255, 255, 255, 0.55); }
+  .site-footer__bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; column-gap: 24px; padding-top: 12px; font-size: 0.88rem; }
+  .site-footer__copy { margin: 0; color: rgba(255, 255, 255, 0.55); }
+  .site-footer__credit { display: inline-flex; align-items: center; min-height: 44px; color: rgba(255, 255, 255, 0.7); text-decoration: underline; text-decoration-color: rgba(255, 255, 255, 0.3); }
+  .site-footer__credit:hover { color: var(--gold); text-decoration-color: currentColor; }
+  /* Espaço para o botão flutuante do WhatsApp não tapar a última linha. */
+  @media (max-width: 759px) { .site-footer { padding-bottom: 88px; } }
   @media (min-width: 760px) { .site-footer__top { grid-template-columns: 1.5fr 1fr 1.2fr; } }
 </style>

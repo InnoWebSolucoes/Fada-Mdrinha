@@ -5,7 +5,7 @@ Site institucional estático da **Fada Madrinha** (limpeza profissional, Talaton
 - **Stack:** Astro (output estático), CSS com variáveis, JavaScript mínimo.
 - **Sem backend:** todo o contacto é feito por WhatsApp (`wa.me`), `tel:` e `mailto:`.
 - **Sem preços:** o orçamento é sempre pedido por WhatsApp.
-- **Deploy:** Netlify (`netlify.toml`).
+- **Deploy:** Vercel, publicado em https://innoweb.agency/fada-madrinha (`vercel.json`).
 
 ## Correr
 
@@ -51,6 +51,12 @@ Century Gothic (licença Monotype) ainda não licenciada para web; usa-se Jost. 
 
 `public/logo/` (logótipo extraído do manual, PNG/WebP), `public/fairy/`, `src/assets/photos/`, `src/assets/team/`. As fotografias passam por `<Picture>` (AVIF/WebP responsivo).
 
-## Deploy (Netlify)
+## Deploy (Vercel, em innoweb.agency/fada-madrinha)
 
-Ligar o repositório, build `npm run build`, publish `dist`, domínio `www.fadamadrinha.com`. Cache imutável para `/_astro/*` já configurada.
+O site é servido em **https://innoweb.agency/fada-madrinha**. Este repositório faz deploy no projecto Vercel `fada-mdrinha`; o site do innoweb.agency (repositório `innoweb-agency`, `next.config.js`) reencaminha `/fada-madrinha/*` para `https://fada-mdrinha.vercel.app/fada-madrinha/*`.
+
+- `base: '/fada-madrinha'` em `astro.config.mjs`, e o build vai para `dist/fada-madrinha`, para os caminhos serem iguais nos dois sítios.
+- Links internos e ficheiros de `public/` usam sempre `withBase()` (`src/config/site.ts`); um `href="/..."` directo parte o site.
+- `vercel.json` redirecciona o endereço antigo (`fada-mdrinha.vercel.app/...`) para o innoweb.agency.
+- Para mudar para um domínio próprio: alterar `site`/`base` em `astro.config.mjs`, `site.url` em `src/config/site.ts` e os redirects em `vercel.json`.
+- Nota: `fadamadrinha.com` pertence a outra empresa (confeitaria no Brasil).

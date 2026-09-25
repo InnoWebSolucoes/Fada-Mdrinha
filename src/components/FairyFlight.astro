@@ -3,15 +3,18 @@
  * A fada da Fada Madrinha (a figura do próprio símbolo da marca) voa pela página
  * enquanto se faz scroll: segue uma curva, vira-se para onde vai, inclina com a
  * velocidade, bate as asas e deixa um rasto de brilhos.
+ * No telemóvel pousa em espaços vazios e salta entre eles, sem tapar texto.
  * Desligar em src/config/site.ts (features.fairy). Oculta com prefers-reduced-motion.
  */
+import { withBase } from '../config/site';
+const src = withBase('/fairy/fada.png');
 ---
 <div class="fairy-layer" aria-hidden="true">
   <div class="fairy" data-fairy>
     <div class="fairy__flip" data-fairy-flip>
       <div class="fairy__bob">
-        <img class="fairy__body" src="/fairy/fada.png" width="331" height="404" alt="" decoding="async" />
-        <img class="fairy__wings" src="/fairy/fada.png" width="331" height="404" alt="" decoding="async" />
+        <img class="fairy__body" src={src} width="331" height="404" alt="" decoding="async" />
+        <img class="fairy__wings" src={src} width="331" height="404" alt="" decoding="async" />
       </div>
     </div>
   </div>
@@ -20,8 +23,9 @@
 
 <style>
   .fairy-layer { position: fixed; inset: 0; z-index: 80; pointer-events: none; overflow: hidden; }
-  .fairy { position: absolute; left: 0; top: 0; width: var(--fairy-w, 96px); will-change: transform; opacity: 0; transition: opacity 0.6s; }
+  .fairy { position: absolute; left: 0; top: 0; width: var(--fairy-w, 64px); will-change: transform; opacity: 0; transition: opacity 0.6s; }
   .fairy.is-ready { opacity: 1; }
+  .fairy.is-ready.is-away { opacity: 0; transition-duration: 0.3s; }
   .fairy__flip { transition: transform 0.35s var(--ease); }
   .fairy__flip.is-right { transform: scaleX(-1); }
   .fairy__bob { position: relative; aspect-ratio: 331 / 404; animation: fairy-bob 2.4s ease-in-out infinite; filter: drop-shadow(0 6px 10px rgba(11, 53, 86, 0.18)); }
@@ -31,6 +35,9 @@
   .fairy__wings { clip-path: polygon(20% 0, 72% 0, 72% 48%, 56% 50%, 33% 46%, 29% 45%, 28% 30%, 26% 22%, 21% 14%); transform-origin: 30% 45%; animation: fairy-flap 0.2s ease-in-out infinite alternate; }
   @keyframes fairy-flap { from { transform: scaleX(1) skewY(0deg); } to { transform: scaleX(0.72) skewY(-6deg); } }
   @keyframes fairy-bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(2deg); } }
+  /* Telemóvel: reaparece com um "pop" quando se teletransporta. */
+  .fairy.is-pop .fairy__bob { animation: fairy-bob 2.4s ease-in-out infinite, fairy-pop 0.45s var(--bounce); }
+  @keyframes fairy-pop { from { scale: 0.2; opacity: 0; } to { scale: 1; opacity: 1; } }
 
   .fairy-dust { position: absolute; inset: 0; }
   .fairy-dust :global(.dust) { position: absolute; left: 0; top: 0; width: var(--s); height: var(--s); color: var(--c); animation: dust 1s ease-out forwards; }
@@ -40,6 +47,7 @@
     100% { opacity: 0; transform: translate(calc(var(--x) + var(--dx)), calc(var(--y) + var(--dy))) scale(0.2) rotate(120deg); }
   }
   @media (min-width: 900px) { .fairy { --fairy-w: 128px; } }
+  @media (min-width: 900px) and (hover: none) and (pointer: coarse) { .fairy { --fairy-w: 96px; } }
   @media (prefers-reduced-motion: reduce) { .fairy-layer { display: none; } }
 </style>
 
@@ -52,9 +60,12 @@
   if (fairy && flip && dust && !reduce) {
     const colors = ['#dab84f', '#da4f8c', '#0d8de5', '#f2d98a'];
     const star = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0c.9 6.6 3.4 9.3 12 12-8.6 2.7-11.1 5.4-12 12-.9-6.6-3.4-9.3-12-12 8.6-2.7 11.1-5.4 12-12Z"/></svg>';
+    // Telemóvel (ecrã estreito ou tátil): a fada pousa em espaços livres em vez de atravessar o conteúdo.
+    const phoneMq = matchMedia('(max-width: 899px), (hover: none) and (pointer: coarse)');
     let x = innerWidth * 0.8, y = innerHeight * 0.3, px = x, py = y, t = 0, live = 0, facingRight = false;
+    let phone = false, raf = 0, last = performance.now();
 
-    // Onde a fada "quer" estar, a partir do progresso do scroll: uma curva que atravessa o ecrã.
+    // Computador: onde a fada "quer" estar, a partir do progresso do scroll: uma curva que atravessa o ecrã.
     const target = () => {
       const max = document.documentElement.scrollHeight - innerHeight;
       const p = max > 0 ? scrollY / max : 0;
@@ -66,10 +77,143 @@
       return [tx, ty];
     };
 
+    /* Telemóvel: tudo em coordenadas da página (y inclui o scroll). Pousada, a fada acompanha o
+       conteúdo e fica no mesmo espaço vazio. Quando esse espaço sai do ecrã ou passa a ter texto
+       por cima, voa para o espaço livre mais próximo; de vez em quando salta para outro ali perto. */
+    type Box = [number, number, number, number];
+    const SKIP = '.fairy-layer, script, style, noscript, template, .site-header, .mobile-menu, .marquee, .hero__sticker';
+    const AVOID = '.marquee, .hero__sticker'; // blocos evitados por inteiro (em movimento ou com fundo próprio)
+    const FIXED = '.wa-float'; // fixos no ecrã
+    const INTERACTIVE = 'a, button, summary, input, select, textarea, label';
+    const header = document.querySelector<HTMLElement>('.site-header');
+    const range = document.createRange();
+    let targets: (Text | Element)[] | null = null;
+    let rects: Box[] = [], fixed: Box[] = [];
+    let goal: [number, number] | null = null;
+    let top = 0, hw = 0, hh = 0, dir = 0, lastSy = 0, scanSy = 0;
+    let nextScan = 0, nextTry = 0, restUntil = 0, away = false;
+
+    // O que conta como texto: cada linha de texto e, em botões e links pequenos, a caixa inteira.
+    const collect = () => {
+      const set = new Set<Text | Element>();
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode() as Text | null; n; n = walker.nextNode() as Text | null) {
+        const el = n.parentElement;
+        if (!el || !n.nodeValue?.trim() || el.closest(SKIP)) continue;
+        const hit = el.closest<HTMLElement>(INTERACTIVE);
+        set.add(hit && hit.offsetHeight <= 100 ? hit : n);
+      }
+      document.querySelectorAll(AVOID).forEach((el) => set.add(el));
+      targets = [...set];
+    };
+
+    const scan = () => {
+      if (!targets) collect();
+      const sy = scrollY, vh = innerHeight;
+      rects = [];
+      for (const n of targets!) {
+        const box = (n instanceof Text ? n.parentElement! : n).getBoundingClientRect();
+        if (!box.width || box.bottom < -vh * 0.5 || box.top > vh * 1.5) continue;
+        let list: ArrayLike<DOMRect>;
+        if (n instanceof Text) { range.selectNodeContents(n); list = range.getClientRects(); }
+        else list = n.matches(AVOID) ? [box] : n.getClientRects();
+        for (let i = 0; i < list.length; i++) {
+          const r = list[i];
+          if (r.width && r.height) rects.push([r.left, r.top + sy, r.right, r.bottom + sy]);
+        }
+      }
+      fixed = [...document.querySelectorAll(FIXED)].map((el) => el.getBoundingClientRect())
+        .filter((r) => r.width).map((r): Box => [r.left - 6, r.top - 6, r.right + 6, r.bottom + 6]);
+      scanSy = sy;
+    };
+
+    // A fada, centrada em (cx, cy), cabe aqui sem tapar texto e sem sair do ecrã?
+    const free = (cx: number, cy: number, s = 1) => {
+      const l = cx - hw * s, r = cx + hw * s, tp = cy - hh * s, b = cy + hh * s, sy = scrollY;
+      if (l < 4 || r > innerWidth - 4 || tp < sy + top + 6 || b > sy + innerHeight - 10) return false;
+      for (const q of rects) if (q[0] < r && q[2] > l && q[1] < b && q[3] > tp) return false;
+      for (const q of fixed) if (q[0] < r && q[2] > l && q[1] + sy < b && q[3] + sy > tp) return false;
+      return true;
+    };
+    const pathFree = (cx: number, cy: number) => {
+      const n = Math.max(2, Math.ceil(Math.hypot(cx - x, cy - y) / 24));
+      for (let i = 1; i < n; i++) if (!free(x + (cx - x) * i / n, y + (cy - y) * i / n, 0.9)) return false;
+      return true;
+    };
+
+    // hop: salto voluntário para outro sítio ali perto; senão, o espaço livre mais próximo.
+    const pick = (hop: boolean): [number, number] | null => {
+      const sy = scrollY, vh = innerHeight, step = 14, want = 90 + Math.random() * 170;
+      // Do lado para onde o conteúdo vai, o espaço fica mais tempo no ecrã.
+      const pref = dir > 0 ? 0.68 : dir < 0 ? 0.38 : 0.52;
+      let best: [number, number] | null = null, bestScore = Infinity;
+      for (let cy = sy + top + 6 + hh; cy <= sy + vh - 10 - hh; cy += step) {
+        for (let cx = 4 + hw; cx <= innerWidth - 4 - hw; cx += step) {
+          if (!free(cx, cy)) continue;
+          const d = Math.hypot(cx - x, cy - y);
+          if (hop && d < 60) continue;
+          let score = (hop ? Math.abs(d - want) : d) + Math.abs((cy - sy) / vh - pref) * 260 + Math.random() * 40;
+          // Só salta por caminhos livres; de resto, prefere-os (sem caminho livre, teletransporta-se).
+          if (score < bestScore && !pathFree(cx, cy)) { if (hop) continue; score += 250; }
+          if (score < bestScore) { bestScore = score; best = [cx, cy]; }
+        }
+      }
+      return best;
+    };
+
+    const setAway = (v: boolean) => { away = v; fairy.classList.toggle('is-away', v); };
+    const burst = (bx: number, by: number, w: number) => {
+      for (let i = 0; i < 8; i++) sparkle(bx + (Math.random() - 0.5) * w, by + (Math.random() - 0.5) * w);
+    };
+    const pop = () => {
+      fairy.classList.remove('is-pop');
+      void fairy.offsetWidth; // reinicia a animação
+      fairy.classList.add('is-pop');
+    };
+
+    const phoneStep = (f: number, now: number) => {
+      const sy = scrollY;
+      if (sy > lastSy + 0.5) dir = 1; else if (sy < lastSy - 0.5) dir = -1;
+      lastSy = sy;
+      if (now > nextScan || Math.abs(sy - scanSy) > innerHeight * 0.5) { scan(); nextScan = now + 400; }
+      top = header ? Math.max(0, header.getBoundingClientRect().bottom) : 0;
+      const w = fairy.offsetWidth;
+      hw = w / 2 + 4; hh = (w * 404 / 331) / 2 + 10; // +10: o balançar vertical
+
+      if (!goal || !free(goal[0], goal[1])) {
+        if (now >= nextTry) {
+          const s = pick(false);
+          if (s) {
+            // Escondida, ou sem caminho livre até lá: desfaz-se em brilhos e reaparece lá.
+            if (away || !goal || !pathFree(s[0], s[1])) {
+              if (!away && goal) burst(x, y - sy, w);
+              x = px = s[0]; y = py = s[1];
+              burst(x, y - sy, w);
+              pop();
+            }
+            goal = s; restUntil = 0; setAway(false);
+          } else {
+            // Nenhum espaço livre à vista: some até haver um.
+            goal = null; setAway(true); nextTry = now + 250;
+          }
+        }
+      } else if (restUntil && now > restUntil) {
+        const s = pick(true);
+        if (s) { goal = s; restUntil = 0; } else restUntil = now + 2000;
+      }
+
+      if (goal) {
+        const k = 1 - Math.pow(0.93, f);
+        x += (goal[0] - x) * k;
+        y += (goal[1] - y) * k;
+        if (!restUntil && Math.hypot(goal[0] - x, goal[1] - y) < 2) restUntil = now + 2500 + Math.random() * 3500;
+      }
+    };
+
     const sparkle = (sx: number, sy: number) => {
       if (live > 36) return;
       const el = document.createElement('span');
-      const s = 6 + Math.random() * 12;
+      const s = phone ? 5 + Math.random() * 8 : 6 + Math.random() * 12;
       el.className = 'dust';
       el.innerHTML = star;
       el.style.setProperty('--s', `${s}px`);
@@ -77,32 +221,52 @@
       el.style.setProperty('--x', `${sx - s / 2}px`);
       el.style.setProperty('--y', `${sy - s / 2}px`);
       el.style.setProperty('--dx', `${(Math.random() - 0.5) * 40}px`);
-      el.style.setProperty('--dy', `${20 + Math.random() * 40}px`);
+      el.style.setProperty('--dy', `${phone ? 10 + Math.random() * 20 : 20 + Math.random() * 40}px`);
       live++;
       el.addEventListener('animationend', () => { el.remove(); live--; }, { once: true });
       dust.appendChild(el);
     };
 
-    const frame = () => {
+    const frame = (now: number) => {
       t++;
-      const [tx, ty] = target();
-      x += (tx - x) * 0.06;
-      y += (ty - y) * 0.06;
-      const vx = x - px, vy = y - py, speed = Math.hypot(vx, vy);
+      // Em ecrãs de 120 Hz o telemóvel voa à mesma velocidade.
+      const f = Math.min(4, Math.max(0.25, (now - last) / (1000 / 60)));
+      last = now;
+      if (phoneMq.matches !== phone) {
+        // Mudança de modo: converte entre coordenadas do ecrã e da página.
+        phone = phoneMq.matches;
+        const d = phone ? scrollY : -scrollY;
+        y += d; py += d; goal = null; restUntil = 0; nextTry = 0; setAway(false);
+      }
+      if (phone) phoneStep(f, now);
+      else {
+        const [tx, ty] = target();
+        x += (tx - x) * 0.06;
+        y += (ty - y) * 0.06;
+      }
+      const oy = phone ? scrollY : 0, fs = phone ? f : 1;
+      const vx = (x - px) / fs, vy = (y - py) / fs, speed = Math.hypot(vx, vy);
       if (vx > 0.4 && !facingRight) { facingRight = true; flip.classList.add('is-right'); }
       else if (vx < -0.4 && facingRight) { facingRight = false; flip.classList.remove('is-right'); }
       const w = fairy.offsetWidth, h = w * (404 / 331);
       const tilt = Math.max(-18, Math.min(18, vx * 1.6));
-      fairy.style.transform = `translate3d(${x - w / 2}px, ${y - h / 2}px, 0) rotate(${tilt}deg)`;
+      fairy.style.transform = `translate3d(${x - w / 2}px, ${y - oy - h / 2}px, 0) rotate(${tilt}deg)`;
       // Os brilhos saem dos pés (o lado de trás, oposto ao da cabeça).
-      const tailX = x + (facingRight ? -1 : 1) * w * 0.4, tailY = y + h * 0.35;
-      if (speed > 1.2 && t % 2 === 0) sparkle(tailX, tailY);
-      else if (t % 24 === 0) sparkle(tailX, tailY);
+      const tailX = x + (facingRight ? -1 : 1) * w * 0.4, tailY = y - oy + h * 0.35;
+      if (!away) {
+        if (speed > 1.2 && t % 2 === 0) sparkle(tailX, tailY);
+        else if (t % (phone ? 40 : 24) === 0) sparkle(tailX, tailY);
+      }
       px = x; py = y;
-      if (!document.hidden) requestAnimationFrame(frame);
+      raf = document.hidden ? 0 : requestAnimationFrame(frame);
     };
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) requestAnimationFrame(frame); });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && !raf) { last = performance.now(); raf = requestAnimationFrame(frame); }
+    });
+    // No telemóvel a barra do browser dispara resize a cada scroll; só a largura muda o texto.
+    let lastW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; targets = null; } nextScan = 0; });
     fairy.classList.add('is-ready');
-    requestAnimationFrame(frame);
+    raf = requestAnimationFrame(frame);
   }
 </script>

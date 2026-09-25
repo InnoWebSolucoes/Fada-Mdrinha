@@ -6,6 +6,7 @@ import Star from '../components/Star.astro';
 import Wave from '../components/Wave.astro';
 import ContactCta from '../components/ContactCta.astro';
 import { team, values, principles, oath } from '../data/content';
+import { withBase } from '../config/site';
 ---
 <Base title="Quem Somos" description="Conheça a história, a missão, os valores e a equipa da Fada Madrinha, limpeza profissional em Luanda com método, cuidado e confiança.">
   <PageHero tone="pink" title="Duas amigas, uma crença, uma equipa que cuida" text="A Fada Madrinha nasce de Irina André e Nguelengue Savinona, duas amigas que sempre entenderam que um espaço limpo e arrumado não é um privilégio. É essencial." />
@@ -79,7 +80,7 @@ import { team, values, principles, oath } from '../data/content';
         ))}
       </ul>
       <blockquote class="oath reveal">
-        <img src="/fairy/fada.png" width="331" height="404" alt="" class="oath__fairy" />
+        <img src={withBase('/fairy/fada.png')} width="331" height="404" alt="" class="oath__fairy" />
         <p>{oath}</p>
         <footer>O Juramento Fada Madrinha, feito por cada colaborador no fim da integração</footer>
       </blockquote>

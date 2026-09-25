@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import Star from '../components/Star.astro';
-import { waLink } from '../config/site';
+import { waLink, withBase } from '../config/site';
 ---
 <Base title="Página não encontrada" description="A página que procura não existe ou foi movida." noindex>
   <section class="nf">
@@ -10,11 +10,11 @@ import { waLink } from '../config/site';
     <Star style="top:30%;right:20%;--s:18px;--t:.8s" color="var(--pink)" />
     <Star style="bottom:22%;left:30%;--s:14px;--t:1.4s" color="var(--blue)" />
     <div class="wrap nf__inner">
-      <img src="/fairy/fada.png" width="331" height="404" alt="" class="nf__fairy float" />
+      <img src={withBase('/fairy/fada.png')} width="331" height="404" alt="" class="nf__fairy float" />
       <h1>Oops! Esta página voou para longe.</h1>
       <p class="lede mx-auto">Até uma fada madrinha se perde de vez em quando. Volte ao início ou fale connosco, que nós tratamos do resto.</p>
       <div class="actions actions--center">
-        <a href="/" class="btn btn--lg">Voltar ao início</a>
+        <a href={withBase('/')} class="btn btn--lg">Voltar ao início</a>
         <a href={waLink()} class="btn btn--outline btn--lg" target="_blank" rel="noopener"><Icon name="whatsapp" /> Falar connosco</a>
       </div>
     </div>

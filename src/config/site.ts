@@ -3,9 +3,19 @@
  * Contactos, domínio, redes sociais e mensagens pré-preenchidas do WhatsApp vivem aqui.
  */
 
+/**
+ * Caminho interno com o prefixo do site (base em astro.config.mjs): withBase('/servicos') dá
+ * '/fada-madrinha/servicos'. Usar em todos os links e ficheiros de public/.
+ */
+export function withBase(path: string = '/'): string {
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  return path === '/' ? base || '/' : base + path;
+}
+
 export const site = {
   name: 'Fada Madrinha',
-  url: 'https://www.fadamadrinha.com',
+  // Endereço completo do início do site. (fadamadrinha.com é de outra empresa, não usar.)
+  url: 'https://innoweb.agency/fada-madrinha',
   tagline: 'Transformamos espaços. Criamos bem-estar.',
   description:
     'Limpeza profissional residencial e empresarial em Talatona, Luanda. Método próprio, supervisão em cada visita e atendimento próximo. Peça o seu orçamento pelo WhatsApp.',
@@ -51,8 +61,8 @@ export const telLink = `tel:${site.phone.e164}`;
 export const mailLink = `mailto:${site.email}`;
 
 export const nav = [
-  { href: '/quem-somos', label: 'Quem Somos' },
-  { href: '/servicos', label: 'Serviços' },
-  { href: '/empresas', label: 'Empresas' },
-  { href: '/metodo', label: 'O Nosso Método' },
+  { href: withBase('/quem-somos'), label: 'Quem Somos' },
+  { href: withBase('/servicos'), label: 'Serviços' },
+  { href: withBase('/empresas'), label: 'Empresas' },
+  { href: withBase('/metodo'), label: 'O Nosso Método' },
 ] as const;
